@@ -2,9 +2,6 @@
 
 public partial class SimpleChatViewModel : ObservableRecipient
 {
-    Color? _primaryColor;
-    Color? _secondaryColor;
-
     public SimpleChatViewModel()
     {
         InitChatMessages();
