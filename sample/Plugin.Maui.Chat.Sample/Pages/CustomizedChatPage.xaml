@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:chat="clr-namespace:Plugin.Maui.Chat.Controls;assembly=Plugin.Maui.Chat"
+             xmlns:resources="clr-namespace:Plugin.Maui.Chat.Sample.Resources"
+             xmlns:viewmodels="clr-namespace:Plugin.Maui.Chat.Sample.ViewModels"
+             x:Class="Plugin.Maui.Chat.Sample.Pages.CustomizedChatPage"
+             Title="Customized chat"
+             x:DataType="viewmodels:CustomizedChatViewModel">
+    <chat:Chat UserMessage="{Binding UserMessage}"
+               ChatMessages="{Binding ChatMessages}"
+               
+               SentMessageBackgroundColor="{StaticResource Primary}"
+               IsSentMessageAuthorVisible="True"
+               SentMessageAuthorTextColor="{StaticResource Secondary}"
+               IsSentMessageTimestampVisible="True"
+               SentMessageTimestampTextColor="{StaticResource Secondary}"
+               SentMessageContentTextColor="{StaticResource Secondary}"
+               
+               ReceivedMessageBackgroundColor="{StaticResource Secondary}"
+               IsReceivedMessageAuthorVisible="True"
+               ReceivedMessageAuthorTextColor="{StaticResource Tertiary}"
+               IsReceivedMessageTimestampVisible="True"
+               ReceivedMessageTimestampTextColor="{StaticResource Tertiary}"
+               ReceivedMessageContentTextColor="{StaticResource Primary}"
+               
+               SystemMessageBackgroundColor="{StaticResource Gray200}"
+               SystemMessageTextColor="{StaticResource Gray900}"
+               
+               Status="{Binding Status}"
+               IsStatusVisible="{Binding IsStatusVisible}"
+               StatusTextColor="{StaticResource Gray500}"
+               
+               StartStopRecordToggleCommand="{Binding StartStopRecordToggleCommand}"
+               IsStartStopRecordToggleVisible="True"
+               StartStopRecordToggleIcon="{Static resources:Icons.Microphone}"
+               StartStopRecordToggleColor="{Binding StartStopRecordToggleColor}"
+               
+               HandsFreeModeToggleCommand="{Binding HandsFreeModeToggleCommand}"
+               IsHandsFreeModeToggleVisible="True"
+               HandsFreeModeToggleIcon="{Static resources:Icons.Headphones}"
+               HandsFreeModeToggleColor="{Binding HandsFreeModeToggleColor}"
+               
+               AddAttachmentCommand="{Binding AddAttachmentCommand}"
+               IsAddAttachmentVisible="True"
+               AddAttachmentIcon="{Static resources:Icons.PaperClip}"
+               AddAttachmentColor="{Binding AddAttachmentColor}"
+               
+               TakePhotoCommand="{Binding TakePhotoCommand}"
+               IsTakePhotoVisible="True"
+               TakePhotoIcon="{Static resources:Icons.Camera}"
+               TakePhotoColor="{Binding TakePhotoColor}"
+               
+               SendMessageCommand="{Binding SendMessageCommand}"
+               IsSendMessageVisible="True"
+               SendMessageIcon="{Static resources:Icons.PaperPlane}"
+               SendMessageColor="{Binding SendMessageColor}"
+               
+               Margin="10"/>
+</ContentPage>
+    
