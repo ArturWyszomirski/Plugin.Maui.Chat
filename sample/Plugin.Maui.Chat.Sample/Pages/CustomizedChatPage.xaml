@@ -34,28 +34,41 @@
                StartStopRecordToggleCommand="{Binding StartStopRecordToggleCommand}"
                IsStartStopRecordToggleVisible="True"
                StartStopRecordToggleIcon="{Static resources:Icons.Microphone}"
-               StartStopRecordToggleColor="{Binding StartStopRecordToggleColor}"
                
                HandsFreeModeToggleCommand="{Binding HandsFreeModeToggleCommand}"
                IsHandsFreeModeToggleVisible="True"
                HandsFreeModeToggleIcon="{Static resources:Icons.Headphones}"
-               HandsFreeModeToggleColor="{Binding HandsFreeModeToggleColor}"
                
                AddAttachmentCommand="{Binding AddAttachmentCommand}"
                IsAddAttachmentVisible="True"
                AddAttachmentIcon="{Static resources:Icons.PaperClip}"
-               AddAttachmentColor="{Binding AddAttachmentColor}"
+               AddAttachmentColor="{StaticResource Primary}"
                
                TakePhotoCommand="{Binding TakePhotoCommand}"
                IsTakePhotoVisible="True"
                TakePhotoIcon="{Static resources:Icons.Camera}"
-               TakePhotoColor="{Binding TakePhotoColor}"
+               TakePhotoColor="{StaticResource Primary}"
                
                SendMessageCommand="{Binding SendMessageCommand}"
                IsSendMessageVisible="True"
                SendMessageIcon="{Static resources:Icons.PaperPlane}"
-               SendMessageColor="{Binding SendMessageColor}"
+               SendMessageColor="{StaticResource Primary}"
                
-               Margin="10"/>
+               Margin="10">
+        <chat:Chat.Triggers>
+            <DataTrigger TargetType="chat:Chat" Binding="{Binding IsRecording}" Value="True">
+                <Setter Property="StartStopRecordToggleColor" Value="{StaticResource Primary}"/>
+            </DataTrigger>
+            <DataTrigger TargetType="chat:Chat" Binding="{Binding IsRecording}" Value="False">
+                <Setter Property="StartStopRecordToggleColor" Value="{StaticResource Secondary}"/>
+            </DataTrigger>
+            <DataTrigger TargetType="chat:Chat" Binding="{Binding IsHandsFreeMode}" Value="True">
+                <Setter Property="HandsFreeModeToggleColor" Value="{StaticResource Primary}"/>
+            </DataTrigger>
+            <DataTrigger TargetType="chat:Chat" Binding="{Binding IsHandsFreeMode}" Value="False">
+                <Setter Property="HandsFreeModeToggleColor" Value="{StaticResource Secondary}"/>
+            </DataTrigger>
+        </chat:Chat.Triggers>
+    </chat:Chat>
 </ContentPage>
     
