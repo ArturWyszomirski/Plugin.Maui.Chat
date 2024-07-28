@@ -470,6 +470,18 @@ public partial class Chat : ContentView
     }
 
     /// <summary>
+    /// Determines whether send message button is enabled.
+    /// </summary>
+    public static readonly BindableProperty IsSendMessageEnabledProperty =
+        BindableProperty.Create(nameof(IsSendMessageEnabled), typeof(bool), typeof(Chat));
+
+    public bool IsSendMessageEnabled
+    {
+        get => (bool)GetValue(IsSendMessageEnabledProperty);
+        set => SetValue(IsSendMessageEnabledProperty, value);
+    }
+
+    /// <summary>
     /// Determines whether send message button is visible.
     /// </summary>
     public static readonly BindableProperty IsSendMessageVisibleProperty = 

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:behaviors="clr-namespace:Plugin.Maui.Chat.Behaviors"
              xmlns:controls="clr-namespace:Plugin.Maui.Chat.Controls"
              xmlns:helpers="clr-namespace:Plugin.Maui.Chat.Helpers"
              xmlns:models="clr-namespace:Plugin.Maui.Chat.Models"
@@ -8,6 +9,10 @@
              x:Class="Plugin.Maui.Chat.Controls.Chat"
              x:DataType="controls:Chat"
              x:Name="chat">
+
+    <ContentView.Behaviors>
+        <behaviors:UserMessageValidationBehavior></behaviors:UserMessageValidationBehavior>
+    </ContentView.Behaviors>
 
     <ContentView.Resources>
         <DataTemplate x:Key="SentMessageTemplate" 
@@ -160,17 +165,18 @@
                     </Image>
                 </Grid>
             </Frame>
-            <Image Grid.Column="1"
+            <ImageButton Grid.Column="1"
+                         Command="{Binding SendMessageCommand, Source={x:Reference chat}}"
                    HeightRequest="25"
                    WidthRequest="25"
                    Source="{Binding SendMessageIcon, Source={x:Reference chat}}" 
                    Aspect="AspectFit"
+                         IsEnabled="{Binding IsSendMessageEnabled, Source={x:Reference chat}}"
                    IsVisible="{Binding IsSendMessageVisible, Source={x:Reference chat}}">
-                <Image.Behaviors>
+                <ImageButton.Behaviors>
                     <toolkit:IconTintColorBehavior TintColor="{Binding SendMessageColor, Source={x:Reference chat}}"/>
-                    <toolkit:ImageTouchBehavior Command="{Binding SendMessageCommand, Source={x:Reference chat}}"/>
-                </Image.Behaviors>
-            </Image>
+                </ImageButton.Behaviors>
+            </ImageButton>
         </Grid>
     </Grid>
 </ContentView>
