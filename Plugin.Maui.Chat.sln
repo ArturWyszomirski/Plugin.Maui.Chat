@@ -5,7 +5,14 @@ VisualStudioVersion = 17.10.35013.160
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Plugin.Maui.Chat", "src\Plugin.Maui.Chat\Plugin.Maui.Chat.csproj", "{EBE2339C-B7E6-4408-B13D-EDA53617B508}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Plugin.Maui.Chat.Sample", "sample\Plugin.Maui.Chat.Sample\Plugin.Maui.Chat.Sample.csproj", "{CE150A3C-8946-43AF-A70C-AF51A99A8E61}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Plugin.Maui.Chat.Sample", "sample\Plugin.Maui.Chat.Sample\Plugin.Maui.Chat.Sample.csproj", "{CE150A3C-8946-43AF-A70C-AF51A99A8E61}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{BE49A087-5C5A-4693-9863-AA119C69777A}"
+	ProjectSection(SolutionItems) = preProject
+		LICENSE = LICENSE
+		messages.png = messages.png
+		README.md = README.md
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
