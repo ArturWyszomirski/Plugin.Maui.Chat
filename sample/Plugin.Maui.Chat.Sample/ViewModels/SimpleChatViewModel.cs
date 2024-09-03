@@ -16,27 +16,27 @@ public partial class SimpleChatViewModel : ObservableRecipient
     {
         ChatMessages.Add(new ChatMessage()
         {
-            Type = Type.Sent,
+            Type = MessageType.Sent,
             Author = "You",
             Text = "This is a sample sent message."
         });
 
         ChatMessages.Add(new ChatMessage()
         {
-            Type = Type.Received,
+            Type = MessageType.Received,
             Author = "Echo",
             Text = "This is a sample received message."
         });
 
         ChatMessages.Add(new ChatMessage()
         {
-            Type = Type.System,
+            Type = MessageType.System,
             Text = "This is a sample system message."
         });
 
         ChatMessages.Add(new ChatMessage()
         {
-            Type = Type.Sent,
+            Type = MessageType.Sent,
             Author = "You",
             Text = "This is a little bit longer sample sent message to see how multiple lines will look like.\n" +
                    ".NET MAUI is awesome!"
@@ -44,7 +44,7 @@ public partial class SimpleChatViewModel : ObservableRecipient
 
         ChatMessages.Add(new ChatMessage()
         {
-            Type = Type.Received,
+            Type = MessageType.Received,
             Author = "Echo",
             Text = "This is a little bit longer sample sent message to see how multiple lines will look like.\n" +
                    ".NET MAUI is awesome!"
@@ -56,7 +56,7 @@ public partial class SimpleChatViewModel : ObservableRecipient
     {
         ChatMessages.Add(new ChatMessage()
         {
-            Type = Type.Sent,
+            Type = MessageType.Sent,
             Author = "You",
             Text = UserMessage
         });
@@ -67,7 +67,7 @@ public partial class SimpleChatViewModel : ObservableRecipient
 
         ChatMessages.Add(new ChatMessage()
         {
-            Type = Type.Received,
+            Type = MessageType.Received,
             Author = "Echo",
             Text = $"Echo: {ChatMessages.Last().Text}"
         });

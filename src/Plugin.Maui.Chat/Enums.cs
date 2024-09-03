@@ -1,6 +1,6 @@
 ﻿namespace Plugin.Maui.Chat;
 
-public enum Type
+public enum MessageType
 {
     Sent,
     Received,
