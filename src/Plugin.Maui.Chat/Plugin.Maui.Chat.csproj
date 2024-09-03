@@ -59,7 +59,7 @@
 
 	<ItemGroup>
 		<!-- Images -->
-		<MauiImage Include="Resources\Images\*" Pack="true" PackagePath="contentFiles\any\net8.0\Resources\Images\"/>
+		<None Include="Resources\Images\*" Pack="true" PackagePath="contentFiles\any\net8.0\Resources\Images\"/>
 	</ItemGroup>
 
 	<ItemGroup>
