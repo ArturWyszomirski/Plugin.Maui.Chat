@@ -63,12 +63,6 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <None Remove="Resources\Images\camera_br.png" />
-	  <None Remove="Resources\Images\paper_clip_br.png" />
-	  <None Remove="Resources\Images\paper_plane_br.png" />
-	</ItemGroup>
-
-	<ItemGroup>
 	  <Compile Update="Resources\Icons.Designer.cs">
 	    <DesignTime>True</DesignTime>
 	    <AutoGen>True</AutoGen>
