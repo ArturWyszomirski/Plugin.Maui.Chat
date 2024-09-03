@@ -5,7 +5,7 @@ namespace Plugin.Maui.Chat.Behaviors;
 /// <summary>
 /// Disables send message button if user message is empty or white space.
 /// </summary>
-public class UserMessageValidationBehavior : Behavior<Controls.Chat>
+internal class UserMessageValidationBehavior : Behavior<Controls.Chat>
 {
     protected override void OnAttachedTo(BindableObject bindable)
     {

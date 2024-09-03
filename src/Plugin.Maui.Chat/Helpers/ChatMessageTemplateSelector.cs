@@ -1,6 +1,6 @@
 ﻿namespace Plugin.Maui.Chat.Helpers;
 
-public class ChatMessageTemplateSelector : DataTemplateSelector
+internal class ChatMessageTemplateSelector : DataTemplateSelector
 {
     public DataTemplate? SentMessage { get; set; }
     public DataTemplate? ReceivedMessage { get; set; }
@@ -12,9 +12,9 @@ public class ChatMessageTemplateSelector : DataTemplateSelector
         {
             return message.Type switch
             {
-                Type.Sent => SentMessage,
-                Type.Received => ReceivedMessage,
-                Type.System => SystemMessage,
+                MessageType.Sent => SentMessage,
+                MessageType.Received => ReceivedMessage,
+                MessageType.System => SystemMessage,
                 _ => throw new ArgumentException("Invalid item value", nameof(item))
             };
         }
