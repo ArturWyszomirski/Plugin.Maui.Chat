@@ -41,7 +41,7 @@
 	<!-- Package additions -->
 	<ItemGroup>
 		<None Include="..\..\messages.png" PackagePath="icon.png" Pack="true" />
-		<None Include="..\..\README.md" Pack="true" PackagePath="\"/>
+		<None Include="..\..\README.md" Pack="true" PackagePath="\" />
 	</ItemGroup>
 	
 	<ItemGroup>
@@ -58,8 +58,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<!-- Images -->
-		<None Include="Resources\Images\*" Pack="true" PackagePath="contentFiles\any\net8.0\Resources\Images\"/>
+		<EmbeddedResource Include="Resources\Images\*" />
 	</ItemGroup>
 
 	<ItemGroup>
