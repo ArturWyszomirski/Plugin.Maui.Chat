@@ -58,7 +58,14 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<EmbeddedResource Include="Resources\Images\*" />
+		<None Include="Plugin.Maui.Chat.targets" Pack="True" PackagePath="buildTransitive\" />
+	</ItemGroup>
+	<ItemGroup>
+		<MauiImage Include="Resources\Images\camera_br.png" Pack="True" PackagePath="buildTransitive\Images\" />
+		<MauiImage Include="Resources\Images\headphones_br.png" Pack="True" PackagePath="buildTransitive\Images\" />
+		<MauiImage Include="Resources\Images\microphone_br.png" Pack="True" PackagePath="buildTransitive\Images\" />
+		<MauiImage Include="Resources\Images\paper_clip_br.png" Pack="True" PackagePath="buildTransitive\Images\" />
+		<MauiImage Include="Resources\Images\paper_plane_br.png" Pack="True" PackagePath="buildTransitive\Images\" />
 	</ItemGroup>
 
 	<ItemGroup>
