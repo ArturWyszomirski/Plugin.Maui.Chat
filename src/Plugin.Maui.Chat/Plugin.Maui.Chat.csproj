@@ -58,11 +58,11 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<MauiImage Include="Resources\Images\camera_br.png" Pack="True" PackagePath="buildTransitive\Images\" />
-		<MauiImage Include="Resources\Images\headphones_br.png" Pack="True" PackagePath="buildTransitive\Images\" />
-		<MauiImage Include="Resources\Images\microphone_br.png" Pack="True" PackagePath="buildTransitive\Images\" />
-		<MauiImage Include="Resources\Images\paper_clip_br.png" Pack="True" PackagePath="buildTransitive\Images\" />
-		<MauiImage Include="Resources\Images\paper_plane_br.png" Pack="True" PackagePath="buildTransitive\Images\" />
+		<MauiImage Include="Resources\Images\camera_br.png" />
+		<MauiImage Include="Resources\Images\headphones_br.png" />
+		<MauiImage Include="Resources\Images\microphone_br.png" />
+		<MauiImage Include="Resources\Images\paper_clip_br.png" />
+		<MauiImage Include="Resources\Images\paper_plane_br.png" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -80,7 +80,7 @@
 	  </EmbeddedResource>
 	</ItemGroup>
 
-	<!--Add images to NuGet package-->
+	<!-- Add images to NuGet package -->
 	<ItemGroup>
 		<None Include="Plugin.Maui.Chat.targets" Pack="True" PackagePath="buildTransitive\" />
 	</ItemGroup>
