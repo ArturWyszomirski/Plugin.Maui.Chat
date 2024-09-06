@@ -40,7 +40,7 @@
 	
 	<!-- Package additions -->
 	<ItemGroup>
-		<None Include="..\..\messages.png" PackagePath="icon.png" Pack="true" />
+		<None Include="..\..\nuget.png" PackagePath="icon.png" Pack="true" />
 		<None Include="..\..\README.md" Pack="true" PackagePath="\" />
 	</ItemGroup>
 	
