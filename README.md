@@ -174,4 +174,7 @@ TakePhotoColor="{StaticResource Primary}"
 ```
 
 ## Credits
-All icons comes from flaticon.com's UICONS series.
+
+All icons comes from [flaticon.com](https://www.flaticon.com)'s UICONS series.
+
+Documentation icon coloured using https://onlinepngtools.com/change-png-color
