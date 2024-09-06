@@ -5,7 +5,8 @@
 
 As for now this control enables only text messaging but soon it will be upgraded with some additional features like voice messages, speech-to-text transcription, text-to-speech converter and much more:)
 
-_The UI was tested only on Android. In near future the Windows version will also be polished._
+> [!NOTE]
+> The UI was tested only on Android. In near future the Windows version will also be polished.
 
 ## Install Plugin
 
@@ -54,7 +55,8 @@ builder.UseMauiCommunityToolkit();
 
 To use `Chat` you need to register `Plugin.Maui.Chat.Controls` namespace by adding below line to XAML file opening tag.
 
-**_Make sure you are adding `Plugin.Maui.Chat.Controls` namespace, not the `Plugin.Maui.Chat`!_**
+> [!WARNING]
+> Make sure you are adding `Plugin.Maui.Chat.Controls` namespace, not the `Plugin.Maui.Chat`!_**
 
 ```xaml
 <ContentPage ...
