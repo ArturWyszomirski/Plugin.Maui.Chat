@@ -1,4 +1,4 @@
-![](messages.png)
+![](nuget.png)
 # Plugin.Maui.Chat
 
 `Plugin.Maui.Chat` provides the ability to do this amazing thing in your .NET MAUI application.
