@@ -30,36 +30,34 @@ public partial class CustomizedChatViewModel : ObservableRecipient
         {
             Type = MessageType.Sent,
             Author = "You",
-            Text = "This is a sample sent message."
+            Text = "This is a sent message sample."
         });
 
         ChatMessages.Add(new ChatMessage()
         {
             Type = MessageType.Received,
             Author = "Echo",
-            Text = "This is a sample received message."
+            Text = "This is a received message sample."
         });
 
         ChatMessages.Add(new ChatMessage()
         {
             Type = MessageType.System,
-            Text = "This is a sample system message."
+            Text = "This is a system message sample."
         });
 
         ChatMessages.Add(new ChatMessage()
         {
             Type = MessageType.Sent,
             Author = "You",
-            Text = "This is a little bit longer sample sent message to see how multiple lines will look like.\n" +
-                   ".NET MAUI is awesome!"
+            Text = "This is a little bit longer sent message sample to see how multiple lines look like."
         });
 
         ChatMessages.Add(new ChatMessage()
         {
             Type = MessageType.Received,
             Author = "Echo",
-            Text = "This is a little bit longer sample sent message to see how multiple lines will look like.\n" +
-                   ".NET MAUI is awesome!"
+            Text = "This is a little bit longer received message sample to see how multiple lines look like."
         });
     }
 
