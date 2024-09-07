@@ -1,4 +1,4 @@
-![nuget.png](https://github.com/ArturWyszomirski/Plugin.Maui.Chat/blob/Documentation/nuget.png)
+![nuget.svg](https://raw.githubusercontent.com/ArturWyszomirski/Plugin.Maui.Chat/Documentation/nuget.svg)
 # Plugin.Maui.Chat
 
 `Plugin.Maui.Chat` provides highly customizable chat control. By default colors corresponds to those set in `Resources\Styles\Colors.xaml`, but can be easily changed (see: [Customized usage](https://github.com/ArturWyszomirski/Plugin.Maui.Chat/edit/Documentation/README.md#customized-usage)).
@@ -200,4 +200,4 @@ TakePhotoColor="{StaticResource Primary}"
 
 All icons comes from [flaticon.com](https://www.flaticon.com)'s UICONS series.
 
-Documentation icon coloured using https://onlinepngtools.com/change-png-color
+Icon was coloured using https://onlinepngtools.com/change-png-color and converted to svg using https://convertio.co
