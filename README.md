@@ -5,7 +5,8 @@
 
 As for now this control enables only text messaging but soon it will be upgraded with some additional features like voice messages, speech-to-text transcription, text-to-speech converter and much more:)
 
-_The UI was tested only on Android. In near future the Windows version will also be polished._
+> [!NOTE]
+> The UI was tested only on Android. In near future the Windows version will also be polished.
 
 ## Install Plugin
 
@@ -27,7 +28,7 @@ Install with the dotnet CLI: `dotnet add package Plugin.Maui.Chat`, or through t
 ## API Usage
 
 `Chat` control may be roughly divided in two fields:
-- the list of messages of `ChatMessages` type;
+- the collection of messages of `ChatMessages` type;
 - the user message entry field with buttons attached.
 
 `ChatMessage` consist four properties:
@@ -54,7 +55,8 @@ builder.UseMauiCommunityToolkit();
 
 To use `Chat` you need to register `Plugin.Maui.Chat.Controls` namespace by adding below line to XAML file opening tag.
 
-**_Make sure you are adding `Plugin.Maui.Chat.Controls` namespace, not the `Plugin.Maui.Chat`!_**
+> [!WARNING]
+> Make sure you are adding `Plugin.Maui.Chat.Controls` namespace, not the `Plugin.Maui.Chat`!_**
 
 ```xaml
 <ContentPage ...
@@ -64,7 +66,12 @@ To use `Chat` you need to register `Plugin.Maui.Chat.Controls` namespace by addi
 
 ### Simple usage
 
-All you have to do to get started is feed these three properties:
+All you have to do to get started is to deal with those three properties:
+- `UserMessage` of string type which holds the user input,
+- `ChatMessages` which is a collection of `ChatMessage`,
+- `SendMessageCommand` where you decide what happens after firing Send message button.
+
+Example below shows how to bind properties. In this scenario every sent message will be repeated and send back after 1 second.
 
 XAML:
 ```xaml
@@ -84,7 +91,23 @@ public ObservableCollection<ChatMessage> ChatMessages { get; set; } = [];
 [RelayCommand]
 async Task SendMessageAsync()
 {
-    ...
+    ChatMessages.Add(new ChatMessage()
+    {
+        Type = MessageType.Sent,
+        Author = "You",
+        Text = UserMessage
+    });
+
+    UserMessage = null;
+
+    await Task.Delay(1000);
+
+    ChatMessages.Add(new ChatMessage()
+    {
+        Type = MessageType.Received,
+        Author = "Echo",
+        Text = $"Echo: {ChatMessages.Last().Text}"
+    });
 }
 ```
 
@@ -174,4 +197,7 @@ TakePhotoColor="{StaticResource Primary}"
 ```
 
 ## Credits
-All icons comes from flaticon.com's UICONS series.
+
+All icons comes from [flaticon.com](https://www.flaticon.com)'s UICONS series.
+
+Documentation icon coloured using https://onlinepngtools.com/change-png-color
