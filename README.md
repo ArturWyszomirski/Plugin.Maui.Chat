@@ -56,7 +56,7 @@ builder.UseMauiCommunityToolkit();
 To use `Chat` you need to register `Plugin.Maui.Chat.Controls` namespace by adding below line to XAML file opening tag.
 
 > [!WARNING]
-> Make sure you are adding `Plugin.Maui.Chat.Controls` namespace, not the `Plugin.Maui.Chat`!_**
+> Make sure you are adding `Plugin.Maui.Chat.Controls` namespace, not the `Plugin.Maui.Chat`.
 
 ```xaml
 <ContentPage ...
@@ -73,7 +73,7 @@ All you have to do to get started is to deal with those three properties:
 
 Example below shows how to bind properties. In this scenario every sent message will be repeated and send back after 1 second.
 
-XAML:
+View:
 ```xaml
 <chat:Chat UserMessage="{Binding UserMessage}"
            ChatMessages="{Binding ChatMessages}"
