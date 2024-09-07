@@ -28,7 +28,7 @@ Install with the dotnet CLI: `dotnet add package Plugin.Maui.Chat`, or through t
 ## API Usage
 
 `Chat` control may be roughly divided in two fields:
-- the list of messages of `ChatMessages` type;
+- the collection of messages of `ChatMessages` type;
 - the user message entry field with buttons attached.
 
 `ChatMessage` consist four properties:
@@ -66,7 +66,12 @@ To use `Chat` you need to register `Plugin.Maui.Chat.Controls` namespace by addi
 
 ### Simple usage
 
-All you have to do to get started is feed these three properties:
+All you have to do to get started is to deal with those three properties:
+- `UserMessage` of string type which holds the user input,
+- `ChatMessages` which is a collection of `ChatMessage`,
+- `SendMessageCommand` where you decide what happens after firing Send message button.
+
+Example below shows how to bind properties. In this scenario every sent message will be repeated and send back after 1 second.
 
 XAML:
 ```xaml
@@ -86,7 +91,23 @@ public ObservableCollection<ChatMessage> ChatMessages { get; set; } = [];
 [RelayCommand]
 async Task SendMessageAsync()
 {
-    ...
+    ChatMessages.Add(new ChatMessage()
+    {
+        Type = MessageType.Sent,
+        Author = "You",
+        Text = UserMessage
+    });
+
+    UserMessage = null;
+
+    await Task.Delay(1000);
+
+    ChatMessages.Add(new ChatMessage()
+    {
+        Type = MessageType.Received,
+        Author = "Echo",
+        Text = $"Echo: {ChatMessages.Last().Text}"
+    });
 }
 ```
 
