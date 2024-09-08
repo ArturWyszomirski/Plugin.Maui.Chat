@@ -1,4 +1,4 @@
-![nuget.svg](https://raw.githubusercontent.com/ArturWyszomirski/Plugin.Maui.Chat/Documentation/nuget.svg)
+![nuget.png](https://raw.githubusercontent.com/ArturWyszomirski/Plugin.Maui.Chat/main/nuget.png)
 # Plugin.Maui.Chat
 
 `Plugin.Maui.Chat` provides highly customizable chat control. By default colors corresponds to those set in `Resources\Styles\Colors.xaml`, but can be easily changed (see: [Customized usage](https://github.com/ArturWyszomirski/Plugin.Maui.Chat/edit/Documentation/README.md#customized-usage)).
