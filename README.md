@@ -3,7 +3,7 @@
 
 `Plugin.Maui.Chat` provides highly customizable chat control. By default colors corresponds to those set in `Resources\Styles\Colors.xaml`, but can be easily changed (see: [Customized usage](https://github.com/ArturWyszomirski/Plugin.Maui.Chat/edit/Documentation/README.md#customized-usage)).
 
-As for now this control enables only text messaging but soon it will be upgraded with some additional features like voice messages, speech-to-text transcription, text-to-speech converter and much more:)
+As for now this control enables only text messaging but it will be upgraded with some additional features like voice messages, speech-to-text transcription, text-to-speech converter and much more:)
 
 > [!NOTE]
 > The UI was tested only on Android. In near future the Windows version will also be polished.
@@ -28,8 +28,8 @@ Install with the dotnet CLI: `dotnet add package Plugin.Maui.Chat`, or through t
 ## API Usage
 
 `Chat` control may be roughly divided in two fields:
-- the collection of messages of `ChatMessages` type;
-- the user message entry field with buttons attached.
+- Collection of messages of `ChatMessages` type.
+- User message entry field with buttons attached.
 
 `ChatMessage` consist four properties:
 - `DateTime` which is getter only and provides the date and time at which `ChatMessage` was created. The visibility of message timestamp can be set by related property (see: [Sent and received messages](https://github.com/ArturWyszomirski/Plugin.Maui.Chat/edit/Documentation/README.md#sent-and-received-messages));
