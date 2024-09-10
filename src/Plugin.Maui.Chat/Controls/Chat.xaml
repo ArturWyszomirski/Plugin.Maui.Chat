@@ -88,6 +88,8 @@
                                              SystemMessage="{StaticResource SystemMessageTemplate}"/>
     </ContentView.Resources>
 
+    
+    <!-- UI -->
     <Grid RowDefinitions="*, Auto, Auto"
           RowSpacing="10">
         <ScrollView x:Name="chatMessagesScrollView" 
@@ -95,7 +97,11 @@
                     VerticalOptions="End">
             <CollectionView x:Name="chatMessagesCollectionView"
                             ItemsSource="{Binding ChatMessages, Source={x:Reference chat}}"
-                            ItemTemplate="{StaticResource ChatMessageTemplateSelector}"/>
+                            ItemTemplate="{StaticResource ChatMessageTemplateSelector}">
+                <CollectionView.ItemsLayout>
+                    <LinearItemsLayout Orientation="Vertical" ItemSpacing="{OnPlatform Android=0, iOS=10, Default=10}" />
+                </CollectionView.ItemsLayout>
+            </CollectionView>
         </ScrollView>
         <Label Grid.Row="1"
                Text="{Binding Status, Source={x:Reference chat}}"
@@ -166,12 +172,13 @@
                 </Grid>
             </Frame>
             <ImageButton Grid.Column="1"
-                         Command="{Binding SendMessageCommand, Source={x:Reference chat}}"
+                   Command="{Binding SendMessageCommand, Source={x:Reference chat}}"
                    HeightRequest="25"
                    WidthRequest="25"
+                   Padding="{OnPlatform iOS=5, Default=0}"
                    Source="{Binding SendMessageIcon, Source={x:Reference chat}}" 
-                   Aspect="AspectFit"
-                         IsEnabled="{Binding IsSendMessageEnabled, Source={x:Reference chat}}"
+                   Aspect="{OnPlatform iOS=Fill, Default=AspectFit}"
+                   IsEnabled="{Binding IsSendMessageEnabled, Source={x:Reference chat}}"
                    IsVisible="{Binding IsSendMessageVisible, Source={x:Reference chat}}">
                 <ImageButton.Behaviors>
                     <toolkit:IconTintColorBehavior TintColor="{Binding SendMessageColor, Source={x:Reference chat}}"/>
