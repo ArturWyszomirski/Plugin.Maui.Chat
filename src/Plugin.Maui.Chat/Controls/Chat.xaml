@@ -18,7 +18,7 @@
         <DataTemplate x:Key="SentMessageTemplate" 
                       x:DataType="models:ChatMessage">
             <Grid ColumnDefinitions="*, 3*"
-                  Margin="0, 5">
+                  Margin="0, 0">
                 <Frame Grid.Column="1"
                        HorizontalOptions="End"
                        CornerRadius="25"
@@ -32,6 +32,7 @@
                                FontAttributes="Bold"
                                IsVisible="{Binding IsSentMessageAuthorVisible, Source={x:Reference chat}}"/>
                         <Label Text="{Binding Text}"
+                               VerticalOptions="Center"
                                TextColor="{Binding SentMessageContentTextColor, Source={x:Reference chat}}"/>
                         <Label Grid.Column="1" 
                                HorizontalOptions="End"
@@ -46,7 +47,7 @@
         <DataTemplate x:Key="ReceivedMessageTemplate"
                       x:DataType="models:ChatMessage">
             <Grid ColumnDefinitions="3*, *"
-                  Margin="0, 5">
+                  Margin="0, 0">
                 <Frame Grid.Column="0"
                        HorizontalOptions="Start"
                        CornerRadius="25"
@@ -60,6 +61,7 @@
                                FontAttributes="Bold"
                                IsVisible="{Binding IsReceivedMessageAuthorVisible, Source={x:Reference chat}}"/>
                         <Label Text="{Binding Text}"
+                               VerticalOptions="Center"
                                TextColor="{Binding ReceivedMessageContentTextColor, Source={x:Reference chat}}"/>                        
                         <Label Grid.Column="1" 
                                HorizontalOptions="End"
@@ -77,7 +79,7 @@
                    CornerRadius="5"
                    Padding="16, 6"
                    BackgroundColor="{Binding SystemMessageBackgroundColor, Source={x:Reference chat}}"
-                   Margin="0, 5">
+                   Margin="0, 0">
                 <Label Text="{Binding Text}"
                        TextColor="{Binding SystemMessageTextColor, Source={x:Reference chat}}"/>
             </Frame>
@@ -96,10 +98,11 @@
                     Grid.Row="0"
                     VerticalOptions="End">
             <CollectionView x:Name="chatMessagesCollectionView"
+                            VerticalScrollBarVisibility="Never"
                             ItemsSource="{Binding ChatMessages, Source={x:Reference chat}}"
                             ItemTemplate="{StaticResource ChatMessageTemplateSelector}">
                 <CollectionView.ItemsLayout>
-                    <LinearItemsLayout Orientation="Vertical" ItemSpacing="{OnPlatform Android=0, iOS=10, Default=10}" />
+                    <LinearItemsLayout Orientation="Vertical" ItemSpacing="{OnPlatform Android=10, iOS=10, Default=10}" />
                 </CollectionView.ItemsLayout>
             </CollectionView>
         </ScrollView>
