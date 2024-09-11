@@ -5,6 +5,7 @@ public partial class Chat : ContentView
     #region Fields
     static readonly Color _primaryColor = GetPrimaryColor();
     static readonly Color _secondaryColor = GetSecondaryColor();
+    static readonly Color _editorColor = GetDefaultTextColor();
     #endregion
 
     #region Constructor
@@ -516,6 +517,18 @@ public partial class Chat : ContentView
         get => (Color)GetValue(SendMessageColorProperty);
         set => SetValue(SendMessageColorProperty, value);
     }
+    
+    /// <summary>
+    /// Color text in Editor
+    /// </summary>
+    public static readonly BindableProperty EditorTextColorProperty = 
+        BindableProperty.Create(nameof(EditorTextColor), typeof(Color), typeof(Chat), _editorColor);
+    public Color EditorTextColor 
+    {
+       get => (Color)GetValue(EditorTextColorProperty);
+       set => SetValue(EditorTextColorProperty, value);
+    }
+ 
     #endregion
     #endregion
 
@@ -567,6 +580,17 @@ public partial class Chat : ContentView
         else
             return Colors.White;
     }
+    static Color GetDefaultTextColor()
+    {
+        if (Application.Current == null)
+            throw new ArgumentNullException(nameof(Application.Current), $"{nameof(Application.Current)} is null.");
+        
+        if (Application.Current.Resources.TryGetValue("Black", out object color))
+            return (Color)color;
+        else
+            return Colors.White;
+    }
+    
     #endregion
     #endregion
 }

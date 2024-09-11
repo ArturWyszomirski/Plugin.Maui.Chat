@@ -123,7 +123,7 @@
                             VerticalTextAlignment="Center"
                             Keyboard="Chat"
                             AutoSize="TextChanges"
-                            TextColor="Black"/>
+                            TextColor="{Binding EditorTextColor, Source={x:Reference chat}}"/>
                     <Image Grid.Column="1"
                            HeightRequest="25"
                            WidthRequest="25"

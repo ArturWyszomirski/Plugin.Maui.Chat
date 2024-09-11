@@ -146,6 +146,14 @@ SystemMessageBackgroundColor="{StaticResource Gray200}"
 SystemMessageTextColor="{StaticResource Gray900}"
 ```
 
+##### Editor
+
+You can set text color.
+
+```xaml
+EditorTextColor="{StaticResource Gray900}"
+```
+
 #### Status field
 
 Status is a field just above the user entry. The purpose of this field is to inform user about some actions taking place, i.e. "Sandy is typing..."
