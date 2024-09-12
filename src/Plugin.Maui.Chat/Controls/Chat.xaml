@@ -15,73 +15,89 @@
     </ContentView.Behaviors>
 
     <ContentView.Resources>
+        
         <DataTemplate x:Key="SentMessageTemplate" 
                       x:DataType="models:ChatMessage">
+            
             <Grid ColumnDefinitions="*, 3*"
                   Margin="0, 5">
+                
                 <Frame Grid.Column="1"
                        HorizontalOptions="End"
                        CornerRadius="25"
                        Padding="16, 12"
                        BackgroundColor="{Binding SentMessageBackgroundColor, Source={x:Reference chat}}">
+                    
                     <VerticalStackLayout>
-                        <Label Grid.Column="0"
-                               HorizontalOptions="Start"
+                        
+                        <Label HorizontalOptions="Start"
                                Text="{Binding Author}"
                                TextColor="{Binding SentMessageAuthorTextColor, Source={x:Reference chat}}"
                                FontAttributes="Bold"
                                IsVisible="{Binding IsSentMessageAuthorVisible, Source={x:Reference chat}}"/>
+                        
                         <Label Text="{Binding Text}"
                                TextColor="{Binding SentMessageContentTextColor, Source={x:Reference chat}}"/>
-                        <Label Grid.Column="1" 
-                               HorizontalOptions="End"
+                        
+                        <Label HorizontalOptions="End"
                                Text="{Binding DateTime, StringFormat='{0:HH:mm}'}" 
                                FontSize="Micro"
                                TextColor="{Binding SentMessageTimestampTextColor, Source={x:Reference chat}}"
                                IsVisible="{Binding IsSentMessageTimestampVisible, Source={x:Reference chat}}"/>
+                        
                     </VerticalStackLayout>
                 </Frame>
             </Grid>
         </DataTemplate>
+        
         <DataTemplate x:Key="ReceivedMessageTemplate"
                       x:DataType="models:ChatMessage">
+            
             <Grid ColumnDefinitions="3*, *"
                   Margin="0, 5">
+                
                 <Frame Grid.Column="0"
                        HorizontalOptions="Start"
                        CornerRadius="25"
                        Padding="16, 12"
                        BackgroundColor="{Binding ReceivedMessageBackgroundColor, Source={x:Reference chat}}">
+                    
                     <VerticalStackLayout>
-                        <Label Grid.Column="0" 
-                               HorizontalOptions="Start"
+                        
+                        <Label HorizontalOptions="Start"
                                Text="{Binding Author}"
                                TextColor="{Binding ReceivedMessageAuthorTextColor, Source={x:Reference chat}}"
                                FontAttributes="Bold"
                                IsVisible="{Binding IsReceivedMessageAuthorVisible, Source={x:Reference chat}}"/>
+                        
                         <Label Text="{Binding Text}"
-                               TextColor="{Binding ReceivedMessageContentTextColor, Source={x:Reference chat}}"/>                        
-                        <Label Grid.Column="1" 
-                               HorizontalOptions="End"
+                               TextColor="{Binding ReceivedMessageContentTextColor, Source={x:Reference chat}}"/>
+                        
+                        <Label HorizontalOptions="End"
                                Text="{Binding DateTime, StringFormat='{0:HH:mm}'}" 
                                FontSize="Micro"
                                TextColor="{Binding ReceivedMessageTimestampTextColor, Source={x:Reference chat}}"
                                IsVisible="{Binding IsReceivedMessageTimestampVisible, Source={x:Reference chat}}"/>
+                        
                     </VerticalStackLayout>
                 </Frame>
             </Grid>
         </DataTemplate>
+        
         <DataTemplate x:Key="SystemMessageTemplate"
                       x:DataType="models:ChatMessage">
+            
             <Frame HorizontalOptions="Center"
                    CornerRadius="5"
                    Padding="16, 6"
                    BackgroundColor="{Binding SystemMessageBackgroundColor, Source={x:Reference chat}}"
                    Margin="0, 5">
+                
                 <Label Text="{Binding Text}"
                        TextColor="{Binding SystemMessageTextColor, Source={x:Reference chat}}"/>
             </Frame>
         </DataTemplate>
+        
         <helpers:ChatMessageTemplateSelector x:Key="ChatMessageTemplateSelector"
                                              SentMessage="{StaticResource SentMessageTemplate}"
                                              ReceivedMessage="{StaticResource ReceivedMessageTemplate}"
@@ -90,24 +106,31 @@
 
     <Grid RowDefinitions="*, Auto, Auto"
           RowSpacing="10">
+        
         <ScrollView x:Name="chatMessagesScrollView" 
                     Grid.Row="0"
                     VerticalOptions="End">
+            
             <CollectionView x:Name="chatMessagesCollectionView"
                             ItemsSource="{Binding ChatMessages, Source={x:Reference chat}}"
                             ItemTemplate="{StaticResource ChatMessageTemplateSelector}"/>
         </ScrollView>
+        
         <Label Grid.Row="1"
                Text="{Binding Status, Source={x:Reference chat}}"
                IsVisible="{Binding IsStatusVisible, Source={x:Reference chat}}"
                TextColor="{Binding StatusTextColor, Source={x:Reference chat}}"/>
+        
         <Grid Grid.Row="2"
               ColumnDefinitions="*, Auto"
               ColumnSpacing="10">
+            
             <Frame Grid.Column="0"
                    Padding="5, 0, 10, 0"
                    BorderColor="LightGray">
+                
                 <Grid ColumnDefinitions="*, Auto, Auto, Auto, Auto">
+                    
                     <Editor Grid.Column="0"
                             Text="{Binding UserMessage, Source={x:Reference chat}}"
                             Placeholder="Type your message..."
@@ -115,6 +138,7 @@
                             Keyboard="Chat"
                             AutoSize="TextChanges"
                             TextColor="Black"/>
+                    
                     <Image Grid.Column="1"
                            HeightRequest="25"
                            WidthRequest="25"
@@ -127,6 +151,7 @@
                             <toolkit:ImageTouchBehavior Command="{Binding StartStopRecordToggleCommand, Source={x:Reference chat}}"/>
                         </Image.Behaviors>
                     </Image>
+                    
                     <Image Grid.Column="2"
                            HeightRequest="25"
                            WidthRequest="25"
@@ -139,6 +164,7 @@
                             <toolkit:ImageTouchBehavior Command="{Binding HandsFreeModeToggleCommand, Source={x:Reference chat}}"/>
                         </Image.Behaviors>
                     </Image>
+                    
                     <Image Grid.Column="3"
                            HeightRequest="25"
                            WidthRequest="25"
@@ -151,6 +177,7 @@
                             <toolkit:ImageTouchBehavior Command="{Binding AddAttachmentCommand, Source={x:Reference chat}}"/>
                         </Image.Behaviors>
                     </Image>
+                    
                     <Image Grid.Column="4"
                            HeightRequest="25"
                            WidthRequest="25"
@@ -165,14 +192,15 @@
                     </Image>
                 </Grid>
             </Frame>
+            
             <ImageButton Grid.Column="1"
                          Command="{Binding SendMessageCommand, Source={x:Reference chat}}"
-                   HeightRequest="25"
-                   WidthRequest="25"
-                   Source="{Binding SendMessageIcon, Source={x:Reference chat}}" 
-                   Aspect="AspectFit"
+                         HeightRequest="25"
+                         WidthRequest="25"
+                         Source="{Binding SendMessageIcon, Source={x:Reference chat}}"
+                         Aspect="AspectFit"
                          IsEnabled="{Binding IsSendMessageEnabled, Source={x:Reference chat}}"
-                   IsVisible="{Binding IsSendMessageVisible, Source={x:Reference chat}}">
+                         IsVisible="{Binding IsSendMessageVisible, Source={x:Reference chat}}">
                 <ImageButton.Behaviors>
                     <toolkit:IconTintColorBehavior TintColor="{Binding SendMessageColor, Source={x:Reference chat}}"/>
                 </ImageButton.Behaviors>
