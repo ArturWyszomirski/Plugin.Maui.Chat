@@ -533,10 +533,13 @@ public partial class Chat : ContentView
     #endregion
 
     #region Private methods
+    
+    
     #region Workaround for scrolling issue on Android where the last messages were hidden under the device keyboard.
+    [Obsolete("In my opinion, this is no longer necessary.",false)]
     static void OnChatMessagesChanged(BindableObject bindable, object oldValue, object newValue)
     {
-        var chat = (Chat)bindable;
+        /*var chat = (Chat)bindable;
 
         if (oldValue is ObservableCollection<ChatMessage> oldCollection)
             oldCollection.CollectionChanged -= chat.OnChatMessagesCollectionChanged;
@@ -544,18 +547,17 @@ public partial class Chat : ContentView
         if (newValue is ObservableCollection<ChatMessage> newCollection)
             newCollection.CollectionChanged += chat.OnChatMessagesCollectionChanged;
 
-        chat.ScrollDownChatMessages();
+        chat.ScrollDownChatMessages();*/
     }
-
+    
+    [Obsolete("In my opinion, this is no longer necessary.",false)]
     void OnChatMessagesCollectionChanged(object? sender, NotifyCollectionChangedEventArgs e) => ScrollDownChatMessages();
-
+    
+    
+    [Obsolete("In my opinion, this is no longer necessary.",false)]
     void ScrollDownChatMessages()
-    {
-        MainThread.BeginInvokeOnMainThread(async () =>
-        {
-            await Task.Delay(1); // need to be to scroll properly
-            await chatMessagesScrollView.ScrollToAsync(chatMessagesCollectionView, ScrollToPosition.End, true);
-        });
+    { 
+        chatMessagesCollectionView.ScrollTo(ChatMessages.Count-1, position: ScrollToPosition.End);
     }
     #endregion
 

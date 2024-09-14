@@ -25,7 +25,7 @@
                        Padding="16, 12"
                        BackgroundColor="{Binding SentMessageBackgroundColor, Source={x:Reference chat}}">
                     <VerticalStackLayout>
-                        <Label Grid.Column="0"
+                        <Label
                                HorizontalOptions="Start"
                                Text="{Binding Author}"
                                TextColor="{Binding SentMessageAuthorTextColor, Source={x:Reference chat}}"
@@ -34,7 +34,7 @@
                         <Label Text="{Binding Text}"
                                VerticalOptions="Center"
                                TextColor="{Binding SentMessageContentTextColor, Source={x:Reference chat}}"/>
-                        <Label Grid.Column="1" 
+                        <Label 
                                HorizontalOptions="End"
                                Text="{Binding DateTime, StringFormat='{0:HH:mm}'}" 
                                FontSize="Micro"
@@ -54,7 +54,7 @@
                        Padding="16, 12"
                        BackgroundColor="{Binding ReceivedMessageBackgroundColor, Source={x:Reference chat}}">
                     <VerticalStackLayout>
-                        <Label Grid.Column="0" 
+                        <Label 
                                HorizontalOptions="Start"
                                Text="{Binding Author}"
                                TextColor="{Binding ReceivedMessageAuthorTextColor, Source={x:Reference chat}}"
@@ -63,7 +63,7 @@
                         <Label Text="{Binding Text}"
                                VerticalOptions="Center"
                                TextColor="{Binding ReceivedMessageContentTextColor, Source={x:Reference chat}}"/>                        
-                        <Label Grid.Column="1" 
+                        <Label 
                                HorizontalOptions="End"
                                Text="{Binding DateTime, StringFormat='{0:HH:mm}'}" 
                                FontSize="Micro"
@@ -94,18 +94,16 @@
     <!-- UI -->
     <Grid RowDefinitions="*, Auto, Auto"
           RowSpacing="10">
-        <ScrollView x:Name="chatMessagesScrollView" 
-                    Grid.Row="0"
-                    VerticalOptions="End">
-            <CollectionView x:Name="chatMessagesCollectionView"
-                            VerticalScrollBarVisibility="Never"
-                            ItemsSource="{Binding ChatMessages, Source={x:Reference chat}}"
-                            ItemTemplate="{StaticResource ChatMessageTemplateSelector}">
+        <controls:CustomCollectionView x:Name="chatMessagesCollectionView"
+                                Grid.Row="0"
+                                VerticalOptions="End"
+                                ItemsUpdatingScrollMode="KeepLastItemInView"
+                                ItemsSource="{Binding ChatMessages, Source={x:Reference chat}}"
+                                ItemTemplate="{StaticResource ChatMessageTemplateSelector}">
                 <CollectionView.ItemsLayout>
                     <LinearItemsLayout Orientation="Vertical" ItemSpacing="{OnPlatform Android=10, iOS=10, Default=10}" />
                 </CollectionView.ItemsLayout>
-            </CollectionView>
-        </ScrollView>
+        </controls:CustomCollectionView>
         <Label Grid.Row="1"
                Text="{Binding Status, Source={x:Reference chat}}"
                IsVisible="{Binding IsStatusVisible, Source={x:Reference chat}}"
