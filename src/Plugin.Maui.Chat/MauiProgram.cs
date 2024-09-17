@@ -1,6 +1,4 @@
-﻿using CommunityToolkit.Maui;
-
-namespace Plugin.Maui.Chat;
+﻿namespace Plugin.Maui.Chat;
 
 public static class MauiProgram
 {
@@ -8,6 +6,7 @@ public static class MauiProgram
     {
         var builder = MauiApp.CreateBuilder();
         builder
+            .AddAudio()
             .UseMauiCommunityToolkit()
             .ConfigureFonts(fonts =>
             {
