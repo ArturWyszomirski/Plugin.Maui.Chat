@@ -74,10 +74,14 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <ProjectReference Include="..\..\..\Plugin.Maui.Audio\src\Plugin.Maui.Audio\Plugin.Maui.Audio.csproj" />
 	  <ProjectReference Include="..\..\src\Plugin.Maui.Chat\Plugin.Maui.Chat.csproj" />
 	</ItemGroup>
 
 	<ItemGroup>
+	  <Compile Update="Pages\AudioChatPage.xaml.cs">
+	    <DependentUpon>AudioChatPage.xaml</DependentUpon>
+	  </Compile>
 	  <Compile Update="Pages\SimpleChatPage.xaml.cs">
 	    <DependentUpon>SimpleChatPage.xaml</DependentUpon>
 	  </Compile>
@@ -97,6 +101,9 @@
 
 	<ItemGroup>
 	  <MauiXaml Update="Pages\CustomizedChatPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Pages\AudioChatPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Pages\SimpleChatPage.xaml">

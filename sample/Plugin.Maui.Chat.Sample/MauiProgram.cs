@@ -23,8 +23,11 @@ public static class MauiProgram
 
         builder.Services.AddTransient<SimpleChatViewModel>();
         builder.Services.AddTransient<CustomizedChatViewModel>();
+        builder.Services.AddTransient<AudioChatViewModel>();
+
         builder.Services.AddTransient<SimpleChatPage>();
         builder.Services.AddTransient<CustomizedChatPage>();
+        builder.Services.AddTransient<AudioChatPage>();
 
         return builder.Build();
     }

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:chat="clr-namespace:Plugin.Maui.Chat.Controls;assembly=Plugin.Maui.Chat"
+             xmlns:resources="clr-namespace:Plugin.Maui.Chat.Sample.Resources"
+             xmlns:viewmodels="clr-namespace:Plugin.Maui.Chat.Sample.ViewModels"
+             x:Class="Plugin.Maui.Chat.Sample.Pages.AudioChatPage"
+             Title="Audio chat"
+             x:DataType="viewmodels:AudioChatViewModel">
+    <chat:Chat UserMessage="{Binding UserMessage}"
+               ChatMessages="{Binding ChatMessages}"
+               SendMessageCommand="{Binding SendMessageCommand}"
+               
+               IsStartStopRecordToggleVisible="True"
+               AudioContent="{Binding AudioContent}"
+               
+               Margin="10"/>
+</ContentPage>
+    

@@ -31,7 +31,6 @@
                IsStatusVisible="{Binding IsStatusVisible}"
                StatusTextColor="{StaticResource Gray500}"
                
-               StartStopRecordToggleCommand="{Binding StartStopRecordToggleCommand}"
                IsStartStopRecordToggleVisible="True"
                StartStopRecordToggleIcon="{Static resources:Icons.Microphone}"
                
@@ -73,4 +72,5 @@
         
     </chat:Chat>
 </ContentPage>
-    
+
+<!--StartStopRecordToggleCommand="{Binding StartStopRecordToggleCommand}"-->

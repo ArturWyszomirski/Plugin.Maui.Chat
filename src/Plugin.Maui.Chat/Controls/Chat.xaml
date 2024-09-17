@@ -139,18 +139,18 @@
                             AutoSize="TextChanges"
                             TextColor="Black"/>
                     
-                    <Image Grid.Column="1"
-                           HeightRequest="25"
-                           WidthRequest="25"
-                           Source="{Binding StartStopRecordToggleIcon, Source={x:Reference chat}}" 
-                           Aspect="AspectFit"
-                           IsVisible="{Binding IsStartStopRecordToggleVisible, Source={x:Reference chat}}"
-                           Margin="5, 0, 0, 0">
-                        <Image.Behaviors>
+                    <ImageButton Grid.Column="1"
+                                 Command="{Binding StartStopRecordToggleCommand, Source={x:Reference chat}}"
+                                 HeightRequest="25"
+                                 WidthRequest="25"
+                                 Source="{Binding StartStopRecordToggleIcon, Source={x:Reference chat}}" 
+                                 Aspect="AspectFit"
+                                 IsVisible="{Binding IsStartStopRecordToggleVisible, Source={x:Reference chat}}"
+                                 Margin="5, 0, 0, 0">
+                        <ImageButton.Behaviors>
                             <toolkit:IconTintColorBehavior TintColor="{Binding StartStopRecordToggleColor, Source={x:Reference chat}}"/>
-                            <toolkit:ImageTouchBehavior Command="{Binding StartStopRecordToggleCommand, Source={x:Reference chat}}"/>
-                        </Image.Behaviors>
-                    </Image>
+                        </ImageButton.Behaviors>
+                    </ImageButton>
                     
                     <Image Grid.Column="2"
                            HeightRequest="25"

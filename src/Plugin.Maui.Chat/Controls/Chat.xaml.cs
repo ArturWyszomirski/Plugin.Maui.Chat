@@ -3,18 +3,36 @@ namespace Plugin.Maui.Chat.Controls;
 public partial class Chat : ContentView
 {
     #region Fields
-    static readonly Color _primaryColor = GetPrimaryColor();
-    static readonly Color _secondaryColor = GetSecondaryColor();
+    readonly AudioService audioService = new();
+
+    static readonly Color primaryColor = GetPrimaryColor();
+    static readonly Color secondaryColor = GetSecondaryColor();
     #endregion
 
     #region Constructor
     public Chat()
 	{
 		InitializeComponent();
+
+        StartStopRecordToggleCommand ??= new Command(async () => { AudioContent = await audioService.StartStopRecordToggleAsync(); });
     }
     #endregion
 
     #region Properties
+    #region Message contents
+    /// <summary>
+    /// Audio content in message.
+    /// </summary>
+    public static readonly BindableProperty AudioContentProperty = 
+        BindableProperty.Create(nameof(AudioContent), typeof(IAudioSource), typeof(Chat), defaultBindingMode: BindingMode.TwoWay);
+
+    public IAudioSource AudioContent
+    {
+        get => (IAudioSource)GetValue(AudioContentProperty);
+        set => SetValue(AudioContentProperty, value);
+    }
+    #endregion
+
     #region Chat messages collection view
     /// <summary>
     /// List of chat messages.
@@ -33,7 +51,7 @@ public partial class Chat : ContentView
     /// Sent message background color.
     /// </summary>
     public static readonly BindableProperty SentMessageBackgroundColorProperty = 
-        BindableProperty.Create(nameof(SentMessageBackgroundColor), typeof(Color), typeof(Chat), _primaryColor);
+        BindableProperty.Create(nameof(SentMessageBackgroundColor), typeof(Color), typeof(Chat), primaryColor);
 
     public Color SentMessageBackgroundColor
     {
@@ -57,7 +75,7 @@ public partial class Chat : ContentView
     /// Sent message author text color.
     /// </summary>
     public static readonly BindableProperty SentMessageAuthorTextColorProperty = 
-        BindableProperty.Create(nameof(SentMessageAuthorTextColor), typeof(Color), typeof(Chat), _secondaryColor);
+        BindableProperty.Create(nameof(SentMessageAuthorTextColor), typeof(Color), typeof(Chat), secondaryColor);
 
     public Color SentMessageAuthorTextColor
     {
@@ -81,7 +99,7 @@ public partial class Chat : ContentView
     /// Sent message timestamp text color.
     /// </summary>
     public static readonly BindableProperty SentMessageTimestampTextColorProperty = 
-        BindableProperty.Create(nameof(SentMessageTimestampTextColor), typeof(Color), typeof(Chat), _secondaryColor);
+        BindableProperty.Create(nameof(SentMessageTimestampTextColor), typeof(Color), typeof(Chat), secondaryColor);
 
     public Color SentMessageTimestampTextColor
     {
@@ -93,7 +111,7 @@ public partial class Chat : ContentView
     /// Sent message content text color.
     /// </summary>
     public static readonly BindableProperty SentMessageContentTextColorProperty = 
-        BindableProperty.Create(nameof(SentMessageContentTextColor), typeof(Color), typeof(Chat), _secondaryColor);
+        BindableProperty.Create(nameof(SentMessageContentTextColor), typeof(Color), typeof(Chat), secondaryColor);
 
     public Color SentMessageContentTextColor
     {
@@ -107,7 +125,7 @@ public partial class Chat : ContentView
     /// Received message background color.
     /// </summary>
     public static readonly BindableProperty ReceivedMessageBackgroundColorProperty = 
-        BindableProperty.Create(nameof(ReceivedMessageBackgroundColor), typeof(Color), typeof(Chat), _secondaryColor);
+        BindableProperty.Create(nameof(ReceivedMessageBackgroundColor), typeof(Color), typeof(Chat), secondaryColor);
 
     public Color ReceivedMessageBackgroundColor
     {
@@ -132,7 +150,7 @@ public partial class Chat : ContentView
     /// Received message author text color.
     /// </summary>
     public static readonly BindableProperty ReceivedMessageAuthorTextColorProperty = 
-        BindableProperty.Create(nameof(ReceivedMessageAuthorTextColor), typeof(Color), typeof(Chat), _primaryColor);
+        BindableProperty.Create(nameof(ReceivedMessageAuthorTextColor), typeof(Color), typeof(Chat), primaryColor);
 
     public Color ReceivedMessageAuthorTextColor
     {
@@ -156,7 +174,7 @@ public partial class Chat : ContentView
     /// Received message timestamp text color.
     /// </summary>
     public static readonly BindableProperty ReceivedMessageTimestampTextColorProperty = 
-        BindableProperty.Create(nameof(ReceivedMessageTimestampTextColor), typeof(Color), typeof(Chat), _primaryColor);
+        BindableProperty.Create(nameof(ReceivedMessageTimestampTextColor), typeof(Color), typeof(Chat), primaryColor);
 
     public Color ReceivedMessageTimestampTextColor
     {
@@ -168,7 +186,7 @@ public partial class Chat : ContentView
     /// Received message text color.
     /// </summary>
     public static readonly BindableProperty ReceivedMessageContentTextColorProperty = 
-        BindableProperty.Create(nameof(ReceivedMessageContentTextColor), typeof(Color), typeof(Chat), _primaryColor);
+        BindableProperty.Create(nameof(ReceivedMessageContentTextColor), typeof(Color), typeof(Chat), primaryColor);
 
     public Color ReceivedMessageContentTextColor
     {
@@ -297,7 +315,7 @@ public partial class Chat : ContentView
     /// Start/stop record toggle button color.
     /// </summary>
     public static readonly BindableProperty StartStopRecordToggleColorProperty = 
-        BindableProperty.Create(nameof(StartStopRecordToggleColor), typeof(Color), typeof(Chat), _primaryColor);
+        BindableProperty.Create(nameof(StartStopRecordToggleColor), typeof(Color), typeof(Chat), primaryColor);
 
     public Color StartStopRecordToggleColor
     {
@@ -347,7 +365,7 @@ public partial class Chat : ContentView
     /// Hands-free mode toggle button color.
     /// </summary>
     public static readonly BindableProperty HandsFreeModeToggleColorProperty = 
-        BindableProperty.Create(nameof(HandsFreeModeToggleColor), typeof(Color), typeof(Chat), _primaryColor);
+        BindableProperty.Create(nameof(HandsFreeModeToggleColor), typeof(Color), typeof(Chat), primaryColor);
 
     public Color HandsFreeModeToggleColor
     {
@@ -397,7 +415,7 @@ public partial class Chat : ContentView
     /// Add attachment button color.
     /// </summary>
     public static readonly BindableProperty AddAttachmentColorProperty = 
-        BindableProperty.Create(nameof(AddAttachmentColor), typeof(Color), typeof(Chat), _primaryColor);
+        BindableProperty.Create(nameof(AddAttachmentColor), typeof(Color), typeof(Chat), primaryColor);
 
     public Color AddAttachmentColor
     {
@@ -447,7 +465,7 @@ public partial class Chat : ContentView
     /// Take photo button color.
     /// </summary>
     public static readonly BindableProperty TakePhotoColorProperty = 
-        BindableProperty.Create(nameof(TakePhotoColor), typeof(Color), typeof(Chat), _primaryColor);
+        BindableProperty.Create(nameof(TakePhotoColor), typeof(Color), typeof(Chat), primaryColor);
 
     public Color TakePhotoColor
     {
@@ -509,7 +527,7 @@ public partial class Chat : ContentView
     /// Send message button color.
     /// </summary>
     public static readonly BindableProperty SendMessageColorProperty = 
-        BindableProperty.Create(nameof(SendMessageColor), typeof(Color), typeof(Chat), _primaryColor);
+        BindableProperty.Create(nameof(SendMessageColor), typeof(Color), typeof(Chat), primaryColor);
 
     public Color SendMessageColor
     {
