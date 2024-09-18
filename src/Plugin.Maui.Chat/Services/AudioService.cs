@@ -2,51 +2,48 @@
 
 internal class AudioService : BaseService
 {
-    readonly IAudioManager audioManager = new AudioManager();
+    readonly AudioManager audioManager = new AudioManager();
     readonly IAudioRecorder audioRecorder;
-    IAudioSource audioSource;
-    AsyncAudioPlayer audioPlayer;
+    IAudioSource? audioSource;
+    AsyncAudioPlayer? audioPlayer;
 
-    bool isRecording;
+    readonly Controls.Chat chat;
 
-    public AudioService()
+    public AudioService(Controls.Chat chat)
     {
+        this.chat = chat;
         audioRecorder = audioManager.CreateRecorder();
-    }
-
-    public bool IsRecording
-    {
-        get { return isRecording; }
-        set 
-        { 
-            isRecording = value;
-            NotifyPropertyChanged();
-        }
     }
 
     internal async Task<IAudioSource> StartStopRecordToggleAsync()
     {
-        if (!IsRecording)
+        if (!chat.IsRecording)
         {
-            IsRecording = true;
+            chat.IsRecording = true;
+            chat.StartStopRecordToggleColor = Colors.Red;
+            chat.Status = "Recording...";
 
             if (await Permissions.RequestAsync<Permissions.Microphone>() != PermissionStatus.Granted)
             {
                 await Shell.Current.DisplayAlert("Permission denied", "The app needs microphone permission to record audio.", "OK");
-                return new EmptyAudioSource();
+                chat.StartStopRecordToggleColor = chat.SecondaryColor;
+
+                audioSource = new EmptyAudioSource();
             }
-
-            await audioRecorder.StartAsync();
-            audioSource = await audioRecorder.StopAsync(When.SilenceIsDetected());
-
-            IsRecording = false;
+            else
+            {
+                await audioRecorder.StartAsync();
+                audioSource = await audioRecorder.StopAsync(When.SilenceIsDetected());
+            }
         }
         else
         {
             audioSource = await audioRecorder.StopAsync(When.Immediately());
-
-            IsRecording = false;
         }
+
+        chat.IsRecording = false;
+        chat.StartStopRecordToggleColor = chat.PrimaryColor;
+        chat.Status = string.Empty;
 
         return audioSource;
     }

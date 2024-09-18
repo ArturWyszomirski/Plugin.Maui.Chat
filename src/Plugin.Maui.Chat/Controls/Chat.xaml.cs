@@ -3,7 +3,7 @@ namespace Plugin.Maui.Chat.Controls;
 public partial class Chat : ContentView
 {
     #region Fields
-    readonly AudioService audioService = new();
+    readonly AudioService audioService;
 
     static readonly Color primaryColor = GetPrimaryColor();
     static readonly Color secondaryColor = GetSecondaryColor();
@@ -13,12 +13,51 @@ public partial class Chat : ContentView
     public Chat()
 	{
 		InitializeComponent();
+        audioService = new(this);
 
         StartStopRecordToggleCommand ??= new Command(async () => { AudioContent = await audioService.StartStopRecordToggleAsync(); });
     }
     #endregion
 
     #region Properties
+    /// <summary>
+    /// Primary chat color.
+    /// </summary>
+    public static readonly BindableProperty PrimaryColorProperty =
+        BindableProperty.Create(nameof(PrimaryColor), typeof(Color), typeof(Chat), primaryColor);
+
+    public Color PrimaryColor
+    {
+        get => (Color)GetValue(PrimaryColorProperty);
+    }
+
+    /// <summary>
+    /// Secondary chat color.
+    /// </summary>
+    public static readonly BindableProperty SecondaryColorProperty =
+        BindableProperty.Create(nameof(SecondaryColor), typeof(Color), typeof(Chat), secondaryColor);
+
+    public Color SecondaryColor
+    {
+        get => (Color)GetValue(SecondaryColorProperty);
+    }
+    #endregion
+
+    #region Bindable properties
+    #region State properties
+    /// <summary>
+    /// 
+    /// </summary>
+    public static readonly BindableProperty IsRecordingProperty =
+        BindableProperty.Create(nameof(IsRecording), typeof(bool), typeof(Chat));
+
+    public bool IsRecording
+    {
+        get => (bool)GetValue(IsRecordingProperty);
+        set => SetValue(IsRecordingProperty, value);
+    }
+    #endregion
+
     #region Message contents
     /// <summary>
     /// Audio content in message.
