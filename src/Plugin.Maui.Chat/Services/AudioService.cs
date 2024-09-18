@@ -1,6 +1,6 @@
 ﻿namespace Plugin.Maui.Chat.Services;
 
-internal class AudioService : BaseService
+internal class AudioService
 {
     readonly AudioManager audioManager = new AudioManager();
     readonly IAudioRecorder audioRecorder;
@@ -44,7 +44,26 @@ internal class AudioService : BaseService
         chat.IsRecording = false;
         chat.StartStopRecordToggleColor = chat.PrimaryColor;
         chat.Status = string.Empty;
+        chat.IsAudioContentVisible = true;
 
         return audioSource;
+    }
+
+    public async Task PlayAudioAsync(IAudioSource? audioSource)
+    {
+        if (audioSource == null) return;
+
+        if (!chat.IsPlaying)
+        {
+            audioPlayer = audioManager.CreateAsyncPlayer(((FileAudioSource)audioSource).GetAudioStream());
+            
+            chat.IsPlaying = true;
+
+            await audioPlayer.PlayAsync(CancellationToken.None);
+        }
+        else
+            audioPlayer?.Stop();
+
+        chat.IsPlaying = false;
     }
 }

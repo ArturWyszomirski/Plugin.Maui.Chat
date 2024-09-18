@@ -40,6 +40,10 @@
 	<PropertyGroup>
 	  <TargetFrameworks Condition="$([MSBuild]::IsOSPlatform('windows'))">$(TargetFrameworks);net8.0-windows10.0.26100.0</TargetFrameworks>
 	</PropertyGroup>
+
+	<ItemGroup>
+	  <None Remove="Resources\Images\waveform_br.png" />
+	</ItemGroup>
 	
 	<!-- Package additions -->
 	<ItemGroup>
@@ -66,6 +70,7 @@
 		<MauiImage Include="Resources\Images\microphone_br.png" />
 		<MauiImage Include="Resources\Images\paper_clip_br.png" />
 		<MauiImage Include="Resources\Images\paper_plane_br.png" />
+		<MauiImage Include="Resources\Images\waveform_br.png" />
 	</ItemGroup>
 
 	<ItemGroup>

@@ -16,6 +16,7 @@ public partial class Chat : ContentView
         audioService = new(this);
 
         StartStopRecordToggleCommand ??= new Command(async () => { AudioContent = await audioService.StartStopRecordToggleAsync(); });
+        PlayAudioCommand ??= new Command(async () => await audioService.PlayAudioAsync(AudioContent));
     }
     #endregion
 
@@ -46,7 +47,7 @@ public partial class Chat : ContentView
     #region Bindable properties
     #region State properties
     /// <summary>
-    /// 
+    /// True when audio recording is on.
     /// </summary>
     public static readonly BindableProperty IsRecordingProperty =
         BindableProperty.Create(nameof(IsRecording), typeof(bool), typeof(Chat));
@@ -56,19 +57,17 @@ public partial class Chat : ContentView
         get => (bool)GetValue(IsRecordingProperty);
         set => SetValue(IsRecordingProperty, value);
     }
-    #endregion
 
-    #region Message contents
     /// <summary>
-    /// Audio content in message.
+    /// True when audio playing is on.
     /// </summary>
-    public static readonly BindableProperty AudioContentProperty = 
-        BindableProperty.Create(nameof(AudioContent), typeof(IAudioSource), typeof(Chat), defaultBindingMode: BindingMode.TwoWay);
+    public static readonly BindableProperty IsPlayingProperty =
+        BindableProperty.Create(nameof(IsPlaying), typeof(bool), typeof(Chat));
 
-    public IAudioSource AudioContent
+    public bool IsPlaying
     {
-        get => (IAudioSource)GetValue(AudioContentProperty);
-        set => SetValue(AudioContentProperty, value);
+        get => (bool)GetValue(IsPlayingProperty);
+        set => SetValue(IsPlayingProperty, value);
     }
     #endregion
 
@@ -261,7 +260,7 @@ public partial class Chat : ContentView
     #endregion
     #endregion
 
-    #region User message entry
+    #region Message contents
     /// <summary>
     /// Message typed by user.
     /// </summary>
@@ -272,6 +271,66 @@ public partial class Chat : ContentView
     {
         get => (string)GetValue(UserMessageProperty);
         set => SetValue(UserMessageProperty, value);
+    }
+
+    /// <summary>
+    /// Audio content in message.
+    /// </summary>
+    public static readonly BindableProperty AudioContentProperty =
+        BindableProperty.Create(nameof(AudioContent), typeof(IAudioSource), typeof(Chat), defaultBindingMode: BindingMode.TwoWay);
+
+    public IAudioSource AudioContent
+    {
+        get => (IAudioSource)GetValue(AudioContentProperty);
+        set => SetValue(AudioContentProperty, value);
+    }
+
+    /// <summary>
+    /// Play audio message.
+    /// </summary>
+    public static readonly BindableProperty PlayAudioCommandProperty =
+        BindableProperty.Create(nameof(PlayAudioCommand), typeof(ICommand), typeof(Chat));
+
+    public ICommand PlayAudioCommand
+    {
+        get => (ICommand)GetValue(PlayAudioCommandProperty);
+        set => SetValue(PlayAudioCommandProperty, value);
+    }
+
+    /// <summary>
+    /// Determines whether audio content button is visible.
+    /// </summary>
+    public static readonly BindableProperty IsAudioContentVisibleProperty =
+        BindableProperty.Create(nameof(IsAudioContentVisible), typeof(bool), typeof(Chat));
+
+    public bool IsAudioContentVisible
+    {
+        get => (bool)GetValue(IsAudioContentVisibleProperty);
+        set => SetValue(IsAudioContentVisibleProperty, value);
+    }
+
+    /// <summary>
+    /// Audio content button icon.
+    /// </summary>
+    public static readonly BindableProperty AudioContentIconProperty =
+        BindableProperty.Create(nameof(AudioContentIcon), typeof(ImageSource), typeof(Chat), ImageSource.FromFile(Maui.Chat.Resources.Icons.Waveform));
+
+    public ImageSource AudioContentIcon
+    {
+        get => (ImageSource)GetValue(AudioContentIconProperty);
+        set => SetValue(AudioContentIconProperty, value);
+    }
+
+    /// <summary>
+    /// Audio content button color.
+    /// </summary>
+    public static readonly BindableProperty AudioContentColorProperty =
+        BindableProperty.Create(nameof(AudioContentColor), typeof(Color), typeof(Chat), primaryColor);
+
+    public Color AudioContentColor
+    {
+        get => (Color)GetValue(AudioContentColorProperty);
+        set => SetValue(AudioContentColorProperty, value);
     }
     #endregion
 

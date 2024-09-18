@@ -2,10 +2,10 @@ namespace Plugin.Maui.Chat.Sample.Pages;
 
 public partial class AudioChatPage : ContentPage
 {
-	public AudioChatPage(AudioChatViewModel simpleChatViewModel)
+	public AudioChatPage(AudioChatViewModel audioChatViewModel)
 	{
 		InitializeComponent();
 
-		BindingContext = simpleChatViewModel;
+		BindingContext = audioChatViewModel;
 	}
 }

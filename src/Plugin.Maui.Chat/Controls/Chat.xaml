@@ -126,20 +126,39 @@
               ColumnSpacing="10">
             
             <Frame Grid.Column="0"
-                   Padding="5, 0, 10, 0"
+                   Padding="5, 5, 10, 0"
                    BorderColor="LightGray">
                 
-                <Grid ColumnDefinitions="*, Auto, Auto, Auto, Auto">
-                    
+                <Grid ColumnDefinitions="*, Auto, Auto, Auto, Auto"
+                      RowDefinitions="Auto, Auto">
+
+                    <ImageButton Grid.ColumnSpan="5"
+                                 Grid.Row="0"
+                                 Command="{Binding PlayAudioCommand, Source={x:Reference chat}}"
+                                 HeightRequest="25"
+                                 WidthRequest="25"
+                                 Source="{Binding AudioContentIcon, Source={x:Reference chat}}"
+                                 Aspect="AspectFit"
+                                 IsVisible="{Binding IsAudioContentVisible, Source={x:Reference chat}}"
+                                 HorizontalOptions="Start"
+                                 Margin="5, 5, 0, 0">
+
+                        <ImageButton.Behaviors>
+                            <toolkit:IconTintColorBehavior TintColor="{Binding AudioContentColor, Source={x:Reference chat}}"/>
+                        </ImageButton.Behaviors>
+                    </ImageButton>
+
                     <Editor Grid.Column="0"
+                            Grid.Row="1"
                             Text="{Binding UserMessage, Source={x:Reference chat}}"
                             Placeholder="Type your message..."
                             VerticalTextAlignment="Center"
                             Keyboard="Chat"
                             AutoSize="TextChanges"
                             TextColor="Black"/>
-                    
+
                     <ImageButton Grid.Column="1"
+                                 Grid.Row="1"
                                  Command="{Binding StartStopRecordToggleCommand, Source={x:Reference chat}}"
                                  HeightRequest="25"
                                  WidthRequest="25"
@@ -151,8 +170,9 @@
                             <toolkit:IconTintColorBehavior TintColor="{Binding StartStopRecordToggleColor, Source={x:Reference chat}}"/>
                         </ImageButton.Behaviors>
                     </ImageButton>
-                    
+
                     <Image Grid.Column="2"
+                           Grid.Row="1"
                            HeightRequest="25"
                            WidthRequest="25"
                            Source="{Binding HandsFreeModeToggleIcon, Source={x:Reference chat}}" 
@@ -164,8 +184,9 @@
                             <toolkit:ImageTouchBehavior Command="{Binding HandsFreeModeToggleCommand, Source={x:Reference chat}}"/>
                         </Image.Behaviors>
                     </Image>
-                    
+
                     <Image Grid.Column="3"
+                           Grid.Row="1"
                            HeightRequest="25"
                            WidthRequest="25"
                            Source="{Binding AddAttachmentIcon, Source={x:Reference chat}}" 
@@ -177,8 +198,9 @@
                             <toolkit:ImageTouchBehavior Command="{Binding AddAttachmentCommand, Source={x:Reference chat}}"/>
                         </Image.Behaviors>
                     </Image>
-                    
+
                     <Image Grid.Column="4"
+                           Grid.Row="1"
                            HeightRequest="25"
                            WidthRequest="25"
                            Source="{Binding TakePhotoIcon, Source={x:Reference chat}}" 
