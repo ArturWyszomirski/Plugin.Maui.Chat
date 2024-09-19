@@ -1,6 +1,7 @@
 ﻿using CommunityToolkit.Maui;
 using Microsoft.Maui.Controls.Handlers.Items;
 using Plugin.Maui.Chat.Controls;
+using Plugin.Maui.Chat.Services;
 
 namespace Plugin.Maui.Chat;
 
@@ -15,9 +16,6 @@ public static class MauiProgram
             {
                 fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
                 fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
-            })
-            .ConfigureMauiHandlers(handlers =>
-            {
             });
 
         return builder.Build();

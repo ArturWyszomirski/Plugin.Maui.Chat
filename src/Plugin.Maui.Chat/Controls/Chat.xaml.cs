@@ -1,3 +1,10 @@
+using Plugin.Maui.Chat.Helpers;
+using Plugin.Maui.Chat.Services;
+
+#if IOS
+using Plugin.Maui.Chat.Platforms.iOS.Keyboard;
+#endif
+
 namespace Plugin.Maui.Chat.Controls;
 
 public partial class Chat : ContentView
@@ -6,14 +13,51 @@ public partial class Chat : ContentView
     static readonly Color _primaryColor = GetPrimaryColor();
     static readonly Color _secondaryColor = GetSecondaryColor();
     static readonly Color _editorColor = GetDefaultTextColor();
+    
+    IKeyboardService _keyboardService;
     #endregion
 
     #region Constructor
     public Chat()
-	{
+    {
 		InitializeComponent();
+
+#if IOS
+        _keyboardService = new KeyboardService();
+        this.ParentChanged += OnParentChanged;
+#endif
     }
     #endregion
+    
+    private void OnParentChanged(object sender, EventArgs e)
+    {
+        if (this.Parent != null)
+        {
+            SubscribeToKeyboardEvents();
+        }
+        else
+        {
+            UnsubscribeFromKeyboardEvents();
+        }
+    }
+    
+    private void SubscribeToKeyboardEvents()
+    {
+        if (_keyboardService != null)
+        {
+            _keyboardService.Start();
+            _keyboardService.KeyboardHeightChanged += OnKeyboardHeightChanged;
+        }
+    }
+
+    private void UnsubscribeFromKeyboardEvents()
+    {
+        if (_keyboardService != null)
+        {
+            _keyboardService.Stop();
+            _keyboardService.KeyboardHeightChanged -= OnKeyboardHeightChanged;
+        }
+    }
 
     #region Properties
     #region Chat messages collection view
@@ -21,7 +65,7 @@ public partial class Chat : ContentView
     /// List of chat messages.
     /// </summary>
     public static readonly BindableProperty ChatMessagesProperty = 
-        BindableProperty.Create(nameof(ChatMessages), typeof(ObservableCollection<ChatMessage>), typeof(Chat), propertyChanged: OnChatMessagesChanged);
+        BindableProperty.Create(nameof(ChatMessages), typeof(ObservableCollection<ChatMessage>), typeof(Chat));
 	
 	public ObservableCollection<ChatMessage> ChatMessages
 	{ 
@@ -531,34 +575,33 @@ public partial class Chat : ContentView
  
     #endregion
     #endregion
+    
+    private void OnKeyboardHeightChanged(object sender, KeyboardEventArgs e)
+    {
+        var keyboardHeight = e.KeyboardHeight;
+
+        if (keyboardHeight > 0)
+        {
+            mainGridLayout.Margin = new Thickness(0, keyboardHeight, 0, 0);
+        }
+        else
+        {
+            ScrollDownChatMessages();
+            mainGridLayout.Margin = new Thickness(0);
+        }
+    }
 
     #region Private methods
     
-    
-    #region Workaround for scrolling issue on Android where the last messages were hidden under the device keyboard.
-    [Obsolete("In my opinion, this is no longer necessary.",false)]
-    static void OnChatMessagesChanged(BindableObject bindable, object oldValue, object newValue)
-    {
-        /*var chat = (Chat)bindable;
+    #region ScrollAndTools
 
-        if (oldValue is ObservableCollection<ChatMessage> oldCollection)
-            oldCollection.CollectionChanged -= chat.OnChatMessagesCollectionChanged;
-
-        if (newValue is ObservableCollection<ChatMessage> newCollection)
-            newCollection.CollectionChanged += chat.OnChatMessagesCollectionChanged;
-
-        chat.ScrollDownChatMessages();*/
-    }
-    
-    [Obsolete("In my opinion, this is no longer necessary.",false)]
-    void OnChatMessagesCollectionChanged(object? sender, NotifyCollectionChangedEventArgs e) => ScrollDownChatMessages();
-    
-    
-    [Obsolete("In my opinion, this is no longer necessary.",false)]
-    void ScrollDownChatMessages()
+    async void ScrollDownChatMessages()
     { 
+        await Task.Delay(1);
+        chatMessagesCollectionView.TurnOnScrollToLastItem();
         chatMessagesCollectionView.ScrollTo(ChatMessages.Count-1, position: ScrollToPosition.End);
     }
+    
     #endregion
 
     #region Get default colors

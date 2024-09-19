@@ -92,7 +92,7 @@
 
     
     <!-- UI -->
-    <Grid RowDefinitions="*, Auto, Auto"
+    <Grid x:Name="mainGridLayout" RowDefinitions="*, Auto, Auto"
           RowSpacing="10">
         <controls:CustomCollectionView x:Name="chatMessagesCollectionView"
                                 Grid.Row="0"
@@ -115,13 +115,15 @@
                    Padding="5, 0, 10, 0"
                    BorderColor="LightGray">
                 <Grid ColumnDefinitions="*, Auto, Auto, Auto, Auto">
-                    <Editor Grid.Column="0"
-                            Text="{Binding UserMessage, Source={x:Reference chat}}"
-                            Placeholder="Type your message..."
-                            VerticalTextAlignment="Center"
-                            Keyboard="Chat"
-                            AutoSize="TextChanges"
-                            TextColor="{Binding EditorTextColor, Source={x:Reference chat}}"/>
+                    <Editor 
+                        x:Name="editor"
+                        Grid.Column="0"
+                        Text="{Binding UserMessage, Source={x:Reference chat}}"
+                        Placeholder="Type your message..."
+                        VerticalTextAlignment="Center"
+                        Keyboard="Chat"
+                        AutoSize="TextChanges"
+                        TextColor="{Binding EditorTextColor, Source={x:Reference chat}}"/>
                     <Image Grid.Column="1"
                            HeightRequest="25"
                            WidthRequest="25"
