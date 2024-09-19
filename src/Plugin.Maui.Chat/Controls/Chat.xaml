@@ -18,10 +18,11 @@
         <DataTemplate x:Key="SentMessageTemplate" 
                       x:DataType="models:ChatMessage">
             <Grid ColumnDefinitions="*, 3*"
-                  Margin="0, 0">
+                  Margin="0, 0,15, 0">
                 <Frame Grid.Column="1"
                        HorizontalOptions="End"
                        CornerRadius="25"
+                       Margin="0,0,5,0"
                        Padding="16, 12"
                        BackgroundColor="{Binding SentMessageBackgroundColor, Source={x:Reference chat}}">
                     <VerticalStackLayout>
@@ -47,10 +48,11 @@
         <DataTemplate x:Key="ReceivedMessageTemplate"
                       x:DataType="models:ChatMessage">
             <Grid ColumnDefinitions="3*, *"
-                  Margin="0, 0">
+                  Margin="0,0,0, 0">
                 <Frame Grid.Column="0"
                        HorizontalOptions="Start"
                        CornerRadius="25"
+                       Margin="5,0,5,0"
                        Padding="16, 12"
                        BackgroundColor="{Binding ReceivedMessageBackgroundColor, Source={x:Reference chat}}">
                     <VerticalStackLayout>
@@ -79,7 +81,7 @@
                    CornerRadius="5"
                    Padding="16, 6"
                    BackgroundColor="{Binding SystemMessageBackgroundColor, Source={x:Reference chat}}"
-                   Margin="0, 0">
+                   Margin="5,15,5,15">
                 <Label Text="{Binding Text}"
                        TextColor="{Binding SystemMessageTextColor, Source={x:Reference chat}}"/>
             </Frame>
