@@ -3,20 +3,22 @@ namespace Plugin.Maui.Chat.Controls;
 public partial class Chat : ContentView
 {
     #region Fields
-    readonly AudioService audioService;
+    static readonly Color primaryColor = ResourceColors.GetPrimaryColor();
+    static readonly Color secondaryColor = ResourceColors.GetSecondaryColor();
 
-    static readonly Color primaryColor = GetPrimaryColor();
-    static readonly Color secondaryColor = GetSecondaryColor();
+    readonly AudioManager audioManager = new();
+    readonly IAudioRecorder audioRecorder;
+    IAudioSource? audioSource;
     #endregion
 
     #region Constructor
     public Chat()
 	{
 		InitializeComponent();
-        audioService = new(this);
 
-        StartStopRecordToggleCommand ??= new Command(async () => { AudioContent = await audioService.StartStopRecordToggleAsync(); });
-        PlayAudioCommand ??= new Command(async () => await audioService.PlayAudioAsync(AudioContent));
+        audioRecorder = audioManager.CreateRecorder();
+
+        StartStopRecordToggleCommand ??= new Command(async () => AudioContent = await StartStopRecordToggleAsync());
     }
     #endregion
 
@@ -156,6 +158,18 @@ public partial class Chat : ContentView
         get => (Color)GetValue(SentMessageContentTextColorProperty);
         set => SetValue(SentMessageContentTextColorProperty, value);
     }
+
+    /// <summary>
+    /// Sent audio content button color.
+    /// </summary>
+    public static readonly BindableProperty SentAudioContentColorProperty =
+        BindableProperty.Create(nameof(SentAudioContentColor), typeof(Color), typeof(Chat), secondaryColor);
+
+    public Color SentAudioContentColor
+    {
+        get => (Color)GetValue(SentAudioContentColorProperty);
+        set => SetValue(SentAudioContentColorProperty, value);
+    }
     #endregion
 
     #region Received message
@@ -231,6 +245,18 @@ public partial class Chat : ContentView
         get => (Color)GetValue(ReceivedMessageContentTextColorProperty);
         set => SetValue(ReceivedMessageContentTextColorProperty, value);
     }
+
+    /// <summary>
+    /// Received audio content button color.
+    /// </summary>
+    public static readonly BindableProperty ReceivedAudioContentColorProperty =
+        BindableProperty.Create(nameof(ReceivedAudioContentColor), typeof(Color), typeof(Chat), primaryColor);
+
+    public Color ReceivedAudioContentColor
+    {
+        get => (Color)GetValue(ReceivedAudioContentColorProperty);
+        set => SetValue(ReceivedAudioContentColorProperty, value);
+    }
     #endregion
 
     #region System message
@@ -260,7 +286,7 @@ public partial class Chat : ContentView
     #endregion
     #endregion
 
-    #region Message contents
+    #region User message contents
     /// <summary>
     /// Message typed by user.
     /// </summary>
@@ -286,51 +312,15 @@ public partial class Chat : ContentView
     }
 
     /// <summary>
-    /// Play audio message.
+    /// User audio content button color.
     /// </summary>
-    public static readonly BindableProperty PlayAudioCommandProperty =
-        BindableProperty.Create(nameof(PlayAudioCommand), typeof(ICommand), typeof(Chat));
+    public static readonly BindableProperty UserAudioContentColorProperty =
+        BindableProperty.Create(nameof(UserAudioContentColor), typeof(Color), typeof(Chat), primaryColor);
 
-    public ICommand PlayAudioCommand
+    public Color UserAudioContentColor
     {
-        get => (ICommand)GetValue(PlayAudioCommandProperty);
-        set => SetValue(PlayAudioCommandProperty, value);
-    }
-
-    /// <summary>
-    /// Determines whether audio content button is visible.
-    /// </summary>
-    public static readonly BindableProperty IsAudioContentVisibleProperty =
-        BindableProperty.Create(nameof(IsAudioContentVisible), typeof(bool), typeof(Chat));
-
-    public bool IsAudioContentVisible
-    {
-        get => (bool)GetValue(IsAudioContentVisibleProperty);
-        set => SetValue(IsAudioContentVisibleProperty, value);
-    }
-
-    /// <summary>
-    /// Audio content button icon.
-    /// </summary>
-    public static readonly BindableProperty AudioContentIconProperty =
-        BindableProperty.Create(nameof(AudioContentIcon), typeof(ImageSource), typeof(Chat), ImageSource.FromFile(Maui.Chat.Resources.Icons.Waveform));
-
-    public ImageSource AudioContentIcon
-    {
-        get => (ImageSource)GetValue(AudioContentIconProperty);
-        set => SetValue(AudioContentIconProperty, value);
-    }
-
-    /// <summary>
-    /// Audio content button color.
-    /// </summary>
-    public static readonly BindableProperty AudioContentColorProperty =
-        BindableProperty.Create(nameof(AudioContentColor), typeof(Color), typeof(Chat), primaryColor);
-
-    public Color AudioContentColor
-    {
-        get => (Color)GetValue(AudioContentColorProperty);
-        set => SetValue(AudioContentColorProperty, value);
+        get => (Color)GetValue(UserAudioContentColorProperty);
+        set => SetValue(UserAudioContentColorProperty, value);
     }
     #endregion
 
@@ -369,6 +359,32 @@ public partial class Chat : ContentView
     {
         get => (Color)GetValue(StatusTextColorProperty);
         set => SetValue(StatusTextColorProperty, value);
+    }
+    #endregion
+
+    #region Audio player
+    /// <summary>
+    /// Play or stop audio message.
+    /// </summary>
+    public static readonly BindableProperty AudioPlayerCommandProperty =
+        BindableProperty.Create(nameof(AudioPlayerCommand), typeof(ICommand), typeof(Chat));
+
+    public ICommand AudioPlayerCommand
+    {
+        get => (ICommand)GetValue(AudioPlayerCommandProperty);
+        set => SetValue(AudioPlayerCommandProperty, value);
+    }
+
+    /// <summary>
+    /// Audio content button icon.
+    /// </summary>
+    public static readonly BindableProperty AudioContentIconProperty =
+        BindableProperty.Create(nameof(AudioContentIcon), typeof(ImageSource), typeof(Chat), ImageSource.FromFile(Maui.Chat.Resources.Icons.Waveform));
+
+    public ImageSource AudioContentIcon
+    {
+        get => (ImageSource)GetValue(AudioContentIconProperty);
+        set => SetValue(AudioContentIconProperty, value);
     }
     #endregion
 
@@ -633,7 +649,6 @@ public partial class Chat : ContentView
         set => SetValue(SendMessageColorProperty, value);
     }
     #endregion
-    #endregion
 
     #region Private methods
     #region Workaround for scrolling issue on Android where the last messages were hidden under the device keyboard.
@@ -662,26 +677,37 @@ public partial class Chat : ContentView
     }
     #endregion
 
-    #region Get default colors
-    static Color GetPrimaryColor()
+    async Task<IAudioSource> StartStopRecordToggleAsync()
     {
-        if (Application.Current == null)
-            throw new ArgumentNullException(nameof(Application.Current), $"{nameof(Application.Current)} is null.");
+        if (!audioRecorder.IsRecording)
+        {
+            IsRecording = true;
+            StartStopRecordToggleColor = Colors.Red;
+            Status = "Recording...";
 
-        if (Application.Current.Resources.TryGetValue("Primary", out object color))
-            return (Color)color;
-        else
-            return Colors.Black;
-    }
-    static Color GetSecondaryColor()
-    {
-        if (Application.Current == null)
-            throw new ArgumentNullException(nameof(Application.Current), $"{nameof(Application.Current)} is null.");
+            if (await Permissions.RequestAsync<Permissions.Microphone>() != PermissionStatus.Granted)
+            {
+                await Shell.Current.DisplayAlert("Permission denied", "The app needs microphone permission to record audio.", "OK");
+                StartStopRecordToggleColor = SecondaryColor;
 
-        if (Application.Current.Resources.TryGetValue("Secondary", out object color))
-            return (Color)color;
+                audioSource = new EmptyAudioSource();
+            }
+            else
+            {
+                await audioRecorder.StartAsync();
+                audioSource = await audioRecorder.StopAsync(When.SilenceIsDetected());
+            }
+        }
         else
-            return Colors.White;
+        {
+            audioSource = await audioRecorder.StopAsync(When.Immediately());
+        }
+
+        IsRecording = false;
+        StartStopRecordToggleColor = PrimaryColor;
+        Status = string.Empty;
+
+        return audioSource;
     }
     #endregion
     #endregion

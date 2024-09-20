@@ -1,5 +1,5 @@
-﻿global using Plugin.Maui.Chat.Models;
-global using Plugin.Maui.Chat.Services;
+﻿global using Plugin.Maui.Chat.Helpers;
+global using Plugin.Maui.Chat.Models;
 
 global using Plugin.Maui.Audio;
 

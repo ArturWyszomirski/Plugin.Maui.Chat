@@ -31,6 +31,7 @@
                IsStatusVisible="{Binding IsStatusVisible}"
                StatusTextColor="{StaticResource Gray500}"
                
+               StartStopRecordToggleCommand="{Binding StartStopRecordToggleCommand}"
                IsStartStopRecordToggleVisible="True"
                StartStopRecordToggleIcon="{Static resources:Icons.Microphone}"
                
@@ -54,7 +55,7 @@
                SendMessageColor="{StaticResource Primary}"
                
                Margin="10">
-        
+
         <chat:Chat.Triggers>
             <DataTrigger TargetType="chat:Chat" Binding="{Binding IsRecording}" Value="True">
                 <Setter Property="StartStopRecordToggleColor" Value="{StaticResource Primary}"/>
@@ -69,8 +70,6 @@
                 <Setter Property="HandsFreeModeToggleColor" Value="{StaticResource Secondary}"/>
             </DataTrigger>
         </chat:Chat.Triggers>
-        
+
     </chat:Chat>
 </ContentPage>
-
-<!--StartStopRecordToggleCommand="{Binding StartStopRecordToggleCommand}"-->

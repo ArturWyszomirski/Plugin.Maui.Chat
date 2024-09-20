@@ -8,19 +8,19 @@ public partial class CustomizedChatViewModel : ObservableRecipient
     }
 
     [ObservableProperty]
-    string? _userMessage;
+    string? userMessage;
 
     [ObservableProperty]
-    string? _status;
+    string? status;
 
     [ObservableProperty]
-    bool _isStatusVisible;
+    bool isStatusVisible;
 
     [ObservableProperty]
-    bool _isRecording;
+    bool isRecording;
 
     [ObservableProperty]
-    bool _isHandsFreeMode;
+    bool isHandsFreeMode;
 
     public ObservableCollection<ChatMessage> ChatMessages { get; set; } = [];
 
@@ -50,14 +50,16 @@ public partial class CustomizedChatViewModel : ObservableRecipient
         {
             Type = MessageType.Sent,
             Author = "You",
-            Text = "This is a little bit longer sent message sample to see how multiple lines look like."
+            Text = "This is a little bit longer sent message sample to see how multiple lines look like.",
+            AudioContent = new EmptyAudioSource() // TODO: add some audio content
         });
 
         ChatMessages.Add(new ChatMessage()
         {
             Type = MessageType.Received,
             Author = "Echo",
-            Text = "This is a little bit longer received message sample to see how multiple lines look like."
+            Text = "This is a little bit longer received message sample to see how multiple lines look like.",
+            AudioContent = new EmptyAudioSource() // TODO: add some audio content
         });
     }
 
@@ -90,7 +92,11 @@ public partial class CustomizedChatViewModel : ObservableRecipient
     }
 
     [RelayCommand]
-    void StartStopRecordToggle() => IsRecording = !IsRecording;
+    void StartStopRecordToggle() 
+    { 
+        IsRecording = !IsRecording; 
+        Shell.Current.DisplayAlert("Custom command fired.", "You can use your own commands instead of those built-in.", "Cool:)"); 
+    }
 
     [RelayCommand]
     void HandsFreeModeToggle() => IsHandsFreeMode = !IsHandsFreeMode;

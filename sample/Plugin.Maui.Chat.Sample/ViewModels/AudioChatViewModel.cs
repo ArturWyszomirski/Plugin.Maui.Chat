@@ -64,6 +64,7 @@ public partial class AudioChatViewModel : ObservableRecipient
         });
 
         UserMessage = null;
+        AudioContent = null;
 
         await Task.Delay(1000);
 
@@ -71,8 +72,8 @@ public partial class AudioChatViewModel : ObservableRecipient
         {
             Type = MessageType.Received,
             Author = "Echo",
-            Text = $"Echo: {ChatMessages.Last().Text}",
-            AudioContent = AudioContent
+            Text = !string.IsNullOrEmpty(ChatMessages.Last().Text) ? $"Echo: {ChatMessages.Last().Text}" : string.Empty,
+            AudioContent = ChatMessages.Last().AudioContent
         });
     }
 }

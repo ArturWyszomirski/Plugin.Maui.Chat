@@ -11,7 +11,7 @@
              x:Name="chat">
 
     <ContentView.Behaviors>
-        <behaviors:UserMessageValidationBehavior></behaviors:UserMessageValidationBehavior>
+        <behaviors:UserMessageValidationBehavior/>
     </ContentView.Behaviors>
 
     <ContentView.Resources>
@@ -36,8 +36,23 @@
                                FontAttributes="Bold"
                                IsVisible="{Binding IsSentMessageAuthorVisible, Source={x:Reference chat}}"/>
                         
+                        <controls:AudioPlayer Grid.ColumnSpan="5"
+                                              Grid.Row="0"
+                                              Source="{Binding AudioContent}"
+                                              StartStopCommand="{Binding AudioPlayerCommand, Source={x:Reference chat}}"
+                                              Icon="{Binding AudioContentIcon, Source={x:Reference chat}}"
+                                              Color="{Binding SentAudioContentColor, Source={x:Reference chat}}"
+                                              HeightRequest="25"
+                                              WidthRequest="25"
+                                              HorizontalOptions="Start"
+                                              Margin="0, 5"/>
+
                         <Label Text="{Binding Text}"
-                               TextColor="{Binding SentMessageContentTextColor, Source={x:Reference chat}}"/>
+                               TextColor="{Binding SentMessageContentTextColor, Source={x:Reference chat}}">
+                            <Label.Behaviors>
+                                <behaviors:EmpyLabelVisibilityBehavior/>
+                            </Label.Behaviors>
+                        </Label>
                         
                         <Label HorizontalOptions="End"
                                Text="{Binding DateTime, StringFormat='{0:HH:mm}'}" 
@@ -69,10 +84,25 @@
                                TextColor="{Binding ReceivedMessageAuthorTextColor, Source={x:Reference chat}}"
                                FontAttributes="Bold"
                                IsVisible="{Binding IsReceivedMessageAuthorVisible, Source={x:Reference chat}}"/>
-                        
+
+                        <controls:AudioPlayer Grid.ColumnSpan="5"
+                                              Grid.Row="0"
+                                              Source="{Binding AudioContent}"
+                                              StartStopCommand="{Binding AudioPlayerCommand, Source={x:Reference chat}}"
+                                              Icon="{Binding AudioContentIcon, Source={x:Reference chat}}"
+                                              Color="{Binding ReceivedAudioContentColor, Source={x:Reference chat}}"
+                                              HeightRequest="25"
+                                              WidthRequest="25"
+                                              HorizontalOptions="Start"
+                                              Margin="0, 5"/>
+
                         <Label Text="{Binding Text}"
-                               TextColor="{Binding ReceivedMessageContentTextColor, Source={x:Reference chat}}"/>
-                        
+                               TextColor="{Binding ReceivedMessageContentTextColor, Source={x:Reference chat}}">
+                            <Label.Behaviors>
+                                <behaviors:EmpyLabelVisibilityBehavior/>
+                            </Label.Behaviors>
+                        </Label>
+
                         <Label HorizontalOptions="End"
                                Text="{Binding DateTime, StringFormat='{0:HH:mm}'}" 
                                FontSize="Micro"
@@ -95,6 +125,7 @@
                 
                 <Label Text="{Binding Text}"
                        TextColor="{Binding SystemMessageTextColor, Source={x:Reference chat}}"/>
+                
             </Frame>
         </DataTemplate>
         
@@ -106,47 +137,42 @@
 
     <Grid RowDefinitions="*, Auto, Auto"
           RowSpacing="10">
-        
+
         <ScrollView x:Name="chatMessagesScrollView" 
                     Grid.Row="0"
                     VerticalOptions="End">
-            
+
             <CollectionView x:Name="chatMessagesCollectionView"
                             ItemsSource="{Binding ChatMessages, Source={x:Reference chat}}"
                             ItemTemplate="{StaticResource ChatMessageTemplateSelector}"/>
         </ScrollView>
-        
+
         <Label Grid.Row="1"
                Text="{Binding Status, Source={x:Reference chat}}"
                IsVisible="{Binding IsStatusVisible, Source={x:Reference chat}}"
                TextColor="{Binding StatusTextColor, Source={x:Reference chat}}"/>
-        
+
         <Grid Grid.Row="2"
               ColumnDefinitions="*, Auto"
               ColumnSpacing="10">
-            
+
             <Frame Grid.Column="0"
-                   Padding="5, 5, 10, 0"
+                   Padding="5, 0, 10, 0"
                    BorderColor="LightGray">
-                
+
                 <Grid ColumnDefinitions="*, Auto, Auto, Auto, Auto"
                       RowDefinitions="Auto, Auto">
 
-                    <ImageButton Grid.ColumnSpan="5"
-                                 Grid.Row="0"
-                                 Command="{Binding PlayAudioCommand, Source={x:Reference chat}}"
-                                 HeightRequest="25"
-                                 WidthRequest="25"
-                                 Source="{Binding AudioContentIcon, Source={x:Reference chat}}"
-                                 Aspect="AspectFit"
-                                 IsVisible="{Binding IsAudioContentVisible, Source={x:Reference chat}}"
-                                 HorizontalOptions="Start"
-                                 Margin="5, 5, 0, 0">
-
-                        <ImageButton.Behaviors>
-                            <toolkit:IconTintColorBehavior TintColor="{Binding AudioContentColor, Source={x:Reference chat}}"/>
-                        </ImageButton.Behaviors>
-                    </ImageButton>
+                    <controls:AudioPlayer Grid.ColumnSpan="5"
+                                          Grid.Row="0"
+                                          Source="{Binding AudioContent, Source={x:Reference chat}}"
+                                          StartStopCommand="{Binding AudioPlayerCommand, Source={x:Reference chat}}"
+                                          Icon="{Binding AudioContentIcon, Source={x:Reference chat}}"
+                                          Color="{Binding UserAudioContentColor, Source={x:Reference chat}}"
+                                          HeightRequest="25"
+                                          WidthRequest="25"
+                                          HorizontalOptions="Start"
+                                          Margin="5, 10, 0, 0"/>
 
                     <Editor Grid.Column="0"
                             Grid.Row="1"
@@ -160,10 +186,10 @@
                     <ImageButton Grid.Column="1"
                                  Grid.Row="1"
                                  Command="{Binding StartStopRecordToggleCommand, Source={x:Reference chat}}"
-                                 HeightRequest="25"
-                                 WidthRequest="25"
                                  Source="{Binding StartStopRecordToggleIcon, Source={x:Reference chat}}" 
                                  Aspect="AspectFit"
+                                 HeightRequest="25"
+                                 WidthRequest="25"
                                  IsVisible="{Binding IsStartStopRecordToggleVisible, Source={x:Reference chat}}"
                                  Margin="5, 0, 0, 0">
                         <ImageButton.Behaviors>
@@ -214,19 +240,22 @@
                     </Image>
                 </Grid>
             </Frame>
-            
+
             <ImageButton Grid.Column="1"
                          Command="{Binding SendMessageCommand, Source={x:Reference chat}}"
-                         HeightRequest="25"
-                         WidthRequest="25"
+                         IsEnabled="{Binding IsSendMessageEnabled, Source={x:Reference chat}}"
                          Source="{Binding SendMessageIcon, Source={x:Reference chat}}"
                          Aspect="AspectFit"
-                         IsEnabled="{Binding IsSendMessageEnabled, Source={x:Reference chat}}"
+                         HeightRequest="25"
+                         WidthRequest="25"
+                         VerticalOptions="End"
+                         Margin="0, 11"
                          IsVisible="{Binding IsSendMessageVisible, Source={x:Reference chat}}">
                 <ImageButton.Behaviors>
                     <toolkit:IconTintColorBehavior TintColor="{Binding SendMessageColor, Source={x:Reference chat}}"/>
                 </ImageButton.Behaviors>
             </ImageButton>
+
         </Grid>
     </Grid>
 </ContentView>

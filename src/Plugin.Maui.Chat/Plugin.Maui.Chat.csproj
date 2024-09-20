@@ -59,6 +59,9 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <MauiXaml Update="Controls\AudioPlayer.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
 	  <MauiXaml Update="Controls\Chat.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>

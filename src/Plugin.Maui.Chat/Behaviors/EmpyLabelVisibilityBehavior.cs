@@ -5,7 +5,7 @@ namespace Plugin.Maui.Chat.Behaviors;
 /// <summary>
 /// Disables send message button if user message is empty or white space.
 /// </summary>
-internal class UserMessageValidationBehavior : Behavior<Controls.Chat>
+internal class EmpyLabelVisibilityBehavior : Behavior<Label>
 {
     protected override void OnAttachedTo(BindableObject bindable)
     {
@@ -21,9 +21,11 @@ internal class UserMessageValidationBehavior : Behavior<Controls.Chat>
 
     private void OnPropertyChanged(object? sender, PropertyChangedEventArgs e)
     {
-        var chat = sender as Controls.Chat ?? throw new ArgumentNullException(nameof(sender));
+        var label = sender as Label ?? throw new ArgumentNullException(nameof(sender));
 
-        if (e.PropertyName == Controls.Chat.UserMessageProperty.PropertyName || e.PropertyName == Controls.Chat.AudioContentProperty.PropertyName)
-            chat.IsSendMessageEnabled = !string.IsNullOrWhiteSpace(chat?.UserMessage) || (chat?.AudioContent is not null);
+        if (string.IsNullOrEmpty(label.Text))
+            label.IsVisible = false;
+        else
+            label.IsVisible = true;
     }
 }

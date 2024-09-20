@@ -8,7 +8,7 @@ public partial class SimpleChatViewModel : ObservableRecipient
     }
 
     [ObservableProperty]
-    string? _userMessage;
+    string? userMessage;
 
     public ObservableCollection<ChatMessage> ChatMessages { get; set; } = [];
 
