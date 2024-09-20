@@ -162,13 +162,13 @@ public partial class Chat : ContentView
     /// <summary>
     /// Sent audio content button color.
     /// </summary>
-    public static readonly BindableProperty SentAudioContentColorProperty =
-        BindableProperty.Create(nameof(SentAudioContentColor), typeof(Color), typeof(Chat), secondaryColor);
+    public static readonly BindableProperty SentMessageAudioContentColorProperty =
+        BindableProperty.Create(nameof(SentMessageAudioContentColor), typeof(Color), typeof(Chat), secondaryColor);
 
-    public Color SentAudioContentColor
+    public Color SentMessageAudioContentColor
     {
-        get => (Color)GetValue(SentAudioContentColorProperty);
-        set => SetValue(SentAudioContentColorProperty, value);
+        get => (Color)GetValue(SentMessageAudioContentColorProperty);
+        set => SetValue(SentMessageAudioContentColorProperty, value);
     }
     #endregion
 
@@ -249,13 +249,13 @@ public partial class Chat : ContentView
     /// <summary>
     /// Received audio content button color.
     /// </summary>
-    public static readonly BindableProperty ReceivedAudioContentColorProperty =
-        BindableProperty.Create(nameof(ReceivedAudioContentColor), typeof(Color), typeof(Chat), primaryColor);
+    public static readonly BindableProperty ReceivedMessageAudioContentColorProperty =
+        BindableProperty.Create(nameof(ReceivedMessageAudioContentColor), typeof(Color), typeof(Chat), primaryColor);
 
-    public Color ReceivedAudioContentColor
+    public Color ReceivedMessageAudioContentColor
     {
-        get => (Color)GetValue(ReceivedAudioContentColorProperty);
-        set => SetValue(ReceivedAudioContentColorProperty, value);
+        get => (Color)GetValue(ReceivedMessageAudioContentColorProperty);
+        set => SetValue(ReceivedMessageAudioContentColorProperty, value);
     }
     #endregion
 
