@@ -198,6 +198,12 @@ TakePhotoColor="{StaticResource Primary}"
 
 ## Credits
 
+### Icons
+
 All icons comes from [flaticon.com](https://www.flaticon.com)'s UICONS series.
 
 Icon was coloured using https://onlinepngtools.com/change-png-color and converted to svg using https://convertio.co
+
+### Music
+
+"The Happy Ukulele Song" by Stanislav Fomin

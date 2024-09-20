@@ -1,5 +1,4 @@
-﻿using CommunityToolkit.Maui;
-using Microsoft.Extensions.Logging;
+﻿using Microsoft.Extensions.Logging;
 
 namespace Plugin.Maui.Chat.Sample;
 

@@ -92,10 +92,24 @@ public partial class CustomizedChatViewModel : ObservableRecipient
     }
 
     [RelayCommand]
-    void AudioRecorder() 
+    async Task StartStopRecordingAsync()
     { 
-        IsRecording = !IsRecording; 
-        Shell.Current.DisplayAlert("Custom command fired.", "You can use your own commands instead of those built-in.", "Cool:)"); 
+        IsRecording = !IsRecording;
+
+        if (IsRecording)
+            await Shell.Current.DisplayAlert("Custom record audio command", "You can use your own commands instead of those built-in.", "Cool :)");
+    }
+
+    [RelayCommand]
+    async Task PlayAudioAsync()
+    {
+        var audioPlayer = AudioManager.Current.CreateAsyncPlayer(await FileSystem.OpenAppPackageFileAsync("ukulele.mp3"));
+
+        await Shell.Current.DisplayAlert("Custom play audio command",
+                                         "On this page all audio contents will play \"The Happy Ukulele Song\" by Stanislav Fomin. Enjoy!",
+                                         "Aloha :)");
+
+        await audioPlayer.PlayAsync(default);
     }
 
     [RelayCommand]

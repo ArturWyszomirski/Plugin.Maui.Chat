@@ -7,7 +7,7 @@
              x:Class="Plugin.Maui.Chat.Sample.Pages.CustomizedChatPage"
              Title="Customized chat"
              x:DataType="viewmodels:CustomizedChatViewModel">
-    
+
     <chat:Chat TextContent="{Binding TextContent}"
                ChatMessages="{Binding ChatMessages}"
                
@@ -34,10 +34,12 @@
                IsStatusVisible="{Binding IsStatusVisible}"
                StatusTextColor="{StaticResource Gray500}"
                
-               AudioRecorderCommand="{Binding AudioRecorderCommand}"
+               AudioRecorderCommand="{Binding StartStopRecordingCommand}"
                IsAudioRecorderVisible="True"
                AudioRecorderIcon="{Static resources:Icons.Microphone}"
                
+               AudioPlayerCommand="{Binding PlayAudioCommand}"
+
                HandsFreeModeCommand="{Binding HandsFreeModeCommand}"
                IsHandsFreeModeVisible="True"
                HandsFreeModeIcon="{Static resources:Icons.Headphones}"
@@ -60,18 +62,23 @@
                Margin="10">
 
         <chat:Chat.Triggers>
+
             <DataTrigger TargetType="chat:Chat" Binding="{Binding IsRecording}" Value="True">
                 <Setter Property="AudioRecorderColor" Value="{StaticResource Primary}"/>
             </DataTrigger>
+
             <DataTrigger TargetType="chat:Chat" Binding="{Binding IsRecording}" Value="False">
                 <Setter Property="AudioRecorderColor" Value="{StaticResource Secondary}"/>
             </DataTrigger>
+
             <DataTrigger TargetType="chat:Chat" Binding="{Binding IsHandsFreeMode}" Value="True">
                 <Setter Property="HandsFreeModeColor" Value="{StaticResource Primary}"/>
             </DataTrigger>
+
             <DataTrigger TargetType="chat:Chat" Binding="{Binding IsHandsFreeMode}" Value="False">
                 <Setter Property="HandsFreeModeColor" Value="{StaticResource Secondary}"/>
             </DataTrigger>
+
         </chat:Chat.Triggers>
     </chat:Chat>
 </ContentPage>
