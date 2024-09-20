@@ -67,7 +67,7 @@ To use `Chat` you need to register `Plugin.Maui.Chat.Controls` namespace by addi
 ### Simple usage
 
 All you have to do to get started is to deal with those three properties:
-- `UserMessage` of string type which holds the user input,
+- `TextContent` of string type which holds the user input,
 - `ChatMessages` which is a collection of `ChatMessage`,
 - `SendMessageCommand` where you decide what happens after firing Send message button.
 
@@ -75,7 +75,7 @@ Example below shows how to bind properties. In this scenario every sent message 
 
 View:
 ```xaml
-<chat:Chat UserMessage="{Binding UserMessage}"
+<chat:Chat TextContent="{Binding TextContent}"
            ChatMessages="{Binding ChatMessages}"
            SendMessageCommand="{Binding SendMessageCommand}"
            Margin="10"/>
@@ -84,7 +84,7 @@ View:
 ViewModel:
 ```csharp
 [ObservableProperty]
-string? _userMessage;
+string? textContent;
 
 public ObservableCollection<ChatMessage> ChatMessages { get; set; } = [];
 
@@ -95,10 +95,10 @@ async Task SendMessageAsync()
     {
         Type = MessageType.Sent,
         Author = "You",
-        Text = UserMessage
+        Text = TextContent
     });
 
-    UserMessage = null;
+    TextContent = null;
 
     await Task.Delay(1000);
 
@@ -177,13 +177,13 @@ SendMessageColor="{StaticResource Primary}"
 Analogous to Send message button there are already presetted colors and icon's which can easily be changed by related properties. For now there are no default commands binded to buttons.
 
 ```
-StartStopRecordToggleCommand="{Binding StartStopRecordToggleCommand}"
-IsStartStopRecordToggleVisible="True"
-StartStopRecordToggleIcon="{Static resources:Icons.Microphone}"
+AudioRecorderCommand="{Binding AudioRecorderCommand}"
+IsAudioRecorderVisible="True"
+AudioRecorderIcon="{Static resources:Icons.Microphone}"
 
-HandsFreeModeToggleCommand="{Binding HandsFreeModeToggleCommand}"
-IsHandsFreeModeToggleVisible="True"
-HandsFreeModeToggleIcon="{Static resources:Icons.Headphones}"
+HandsFreeModeCommand="{Binding HandsFreeModeCommand}"
+IsHandsFreeModeVisible="True"
+HandsFreeModeIcon="{Static resources:Icons.Headphones}"
 
 AddAttachmentCommand="{Binding AddAttachmentCommand}"
 IsAddAttachmentVisible="True"

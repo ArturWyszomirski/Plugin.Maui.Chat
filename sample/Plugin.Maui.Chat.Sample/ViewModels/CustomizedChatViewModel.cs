@@ -8,7 +8,7 @@ public partial class CustomizedChatViewModel : ObservableRecipient
     }
 
     [ObservableProperty]
-    string? userMessage;
+    string? textContent;
 
     [ObservableProperty]
     string? status;
@@ -30,27 +30,27 @@ public partial class CustomizedChatViewModel : ObservableRecipient
         {
             Type = MessageType.Sent,
             Author = "You",
-            Text = "This is a sent message sample."
+            TextContent = "This is a sent message sample."
         });
 
         ChatMessages.Add(new ChatMessage()
         {
             Type = MessageType.Received,
             Author = "Echo",
-            Text = "This is a received message sample."
+            TextContent = "This is a received message sample."
         });
 
         ChatMessages.Add(new ChatMessage()
         {
             Type = MessageType.System,
-            Text = "This is a system message sample."
+            TextContent = "This is a system message sample."
         });
 
         ChatMessages.Add(new ChatMessage()
         {
             Type = MessageType.Sent,
             Author = "You",
-            Text = "This is a little bit longer sent message sample to see how multiple lines look like.",
+            TextContent = "This is a little bit longer sent message sample to see how multiple lines look like.",
             AudioContent = new EmptyAudioSource() // TODO: add some audio content
         });
 
@@ -58,7 +58,7 @@ public partial class CustomizedChatViewModel : ObservableRecipient
         {
             Type = MessageType.Received,
             Author = "Echo",
-            Text = "This is a little bit longer received message sample to see how multiple lines look like.",
+            TextContent = "This is a little bit longer received message sample to see how multiple lines look like.",
             AudioContent = new EmptyAudioSource() // TODO: add some audio content
         });
     }
@@ -70,10 +70,10 @@ public partial class CustomizedChatViewModel : ObservableRecipient
         {
             Type = MessageType.Sent,
             Author = "You",
-            Text = UserMessage
+            TextContent = TextContent
         });
 
-        UserMessage = null;
+        TextContent = null;
 
         Status = "Echo is typing...";
         IsStatusVisible = true;
@@ -87,19 +87,19 @@ public partial class CustomizedChatViewModel : ObservableRecipient
         {
             Type = MessageType.Received,
             Author = "Echo",
-            Text = $"Echo: {ChatMessages.Last().Text}"
+            TextContent = $"Echo: {ChatMessages.Last().TextContent}"
         });
     }
 
     [RelayCommand]
-    void StartStopRecordToggle() 
+    void AudioRecorder() 
     { 
         IsRecording = !IsRecording; 
         Shell.Current.DisplayAlert("Custom command fired.", "You can use your own commands instead of those built-in.", "Cool:)"); 
     }
 
     [RelayCommand]
-    void HandsFreeModeToggle() => IsHandsFreeMode = !IsHandsFreeMode;
+    void HandsFreeMode() => IsHandsFreeMode = !IsHandsFreeMode;
 
     [RelayCommand]
     void AddAttachment() { }

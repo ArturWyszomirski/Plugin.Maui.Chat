@@ -47,7 +47,7 @@
                                               HorizontalOptions="Start"
                                               Margin="0, 5"/>
 
-                        <Label Text="{Binding Text}"
+                        <Label Text="{Binding TextContent}"
                                TextColor="{Binding SentMessageContentTextColor, Source={x:Reference chat}}">
                             <Label.Behaviors>
                                 <behaviors:EmpyLabelVisibilityBehavior/>
@@ -96,7 +96,7 @@
                                               HorizontalOptions="Start"
                                               Margin="0, 5"/>
 
-                        <Label Text="{Binding Text}"
+                        <Label Text="{Binding TextContent}"
                                TextColor="{Binding ReceivedMessageContentTextColor, Source={x:Reference chat}}">
                             <Label.Behaviors>
                                 <behaviors:EmpyLabelVisibilityBehavior/>
@@ -122,8 +122,8 @@
                    Padding="16, 6"
                    BackgroundColor="{Binding SystemMessageBackgroundColor, Source={x:Reference chat}}"
                    Margin="0, 5">
-                
-                <Label Text="{Binding Text}"
+
+                <Label Text="{Binding TextContent}"
                        TextColor="{Binding SystemMessageTextColor, Source={x:Reference chat}}"/>
                 
             </Frame>
@@ -176,7 +176,7 @@
 
                     <Editor Grid.Column="0"
                             Grid.Row="1"
-                            Text="{Binding UserMessage, Source={x:Reference chat}}"
+                            Text="{Binding TextContent, Source={x:Reference chat}}"
                             Placeholder="Type your message..."
                             VerticalTextAlignment="Center"
                             Keyboard="Chat"
@@ -185,15 +185,15 @@
 
                     <ImageButton Grid.Column="1"
                                  Grid.Row="1"
-                                 Command="{Binding StartStopRecordToggleCommand, Source={x:Reference chat}}"
-                                 Source="{Binding StartStopRecordToggleIcon, Source={x:Reference chat}}" 
+                                 Command="{Binding AudioRecorderCommand, Source={x:Reference chat}}"
+                                 Source="{Binding AudioRecorderIcon, Source={x:Reference chat}}" 
                                  Aspect="AspectFit"
                                  HeightRequest="25"
                                  WidthRequest="25"
-                                 IsVisible="{Binding IsStartStopRecordToggleVisible, Source={x:Reference chat}}"
+                                 IsVisible="{Binding IsAudioRecorderVisible, Source={x:Reference chat}}"
                                  Margin="5, 0, 0, 0">
                         <ImageButton.Behaviors>
-                            <toolkit:IconTintColorBehavior TintColor="{Binding StartStopRecordToggleColor, Source={x:Reference chat}}"/>
+                            <toolkit:IconTintColorBehavior TintColor="{Binding AudioRecorderColor, Source={x:Reference chat}}"/>
                         </ImageButton.Behaviors>
                     </ImageButton>
 
@@ -201,13 +201,13 @@
                            Grid.Row="1"
                            HeightRequest="25"
                            WidthRequest="25"
-                           Source="{Binding HandsFreeModeToggleIcon, Source={x:Reference chat}}" 
+                           Source="{Binding HandsFreeModeIcon, Source={x:Reference chat}}" 
                            Aspect="AspectFit"
-                           IsVisible="{Binding IsHandsFreeModeToggleVisible, Source={x:Reference chat}}"
+                           IsVisible="{Binding IsHandsFreeModeVisible, Source={x:Reference chat}}"
                            Margin="5, 0, 0, 0">
                         <Image.Behaviors>
-                            <toolkit:IconTintColorBehavior TintColor="{Binding HandsFreeModeToggleColor, Source={x:Reference chat}}"/>
-                            <toolkit:ImageTouchBehavior Command="{Binding HandsFreeModeToggleCommand, Source={x:Reference chat}}"/>
+                            <toolkit:IconTintColorBehavior TintColor="{Binding HandsFreeModeColor, Source={x:Reference chat}}"/>
+                            <toolkit:ImageTouchBehavior Command="{Binding HandsFreeModeCommand, Source={x:Reference chat}}"/>
                         </Image.Behaviors>
                     </Image>
 
@@ -255,7 +255,6 @@
                     <toolkit:IconTintColorBehavior TintColor="{Binding SendMessageColor, Source={x:Reference chat}}"/>
                 </ImageButton.Behaviors>
             </ImageButton>
-
         </Grid>
     </Grid>
 </ContentView>

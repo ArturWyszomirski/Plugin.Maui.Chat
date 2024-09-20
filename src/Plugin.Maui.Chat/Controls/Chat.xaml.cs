@@ -18,7 +18,7 @@ public partial class Chat : ContentView
 
         audioRecorder = audioManager.CreateRecorder();
 
-        StartStopRecordToggleCommand ??= new Command(async () => AudioContent = await StartStopRecordToggleAsync());
+        AudioRecorderCommand ??= new Command(async () => AudioContent = await AudioRecorderAsync());
     }
     #endregion
 
@@ -290,13 +290,13 @@ public partial class Chat : ContentView
     /// <summary>
     /// Message typed by user.
     /// </summary>
-    public static readonly BindableProperty UserMessageProperty =
-        BindableProperty.Create(nameof(UserMessage), typeof(string), typeof(Chat), defaultBindingMode: BindingMode.TwoWay);
+    public static readonly BindableProperty TextContentProperty =
+        BindableProperty.Create(nameof(TextContent), typeof(string), typeof(Chat), defaultBindingMode: BindingMode.TwoWay);
 
-    public string UserMessage
+    public string TextContent
     {
-        get => (string)GetValue(UserMessageProperty);
-        set => SetValue(UserMessageProperty, value);
+        get => (string)GetValue(TextContentProperty);
+        set => SetValue(TextContentProperty, value);
     }
 
     /// <summary>
@@ -388,103 +388,103 @@ public partial class Chat : ContentView
     }
     #endregion
 
-    #region StartStopRecordToggle button
+    #region AudioRecorder button
     /// <summary>
     /// Start or stop recording voice message.
     /// </summary>
-    public static readonly BindableProperty StartStopRecordToggleCommandProperty = 
-        BindableProperty.Create(nameof(StartStopRecordToggleCommand), typeof(ICommand), typeof(Chat));
+    public static readonly BindableProperty AudioRecorderCommandProperty = 
+        BindableProperty.Create(nameof(AudioRecorderCommand), typeof(ICommand), typeof(Chat));
 
-    public ICommand StartStopRecordToggleCommand
+    public ICommand AudioRecorderCommand
     {
-        get => (ICommand)GetValue(StartStopRecordToggleCommandProperty);
-        set => SetValue(StartStopRecordToggleCommandProperty, value);
+        get => (ICommand)GetValue(AudioRecorderCommandProperty);
+        set => SetValue(AudioRecorderCommandProperty, value);
     }
 
     /// <summary>
     /// Determines whether start/stop record toggle button is visible.
     /// </summary>
-    public static readonly BindableProperty IsStartStopRecordToggleVisibleProperty = 
-        BindableProperty.Create(nameof(IsStartStopRecordToggleVisible), typeof(bool), typeof(Chat));
+    public static readonly BindableProperty IsAudioRecorderVisibleProperty = 
+        BindableProperty.Create(nameof(IsAudioRecorderVisible), typeof(bool), typeof(Chat));
 
-    public bool IsStartStopRecordToggleVisible
+    public bool IsAudioRecorderVisible
     {
-        get => (bool)GetValue(IsStartStopRecordToggleVisibleProperty);
-        set => SetValue(IsStartStopRecordToggleVisibleProperty, value);
+        get => (bool)GetValue(IsAudioRecorderVisibleProperty);
+        set => SetValue(IsAudioRecorderVisibleProperty, value);
     }
 
     /// <summary>
     /// Start/stop record toggle button icon.
     /// </summary>
-    public static readonly BindableProperty StartStopRecordToggleIconProperty = 
-        BindableProperty.Create(nameof(StartStopRecordToggleIcon), typeof(ImageSource), typeof(Chat), ImageSource.FromFile(Maui.Chat.Resources.Icons.Microphone));
+    public static readonly BindableProperty AudioRecorderIconProperty = 
+        BindableProperty.Create(nameof(AudioRecorderIcon), typeof(ImageSource), typeof(Chat), ImageSource.FromFile(Maui.Chat.Resources.Icons.Microphone));
 
-    public ImageSource StartStopRecordToggleIcon
+    public ImageSource AudioRecorderIcon
     {
-        get => (ImageSource)GetValue(StartStopRecordToggleIconProperty);
-        set => SetValue(StartStopRecordToggleIconProperty, value);
+        get => (ImageSource)GetValue(AudioRecorderIconProperty);
+        set => SetValue(AudioRecorderIconProperty, value);
     }
 
     /// <summary>
     /// Start/stop record toggle button color.
     /// </summary>
-    public static readonly BindableProperty StartStopRecordToggleColorProperty = 
-        BindableProperty.Create(nameof(StartStopRecordToggleColor), typeof(Color), typeof(Chat), primaryColor);
+    public static readonly BindableProperty AudioRecorderColorProperty = 
+        BindableProperty.Create(nameof(AudioRecorderColor), typeof(Color), typeof(Chat), primaryColor);
 
-    public Color StartStopRecordToggleColor
+    public Color AudioRecorderColor
     {
-        get => (Color)GetValue(StartStopRecordToggleColorProperty);
-        set => SetValue(StartStopRecordToggleColorProperty, value);
+        get => (Color)GetValue(AudioRecorderColorProperty);
+        set => SetValue(AudioRecorderColorProperty, value);
     }
     #endregion
 
-    #region HandsFreeModeToggle button
+    #region HandsFreeMode button
     /// <summary>
     /// Turn on/off hands-free mode. Hands-free mode is automated recording, transcribing and sending voice messages as well as reading received messages.
     /// </summary>
-    public static readonly BindableProperty HandsFreeModeToggleCommandProperty = 
-        BindableProperty.Create(nameof(HandsFreeModeToggleCommand), typeof(ICommand), typeof(Chat));
+    public static readonly BindableProperty HandsFreeModeCommandProperty = 
+        BindableProperty.Create(nameof(HandsFreeModeCommand), typeof(ICommand), typeof(Chat));
 
-    public ICommand HandsFreeModeToggleCommand
+    public ICommand HandsFreeModeCommand
     {
-        get => (ICommand)GetValue(HandsFreeModeToggleCommandProperty);
-        set => SetValue(HandsFreeModeToggleCommandProperty, value);
+        get => (ICommand)GetValue(HandsFreeModeCommandProperty);
+        set => SetValue(HandsFreeModeCommandProperty, value);
     }
 
     /// <summary>
     /// Determines whether hands-free mode toggle button is visible.
     /// </summary>
-    public static readonly BindableProperty IsHandsFreeModeToggleVisibleProperty = 
-        BindableProperty.Create(nameof(IsHandsFreeModeToggleVisible), typeof(bool), typeof(Chat));
+    public static readonly BindableProperty IsHandsFreeModeVisibleProperty = 
+        BindableProperty.Create(nameof(IsHandsFreeModeVisible), typeof(bool), typeof(Chat));
 
-    public bool IsHandsFreeModeToggleVisible
+    public bool IsHandsFreeModeVisible
     {
-        get => (bool)GetValue(IsHandsFreeModeToggleVisibleProperty);
-        set => SetValue(IsHandsFreeModeToggleVisibleProperty, value);
+        get => (bool)GetValue(IsHandsFreeModeVisibleProperty);
+        set => SetValue(IsHandsFreeModeVisibleProperty, value);
     }
 
     /// <summary>
     /// Hands-free mode toggle button icon.
     /// </summary>
-    public static readonly BindableProperty HandsFreeModeToggleIconProperty =
-        BindableProperty.Create(nameof(HandsFreeModeToggleIcon), typeof(ImageSource), typeof(Chat), ImageSource.FromFile(Maui.Chat.Resources.Icons.Headphones));
+    public static readonly BindableProperty HandsFreeModeIconProperty =
+        BindableProperty.Create(nameof(HandsFreeModeIcon), typeof(ImageSource), typeof(Chat), ImageSource.FromFile(Maui.Chat.Resources.Icons.Headphones));
 
-    public ImageSource HandsFreeModeToggleIcon
+    public ImageSource HandsFreeModeIcon
     {
-        get => (ImageSource)GetValue(HandsFreeModeToggleIconProperty);
-        set => SetValue(HandsFreeModeToggleIconProperty, value);
+        get => (ImageSource)GetValue(HandsFreeModeIconProperty);
+        set => SetValue(HandsFreeModeIconProperty, value);
     }
 
     /// <summary>
     /// Hands-free mode toggle button color.
     /// </summary>
-    public static readonly BindableProperty HandsFreeModeToggleColorProperty = 
-        BindableProperty.Create(nameof(HandsFreeModeToggleColor), typeof(Color), typeof(Chat), primaryColor);
+    public static readonly BindableProperty HandsFreeModeColorProperty = 
+        BindableProperty.Create(nameof(HandsFreeModeColor), typeof(Color), typeof(Chat), primaryColor);
 
-    public Color HandsFreeModeToggleColor
+    public Color HandsFreeModeColor
     {
-        get => (Color)GetValue(HandsFreeModeToggleColorProperty);
-        set => SetValue(HandsFreeModeToggleColorProperty, value);
+        get => (Color)GetValue(HandsFreeModeColorProperty);
+        set => SetValue(HandsFreeModeColorProperty, value);
     }
     #endregion
 
@@ -677,18 +677,18 @@ public partial class Chat : ContentView
     }
     #endregion
 
-    async Task<IAudioSource> StartStopRecordToggleAsync()
+    async Task<IAudioSource> AudioRecorderAsync()
     {
         if (!audioRecorder.IsRecording)
         {
             IsRecording = true;
-            StartStopRecordToggleColor = Colors.Red;
+            AudioRecorderColor = Colors.Red;
             Status = "Recording...";
 
             if (await Permissions.RequestAsync<Permissions.Microphone>() != PermissionStatus.Granted)
             {
                 await Shell.Current.DisplayAlert("Permission denied", "The app needs microphone permission to record audio.", "OK");
-                StartStopRecordToggleColor = SecondaryColor;
+                AudioRecorderColor = SecondaryColor;
 
                 audioSource = new EmptyAudioSource();
             }
@@ -704,7 +704,7 @@ public partial class Chat : ContentView
         }
 
         IsRecording = false;
-        StartStopRecordToggleColor = PrimaryColor;
+        AudioRecorderColor = PrimaryColor;
         Status = string.Empty;
 
         return audioSource;

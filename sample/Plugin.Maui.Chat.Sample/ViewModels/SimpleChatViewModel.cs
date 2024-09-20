@@ -8,7 +8,7 @@ public partial class SimpleChatViewModel : ObservableRecipient
     }
 
     [ObservableProperty]
-    string? userMessage;
+    string? textContent;
 
     public ObservableCollection<ChatMessage> ChatMessages { get; set; } = [];
 
@@ -18,34 +18,34 @@ public partial class SimpleChatViewModel : ObservableRecipient
         {
             Type = MessageType.Sent,
             Author = "You",
-            Text = "This is a sent message sample."
+            TextContent = "This is a sent message sample."
         });
 
         ChatMessages.Add(new ChatMessage()
         {
             Type = MessageType.Received,
             Author = "Echo",
-            Text = "This is a received message sample."
+            TextContent = "This is a received message sample."
         });
 
         ChatMessages.Add(new ChatMessage()
         {
             Type = MessageType.System,
-            Text = "This is a system message sample."
+            TextContent = "This is a system message sample."
         });
 
         ChatMessages.Add(new ChatMessage()
         {
             Type = MessageType.Sent,
             Author = "You",
-            Text = "This is a little bit longer sent message sample to see how multiple lines look like."
+            TextContent = "This is a little bit longer sent message sample to see how multiple lines look like."
         });
 
         ChatMessages.Add(new ChatMessage()
         {
             Type = MessageType.Received,
             Author = "Echo",
-            Text = "This is a little bit longer received message sample to see how multiple lines look like."
+            TextContent = "This is a little bit longer received message sample to see how multiple lines look like."
         });
     }
 
@@ -56,10 +56,10 @@ public partial class SimpleChatViewModel : ObservableRecipient
         {
             Type = MessageType.Sent,
             Author = "You",
-            Text = UserMessage
+            TextContent = TextContent
         });
 
-        UserMessage = null;
+        TextContent = null;
 
         await Task.Delay(1000);
 
@@ -67,7 +67,7 @@ public partial class SimpleChatViewModel : ObservableRecipient
         {
             Type = MessageType.Received,
             Author = "Echo",
-            Text = $"Echo: {ChatMessages.Last().Text}"
+            TextContent = $"Echo: {ChatMessages.Last().TextContent}"
         });
     }
 }

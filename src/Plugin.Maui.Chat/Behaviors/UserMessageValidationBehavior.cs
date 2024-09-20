@@ -23,7 +23,7 @@ internal class UserMessageValidationBehavior : Behavior<Controls.Chat>
     {
         var chat = sender as Controls.Chat ?? throw new ArgumentNullException(nameof(sender));
 
-        if (e.PropertyName == Controls.Chat.UserMessageProperty.PropertyName || e.PropertyName == Controls.Chat.AudioContentProperty.PropertyName)
-            chat.IsSendMessageEnabled = !string.IsNullOrWhiteSpace(chat?.UserMessage) || (chat?.AudioContent is not null);
+        if (e.PropertyName == Controls.Chat.TextContentProperty.PropertyName || e.PropertyName == Controls.Chat.AudioContentProperty.PropertyName)
+            chat.IsSendMessageEnabled = !string.IsNullOrWhiteSpace(chat?.TextContent) || (chat?.AudioContent is not null);
     }
 }
