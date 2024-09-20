@@ -17,6 +17,7 @@
                IsSentMessageTimestampVisible="True"
                SentMessageTimestampTextColor="{StaticResource Secondary}"
                SentMessageContentTextColor="{StaticResource Secondary}"
+               SentMessageAudioContentColor="{StaticResource Secondary}"
                
                ReceivedMessageBackgroundColor="{StaticResource Secondary}"
                IsReceivedMessageAuthorVisible="True"
@@ -24,6 +25,7 @@
                IsReceivedMessageTimestampVisible="True"
                ReceivedMessageTimestampTextColor="{StaticResource Tertiary}"
                ReceivedMessageContentTextColor="{StaticResource Primary}"
+               ReceivedMessageAudioContentColor="{StaticResource Primary}"
                
                SystemMessageBackgroundColor="{StaticResource Gray200}"
                SystemMessageTextColor="{StaticResource Gray900}"
