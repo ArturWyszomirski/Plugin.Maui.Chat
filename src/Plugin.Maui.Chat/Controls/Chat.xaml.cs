@@ -303,11 +303,11 @@ public partial class Chat : ContentView
     /// Audio content in message.
     /// </summary>
     public static readonly BindableProperty AudioContentProperty =
-        BindableProperty.Create(nameof(AudioContent), typeof(IAudioSource), typeof(Chat), defaultBindingMode: BindingMode.TwoWay);
+        BindableProperty.Create(nameof(AudioContent), typeof(object), typeof(Chat), defaultBindingMode: BindingMode.TwoWay);
 
-    public IAudioSource AudioContent
+    public object AudioContent
     {
-        get => (IAudioSource)GetValue(AudioContentProperty);
+        get => GetValue(AudioContentProperty);
         set => SetValue(AudioContentProperty, value);
     }
 

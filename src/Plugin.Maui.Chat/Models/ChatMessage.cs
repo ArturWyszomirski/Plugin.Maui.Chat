@@ -6,5 +6,5 @@ public class ChatMessage
     public MessageType Type { get; set; }
     public string? Author { get; set; }
     public string? TextContent { get; set; }
-    public IAudioSource? AudioContent { get; set; }
+    public object? AudioContent { get; set; }
 }

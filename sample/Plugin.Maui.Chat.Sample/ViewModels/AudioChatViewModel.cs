@@ -11,7 +11,7 @@ public partial class AudioChatViewModel : ObservableRecipient
     string? textContent;
 
     [ObservableProperty]
-    IAudioSource? audioContent;
+    object? audioContent;
 
     public ObservableCollection<ChatMessage> ChatMessages { get; set; } = [];
 
