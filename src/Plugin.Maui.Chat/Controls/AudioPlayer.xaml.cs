@@ -29,7 +29,7 @@ public partial class AudioPlayer : ContentView
     /// Audio content in message.
     /// </summary>
     public static readonly BindableProperty SourceProperty =
-        BindableProperty.Create(nameof(Source), typeof(IAudioSource), typeof(Chat), defaultBindingMode: BindingMode.TwoWay, propertyChanged: OnSourceChanged);
+        BindableProperty.Create(nameof(Source), typeof(IAudioSource), typeof(AudioPlayer), defaultBindingMode: BindingMode.TwoWay, propertyChanged: OnSourceChanged);
 
     private static void OnSourceChanged(BindableObject bindable, object oldValue, object newValue)
     {
@@ -104,10 +104,9 @@ public partial class AudioPlayer : ContentView
         set => SetValue(ColorProperty, value);
     }
 
-
     async Task StartStopAudioAsync(IAudioSource? audioSource)
     {
-        if (audioSource == null) return;
+        if (audioSource == null || audioSource.GetType() == typeof(EmptyAudioSource)) return;
 
         if (!isPlaying)
         {

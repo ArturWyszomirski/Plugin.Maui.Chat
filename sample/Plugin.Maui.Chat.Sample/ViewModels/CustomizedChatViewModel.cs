@@ -22,6 +22,9 @@ public partial class CustomizedChatViewModel : ObservableRecipient
     [ObservableProperty]
     bool isHandsFreeMode;
 
+    [ObservableProperty]
+    object? audioContent;
+
     public ObservableCollection<ChatMessage> ChatMessages { get; set; } = [];
 
     private void InitChatMessages()
@@ -74,6 +77,7 @@ public partial class CustomizedChatViewModel : ObservableRecipient
         });
 
         TextContent = null;
+        AudioContent = null;
 
         Status = "Echo is typing...";
         IsStatusVisible = true;
@@ -93,11 +97,13 @@ public partial class CustomizedChatViewModel : ObservableRecipient
 
     [RelayCommand]
     async Task StartStopRecordingAsync()
-    { 
+    {
         IsRecording = !IsRecording;
 
         if (IsRecording)
             await Shell.Current.DisplayAlert("Custom record audio command", "You can use your own commands instead of those built-in.", "Cool :)");
+
+        AudioContent = new EmptyAudioSource();
     }
 
     [RelayCommand]

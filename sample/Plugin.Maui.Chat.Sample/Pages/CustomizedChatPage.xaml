@@ -38,7 +38,10 @@
                IsAudioRecorderVisible="True"
                AudioRecorderIcon="{Static resources:Icons.Microphone}"
                
+               AudioContent="{Binding AudioContent}"
                AudioPlayerCommand="{Binding PlayAudioCommand}"
+               AudioContentIcon="{Static resources:Icons.Waveform}"
+               AudioContentColor="Magenta"
 
                HandsFreeModeCommand="{Binding HandsFreeModeCommand}"
                IsHandsFreeModeVisible="True"

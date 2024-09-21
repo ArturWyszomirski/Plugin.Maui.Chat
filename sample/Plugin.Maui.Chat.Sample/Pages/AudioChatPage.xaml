@@ -12,6 +12,8 @@
                ChatMessages="{Binding ChatMessages}"
                SendMessageCommand="{Binding SendMessageCommand}"
                
+               IsStatusVisible="True"
+               
                IsAudioRecorderVisible="True"
                AudioContent="{Binding AudioContent}"
                

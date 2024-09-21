@@ -168,7 +168,7 @@
                                           Source="{Binding AudioContent, Source={x:Reference chat}}"
                                           StartStopCommand="{Binding AudioPlayerCommand, Source={x:Reference chat}}"
                                           Icon="{Binding AudioContentIcon, Source={x:Reference chat}}"
-                                          Color="{Binding UserAudioContentColor, Source={x:Reference chat}}"
+                                          Color="{Binding AudioContentColor, Source={x:Reference chat}}"
                                           HeightRequest="25"
                                           WidthRequest="25"
                                           HorizontalOptions="Start"

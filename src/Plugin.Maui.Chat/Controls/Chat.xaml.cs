@@ -314,13 +314,13 @@ public partial class Chat : ContentView
     /// <summary>
     /// User audio content button color.
     /// </summary>
-    public static readonly BindableProperty UserAudioContentColorProperty =
-        BindableProperty.Create(nameof(UserAudioContentColor), typeof(Color), typeof(Chat), primaryColor);
+    public static readonly BindableProperty AudioContentColorProperty =
+        BindableProperty.Create(nameof(AudioContentColor), typeof(Color), typeof(Chat), primaryColor);
 
-    public Color UserAudioContentColor
+    public Color AudioContentColor
     {
-        get => (Color)GetValue(UserAudioContentColorProperty);
-        set => SetValue(UserAudioContentColorProperty, value);
+        get => (Color)GetValue(AudioContentColorProperty);
+        set => SetValue(AudioContentColorProperty, value);
     }
     #endregion
 

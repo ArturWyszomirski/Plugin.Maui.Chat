@@ -132,4 +132,7 @@
   <data name="PaperPlane" xml:space="preserve">
     <value>paper_plane_ss.png</value>
   </data>
+  <data name="Waveform" xml:space="preserve">
+    <value>waveform_ss.png</value>
+  </data>
 </root>
