@@ -150,7 +150,11 @@
         <Label Grid.Row="1"
                Text="{Binding Status, Source={x:Reference chat}}"
                IsVisible="{Binding IsStatusVisible, Source={x:Reference chat}}"
-               TextColor="{Binding StatusTextColor, Source={x:Reference chat}}"/>
+               TextColor="{Binding StatusTextColor, Source={x:Reference chat}}">
+            <Label.Behaviors>
+                <behaviors:EmpyLabelVisibilityBehavior/>
+            </Label.Behaviors>
+        </Label>
 
         <Grid Grid.Row="2"
               ColumnDefinitions="*, Auto"
