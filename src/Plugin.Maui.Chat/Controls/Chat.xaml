@@ -128,7 +128,7 @@
                 
             </Frame>
         </DataTemplate>
-        
+
         <helpers:ChatMessageTemplateSelector x:Key="ChatMessageTemplateSelector"
                                              SentMessage="{StaticResource SentMessageTemplate}"
                                              ReceivedMessage="{StaticResource ReceivedMessageTemplate}"
@@ -146,7 +146,7 @@
                             ItemsSource="{Binding ChatMessages, Source={x:Reference chat}}"
                             ItemTemplate="{StaticResource ChatMessageTemplateSelector}"/>
         </ScrollView>
-
+        
         <Label Grid.Row="1"
                Text="{Binding Status, Source={x:Reference chat}}"
                IsVisible="{Binding IsStatusVisible, Source={x:Reference chat}}"
@@ -164,10 +164,10 @@
                    Padding="5, 0, 10, 0"
                    BorderColor="LightGray">
 
-                <Grid ColumnDefinitions="*, Auto, Auto, Auto, Auto"
+                <Grid ColumnDefinitions="*, Auto, Auto, Auto, Auto" 
                       RowDefinitions="Auto, Auto">
 
-                    <controls:AudioPlayer Grid.ColumnSpan="5"
+                    <controls:AudioPlayer Grid.ColumnSpan="5" x:Name="audioPlayer"
                                           Grid.Row="0"
                                           Source="{Binding AudioContent, Source={x:Reference chat}}"
                                           StartStopCommand="{Binding AudioPlayerCommand, Source={x:Reference chat}}"

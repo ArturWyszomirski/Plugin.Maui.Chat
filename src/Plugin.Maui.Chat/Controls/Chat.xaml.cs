@@ -650,6 +650,16 @@ public partial class Chat : ContentView
     }
     #endregion
 
+    #region Protected methods
+    protected override void OnBindingContextChanged()
+    {
+        base.OnBindingContextChanged();
+
+        // workaround for StartStopCommand being null when AudioPlayer resolved (issue #14)
+        audioPlayer.StartStopCommand = AudioPlayerCommand;
+    }
+    #endregion
+
     #region Private methods
     #region Workaround for scrolling issue on Android where the last messages were hidden under the device keyboard.
     static void OnChatMessagesChanged(BindableObject bindable, object oldValue, object newValue)
@@ -680,7 +690,7 @@ public partial class Chat : ContentView
     async Task<IAudioSource> AudioRecorderAsync()
     {
         if (!audioRecorder.IsRecording)
-        {
+        { 
             IsRecording = true;
             AudioRecorderColor = Colors.Red;
             Status = "Recording...";
