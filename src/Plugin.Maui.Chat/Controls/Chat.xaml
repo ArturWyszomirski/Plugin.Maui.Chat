@@ -20,11 +20,12 @@
                       x:DataType="models:ChatMessage">
             
             <Grid ColumnDefinitions="*, 3*"
-                  Margin="0, 0">
+                  Margin="0, 0,15, 0">
                 
                 <Frame Grid.Column="1"
                        HorizontalOptions="End"
                        CornerRadius="25"
+                       Margin="0,0,5,0"
                        Padding="16, 12"
                        BackgroundColor="{Binding SentMessageBackgroundColor, Source={x:Reference chat}}">
                     
@@ -55,11 +56,12 @@
                       x:DataType="models:ChatMessage">
             
             <Grid ColumnDefinitions="3*, *"
-                  Margin="0, 0">
+                  Margin="0,0,0, 0">
                 
                 <Frame Grid.Column="0"
                        HorizontalOptions="Start"
                        CornerRadius="25"
+                       Margin="5,0,5,0"
                        Padding="16, 12"
                        BackgroundColor="{Binding ReceivedMessageBackgroundColor, Source={x:Reference chat}}">
                     
@@ -93,7 +95,7 @@
                    CornerRadius="5"
                    Padding="16, 6"
                    BackgroundColor="{Binding SystemMessageBackgroundColor, Source={x:Reference chat}}"
-                   Margin="0, 0">
+                   Margin="5,15,5,15">
                 
                 <Label Text="{Binding Text}"
                        TextColor="{Binding SystemMessageTextColor, Source={x:Reference chat}}"/>
@@ -105,25 +107,20 @@
                                              ReceivedMessage="{StaticResource ReceivedMessageTemplate}"
                                              SystemMessage="{StaticResource SystemMessageTemplate}"/>
     </ContentView.Resources>
-
     
     <!-- UI -->
-    <Grid RowDefinitions="*, Auto, Auto"
+    <Grid x:Name="mainGridLayout" RowDefinitions="*, Auto, Auto"
           RowSpacing="10">
-        
-        <ScrollView x:Name="chatMessagesScrollView" 
-                    Grid.Row="0"
-                    VerticalOptions="End">
-            
-            <CollectionView x:Name="chatMessagesCollectionView"
-                            VerticalScrollBarVisibility="Never"
-                            ItemsSource="{Binding ChatMessages, Source={x:Reference chat}}"
-                            ItemTemplate="{StaticResource ChatMessageTemplateSelector}">
+        <controls:CustomCollectionView x:Name="chatMessagesCollectionView"
+                                Grid.Row="0"
+                                VerticalOptions="End"
+                                ItemsUpdatingScrollMode="KeepLastItemInView"
+                                ItemsSource="{Binding ChatMessages, Source={x:Reference chat}}"
+                                ItemTemplate="{StaticResource ChatMessageTemplateSelector}">
                 <CollectionView.ItemsLayout>
                     <LinearItemsLayout Orientation="Vertical" ItemSpacing="{OnPlatform Android=10, iOS=10, Default=10}" />
                 </CollectionView.ItemsLayout>
-            </CollectionView>
-        </ScrollView>
+        </controls:CustomCollectionView>
         
         <Label Grid.Row="1"
                Text="{Binding Status, Source={x:Reference chat}}"
@@ -139,14 +136,15 @@
                    BorderColor="LightGray">
                 
                 <Grid ColumnDefinitions="*, Auto, Auto, Auto, Auto">
-                    
-                    <Editor Grid.Column="0"
-                            Text="{Binding UserMessage, Source={x:Reference chat}}"
-                            Placeholder="Type your message..."
-                            VerticalTextAlignment="Center"
-                            Keyboard="Chat"
-                            AutoSize="TextChanges"
-                            TextColor="{Binding EditorTextColor, Source={x:Reference chat}}"/>
+                    <Editor 
+                        x:Name="editor"
+                        Grid.Column="0"
+                        Text="{Binding UserMessage, Source={x:Reference chat}}"
+                        Placeholder="Type your message..."
+                        VerticalTextAlignment="Center"
+                        Keyboard="Chat"
+                        AutoSize="TextChanges"
+                        TextColor="{Binding EditorTextColor, Source={x:Reference chat}}"/>
                     
                     <Image Grid.Column="1"
                            HeightRequest="25"
