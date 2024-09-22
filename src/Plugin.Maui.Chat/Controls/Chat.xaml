@@ -91,7 +91,6 @@
                                              ReceivedMessage="{StaticResource ReceivedMessageTemplate}"
                                              SystemMessage="{StaticResource SystemMessageTemplate}"/>
     </ContentView.Resources>
-
     
     <!-- UI -->
     <Grid x:Name="mainGridLayout" RowDefinitions="*, Auto, Auto"
