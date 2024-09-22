@@ -1,4 +1,3 @@
-
 namespace Plugin.Maui.Chat.Controls;
 
 public partial class AudioPlayer : ContentView
@@ -6,10 +5,6 @@ public partial class AudioPlayer : ContentView
     #region Fields
     Color isStoppedColor;
     readonly Color isPlayingColor = Colors.Green;
-
-    readonly AudioManager audioManager = new();
-    AsyncAudioPlayer? audioPlayer;
-    bool isPlaying;
     #endregion
 
     #region Constructor
@@ -17,13 +12,24 @@ public partial class AudioPlayer : ContentView
 	{
 		InitializeComponent();
 
-        StartStopCommand ??= new Command(async () => await StartStopAudioAsync(Source));
+        StartStopCommand ??= new Command(async () => await StartStopAudioAsync());
 
         isStoppedColor = Color;
         IsVisible = false;
     }
     #endregion
 
+    /// <summary>
+    /// Holds audio service instance.
+    /// </summary>
+    public static readonly BindableProperty AudioServiceProperty =
+        BindableProperty.Create(nameof(AudioService), typeof(AudioService), typeof(Chat));
+
+    public AudioService AudioService
+    {
+        get => (AudioService)GetValue(AudioServiceProperty);
+        set => SetValue(AudioServiceProperty, value);
+    }
 
     /// <summary>
     /// Audio content in message.
@@ -63,7 +69,7 @@ public partial class AudioPlayer : ContentView
     private void OnStartStopCommandChanged(object newValue)
     {
         if (newValue is null) 
-            StartStopCommand = new Command(async () => await StartStopAudioAsync(Source));
+            StartStopCommand = new Command(async () => await StartStopAudioAsync());
     }
 
     public ICommand StartStopCommand
@@ -104,23 +110,12 @@ public partial class AudioPlayer : ContentView
         set => SetValue(ColorProperty, value);
     }
 
-    async Task StartStopAudioAsync(IAudioSource? audioSource)
+    async Task StartStopAudioAsync()
     {
-        if (audioSource == null || audioSource.GetType() == typeof(EmptyAudioSource)) return;
+        Color = isPlayingColor;
 
-        if (!isPlaying)
-        {
-            audioPlayer = audioManager.CreateAsyncPlayer(((FileAudioSource)audioSource).GetAudioStream());
+        await AudioService.StartStopPlayerAsync(Source);
 
-            isPlaying = true;
-            Color = isPlayingColor;
-
-            await audioPlayer.PlayAsync(CancellationToken.None);
-        }
-        else
-            audioPlayer?.Stop();
-
-        isPlaying = false;
         Color = isStoppedColor;
     }
 }

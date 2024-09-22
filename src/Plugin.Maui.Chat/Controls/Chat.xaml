@@ -36,8 +36,7 @@
                                FontAttributes="Bold"
                                IsVisible="{Binding IsSentMessageAuthorVisible, Source={x:Reference chat}}"/>
                         
-                        <controls:AudioPlayer Grid.ColumnSpan="5"
-                                              Grid.Row="0"
+                        <controls:AudioPlayer AudioService="{Binding AudioService, Source={x:Reference chat}}"
                                               Source="{Binding AudioContent}"
                                               StartStopCommand="{Binding AudioPlayerCommand, Source={x:Reference chat}}"
                                               Icon="{Binding AudioContentIcon, Source={x:Reference chat}}"
@@ -85,8 +84,7 @@
                                FontAttributes="Bold"
                                IsVisible="{Binding IsReceivedMessageAuthorVisible, Source={x:Reference chat}}"/>
 
-                        <controls:AudioPlayer Grid.ColumnSpan="5"
-                                              Grid.Row="0"
+                        <controls:AudioPlayer AudioService="{Binding AudioService, Source={x:Reference chat}}"
                                               Source="{Binding AudioContent}"
                                               StartStopCommand="{Binding AudioPlayerCommand, Source={x:Reference chat}}"
                                               Icon="{Binding AudioContentIcon, Source={x:Reference chat}}"
@@ -150,10 +148,8 @@
         <Label Grid.Row="1"
                Text="{Binding Status, Source={x:Reference chat}}"
                IsVisible="{Binding IsStatusVisible, Source={x:Reference chat}}"
-               TextColor="{Binding StatusTextColor, Source={x:Reference chat}}">
-            <Label.Behaviors>
-                <behaviors:EmpyLabelVisibilityBehavior/>
-            </Label.Behaviors>
+               TextColor="{Binding StatusTextColor, Source={x:Reference chat}}"
+               Margin="0, -10, 0, -5">
         </Label>
 
         <Grid Grid.Row="2"
@@ -169,6 +165,7 @@
 
                     <controls:AudioPlayer Grid.ColumnSpan="5" x:Name="audioPlayer"
                                           Grid.Row="0"
+                                          AudioService="{Binding AudioService, Source={x:Reference chat}}"
                                           Source="{Binding AudioContent, Source={x:Reference chat}}"
                                           StartStopCommand="{Binding AudioPlayerCommand, Source={x:Reference chat}}"
                                           Icon="{Binding AudioContentIcon, Source={x:Reference chat}}"

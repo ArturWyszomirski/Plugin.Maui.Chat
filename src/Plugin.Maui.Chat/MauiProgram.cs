@@ -7,7 +7,7 @@ public static class MauiProgram
         var builder = MauiApp.CreateBuilder();
         builder
             .AddAudio()
-            .UseMauiCommunityToolkit()
+            .UseMauiCommunityToolkit() // used for tint color in image buttons
             .ConfigureFonts(fonts =>
             {
                 fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");

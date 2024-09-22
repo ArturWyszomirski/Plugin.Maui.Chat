@@ -37,6 +37,7 @@
                AudioRecorderCommand="{Binding StartStopRecordingCommand}"
                IsAudioRecorderVisible="True"
                AudioRecorderIcon="{Static resources:Icons.Microphone}"
+               AudioRecorderColor="{StaticResource Primary}"
                
                AudioContent="{Binding AudioContent}"
                AudioPlayerCommand="{Binding PlayAudioCommand}"

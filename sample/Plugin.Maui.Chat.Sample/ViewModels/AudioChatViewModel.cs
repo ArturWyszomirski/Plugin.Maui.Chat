@@ -13,6 +13,9 @@ public partial class AudioChatViewModel : ObservableRecipient
     [ObservableProperty]
     object? audioContent;
 
+    [ObservableProperty]
+    string? status;
+
     public ObservableCollection<ChatMessage> ChatMessages { get; set; } = [];
 
     private void InitChatMessages()
@@ -66,7 +69,11 @@ public partial class AudioChatViewModel : ObservableRecipient
         TextContent = null;
         AudioContent = null;
 
+        Status = "Echo is messaging...";
+
         await Task.Delay(1000);
+
+        Status = string.Empty;
 
         ChatMessages.Add(new ChatMessage()
         {

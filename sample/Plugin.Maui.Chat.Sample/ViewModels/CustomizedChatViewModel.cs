@@ -24,7 +24,6 @@ public partial class CustomizedChatViewModel : ObservableRecipient
 
     [ObservableProperty]
     object? audioContent;
-
     public ObservableCollection<ChatMessage> ChatMessages { get; set; } = [];
 
     private void InitChatMessages()
@@ -79,7 +78,7 @@ public partial class CustomizedChatViewModel : ObservableRecipient
         TextContent = null;
         AudioContent = null;
 
-        Status = "Echo is typing...";
+        Status = "Echo is messaging...";
         IsStatusVisible = true;
 
         await Task.Delay(1000);
