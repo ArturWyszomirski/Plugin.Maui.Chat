@@ -705,7 +705,9 @@ public partial class Chat : ContentView
             else
             {
                 await audioRecorder.StartAsync();
+#if ANDROID || WINDOWS
                 audioSource = await audioRecorder.StopAsync(When.SilenceIsDetected());
+#endif
             }
         }
         else

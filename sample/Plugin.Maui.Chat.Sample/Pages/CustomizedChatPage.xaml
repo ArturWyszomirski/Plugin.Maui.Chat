@@ -41,7 +41,7 @@
                AudioContent="{Binding AudioContent}"
                AudioPlayerCommand="{Binding PlayAudioCommand}"
                AudioContentIcon="{Static resources:Icons.Waveform}"
-               AudioContentColor="Magenta"
+               AudioContentColor="{StaticResource Primary}"
 
                HandsFreeModeCommand="{Binding HandsFreeModeCommand}"
                IsHandsFreeModeVisible="True"
