@@ -104,5 +104,6 @@
 	</ItemGroup>
 	<ItemGroup>
 	  <ProjectReference Include="..\..\..\Plugin.Maui.Audio\src\Plugin.Maui.Audio\Plugin.Maui.Audio.csproj" />
+	  <ProjectReference Include="..\..\dependencies\Plugin.Maui.Audio\src\Plugin.Maui.Audio\Plugin.Maui.Audio.csproj" />
 	</ItemGroup>
 </Project>
