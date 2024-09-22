@@ -4,7 +4,7 @@ using Plugin.Maui.Chat.Helpers;
 using Plugin.Maui.Chat.Services;
 using UIKit;
 
-namespace Plugin.Maui.Chat.Platforms.iOS.Keyboard;
+namespace Plugin.Maui.Chat.Keyboard;
 
 public class KeyboardService : IKeyboardService
 {

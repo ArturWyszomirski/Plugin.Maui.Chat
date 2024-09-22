@@ -1,9 +1,6 @@
 using Plugin.Maui.Chat.Helpers;
+using Plugin.Maui.Chat.Keyboard;
 using Plugin.Maui.Chat.Services;
-
-#if IOS
-using Plugin.Maui.Chat.Platforms.iOS.Keyboard;
-#endif
 
 namespace Plugin.Maui.Chat.Controls;
 
@@ -22,11 +19,17 @@ public partial class Chat : ContentView
     {
 		InitializeComponent();
 
-#if IOS
+        SetupKeyboard();
+    }
+
+    private void SetupKeyboard()
+    {
+#if IOS || ANDROID    ///  TODO Windows & MacOS
         _keyboardService = new KeyboardService();
         this.ParentChanged += OnParentChanged;
 #endif
     }
+
     #endregion
     
     private void OnParentChanged(object sender, EventArgs e)
@@ -576,24 +579,35 @@ public partial class Chat : ContentView
     #endregion
     #endregion
     
-    private void OnKeyboardHeightChanged(object sender, KeyboardEventArgs e)
-    {
-        var keyboardHeight = e.KeyboardHeight;
-
-        if (keyboardHeight > 0)
-        {
-            mainGridLayout.Margin = new Thickness(0, keyboardHeight, 0, 0);
-        }
-        else
-        {
-            ScrollDownChatMessages();
-            mainGridLayout.Margin = new Thickness(0);
-        }
-    }
 
     #region Private methods
     
-    #region ScrollAndTools
+    #region Events
+    /// <summary>
+    /// Event OnKeyboardHeightChanged
+    /// </summary>
+    private void OnKeyboardHeightChanged(object sender, KeyboardEventArgs keyboardEventArgs)
+    {
+        var keyboardHeight = keyboardEventArgs.KeyboardHeight;
+
+        if (keyboardHeight > 0)
+        {
+            Thread.Sleep(400);
+            mainGridLayout.Margin = new Thickness(0, keyboardHeight, 0, 0);
+            //chatMessagesCollectionView.TurnOffScrollToLastItem();
+            if(chatMessagesCollectionView.ItemsUpdatingScrollMode == ItemsUpdatingScrollMode.KeepLastItemInView)
+                ScrollDownChatMessages();
+        }
+        else
+        {
+            if(chatMessagesCollectionView.ItemsUpdatingScrollMode == ItemsUpdatingScrollMode.KeepLastItemInView)
+                ScrollDownChatMessages();
+            mainGridLayout.Margin = new Thickness(0);
+        }
+    }
+    #endregion
+    
+    #region ScrollCollectionView
 
     async void ScrollDownChatMessages()
     { 
