@@ -1,14 +1,23 @@
 ﻿namespace Plugin.Maui.Chat.Services;
 
-public class AudioService(Controls.Chat chat)
+public class AudioService
 {
+    readonly Controls.Chat chat;
+
     readonly AudioManager audioManager = new();
+    readonly IAudioRecorder audioRecorder;
     AsyncAudioPlayer? audioPlayer;
+
+    public AudioService(Controls.Chat chat)
+    {
+        this.chat = chat;
+
+        audioRecorder = audioManager.CreateRecorder();
+    }
 
     public async Task<IAudioSource> StartStopRecorderAsync()
     {
         IAudioSource? audioSource = default;
-        IAudioRecorder audioRecorder = audioManager.CreateRecorder();
 
         if (!audioRecorder.IsRecording)
         {
