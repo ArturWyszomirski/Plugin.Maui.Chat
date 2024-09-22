@@ -103,6 +103,6 @@
 		<None Include="Resources\Images\paper_plane_br.png" Pack="True" PackagePath="buildTransitive\Images\" />
 	</ItemGroup>
 	<ItemGroup>
-	  <ProjectReference Include="..\..\dependencies\Plugin.Maui.Audio\src\Plugin.Maui.Audio\Plugin.Maui.Audio.csproj" />
+	  <ProjectReference Include="..\..\..\Plugin.Maui.Audio\src\Plugin.Maui.Audio\Plugin.Maui.Audio.csproj" />
 	</ItemGroup>
 </Project>
