@@ -1,4 +1,4 @@
-[submodule "dependencies/Plugin.Maui.Audio"]
-	path = dependencies/Plugin.Maui.Audio
+[submodule "Dependencies/Plugin.Maui.Audio"]
+	path = Dependencies/Plugin.Maui.Audio
 	url = https://github.com/ArturWyszomirski/Plugin.Maui.Audio
     branch = feature/enhanced-stop
