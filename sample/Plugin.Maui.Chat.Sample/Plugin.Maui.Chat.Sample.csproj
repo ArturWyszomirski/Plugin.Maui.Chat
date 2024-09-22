@@ -76,7 +76,6 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <ProjectReference Include="..\..\..\Plugin.Maui.Audio\src\Plugin.Maui.Audio\Plugin.Maui.Audio.csproj" />
 	  <ProjectReference Include="..\..\src\Plugin.Maui.Chat\Plugin.Maui.Chat.csproj" />
 	</ItemGroup>
 
