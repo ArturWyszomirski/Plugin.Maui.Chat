@@ -15,5 +15,7 @@ jobs:
 
     steps:
     - uses: actions/checkout@v4
+      with:
+        submodules: true 
     - name: Build
       run: dotnet build sample\Plugin.Maui.Chat.Sample.sln -c Release
