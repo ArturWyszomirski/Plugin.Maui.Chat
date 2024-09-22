@@ -114,7 +114,7 @@
         <controls:CustomCollectionView x:Name="chatMessagesCollectionView"
                                 Grid.Row="0"
                                 VerticalOptions="End"
-                                ItemsUpdatingScrollMode="KeepLastItemInView"
+                                ItemsUpdatingScrollMode="{OnPlatform Default=KeepLastItemInView, WinUI=KeepScrollOffset}"
                                 ItemsSource="{Binding ChatMessages, Source={x:Reference chat}}"
                                 ItemTemplate="{StaticResource ChatMessageTemplateSelector}">
                 <CollectionView.ItemsLayout>
