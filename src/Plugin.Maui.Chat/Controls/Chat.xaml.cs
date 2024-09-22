@@ -1,4 +1,5 @@
 using Plugin.Maui.Chat.Helpers;
+using Plugin.Maui.Chat.Keyboard;
 using Plugin.Maui.Chat.Services;
 
 namespace Plugin.Maui.Chat.Controls;
