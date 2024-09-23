@@ -7,7 +7,8 @@
              x:Class="Plugin.Maui.Chat.Sample.Pages.CustomizedChatPage"
              Title="Customized chat"
              x:DataType="viewmodels:CustomizedChatViewModel">
-    <chat:Chat UserMessage="{Binding UserMessage}"
+
+    <chat:Chat TextContent="{Binding TextContent}"
                ChatMessages="{Binding ChatMessages}"
                
                SentMessageBackgroundColor="{StaticResource Primary}"
@@ -16,6 +17,7 @@
                IsSentMessageTimestampVisible="True"
                SentMessageTimestampTextColor="{StaticResource Secondary}"
                SentMessageContentTextColor="{StaticResource Secondary}"
+               SentMessageAudioContentColor="{StaticResource Secondary}"
                
                ReceivedMessageBackgroundColor="{StaticResource Secondary}"
                IsReceivedMessageAuthorVisible="True"
@@ -23,6 +25,7 @@
                IsReceivedMessageTimestampVisible="True"
                ReceivedMessageTimestampTextColor="{StaticResource Tertiary}"
                ReceivedMessageContentTextColor="{StaticResource Primary}"
+               ReceivedMessageAudioContentColor="{StaticResource Primary}"
                
                SystemMessageBackgroundColor="{StaticResource Gray200}"
                SystemMessageTextColor="{StaticResource Gray900}"
@@ -31,13 +34,19 @@
                IsStatusVisible="{Binding IsStatusVisible}"
                StatusTextColor="{StaticResource Gray500}"
                
-               StartStopRecordToggleCommand="{Binding StartStopRecordToggleCommand}"
-               IsStartStopRecordToggleVisible="True"
-               StartStopRecordToggleIcon="{Static resources:Icons.Microphone}"
+               AudioRecorderCommand="{Binding StartStopRecordingCommand}"
+               IsAudioRecorderVisible="True"
+               AudioRecorderIcon="{Static resources:Icons.Microphone}"
+               AudioRecorderColor="{StaticResource Primary}"
                
-               HandsFreeModeToggleCommand="{Binding HandsFreeModeToggleCommand}"
-               IsHandsFreeModeToggleVisible="True"
-               HandsFreeModeToggleIcon="{Static resources:Icons.Headphones}"
+               AudioContent="{Binding AudioContent}"
+               AudioPlayerCommand="{Binding PlayAudioCommand}"
+               AudioContentIcon="{Static resources:Icons.Waveform}"
+               AudioContentColor="{StaticResource Primary}"
+
+               HandsFreeModeCommand="{Binding HandsFreeModeCommand}"
+               IsHandsFreeModeVisible="True"
+               HandsFreeModeIcon="{Static resources:Icons.Headphones}"
                
                AddAttachmentCommand="{Binding AddAttachmentCommand}"
                IsAddAttachmentVisible="True"
@@ -55,22 +64,25 @@
                SendMessageColor="{StaticResource Primary}"
                
                Margin="10">
-        
+
         <chat:Chat.Triggers>
+
             <DataTrigger TargetType="chat:Chat" Binding="{Binding IsRecording}" Value="True">
-                <Setter Property="StartStopRecordToggleColor" Value="{StaticResource Primary}"/>
+                <Setter Property="AudioRecorderColor" Value="{StaticResource Primary}"/>
             </DataTrigger>
+
             <DataTrigger TargetType="chat:Chat" Binding="{Binding IsRecording}" Value="False">
-                <Setter Property="StartStopRecordToggleColor" Value="{StaticResource Secondary}"/>
+                <Setter Property="AudioRecorderColor" Value="{StaticResource Secondary}"/>
             </DataTrigger>
+
             <DataTrigger TargetType="chat:Chat" Binding="{Binding IsHandsFreeMode}" Value="True">
-                <Setter Property="HandsFreeModeToggleColor" Value="{StaticResource Primary}"/>
+                <Setter Property="HandsFreeModeColor" Value="{StaticResource Primary}"/>
             </DataTrigger>
+
             <DataTrigger TargetType="chat:Chat" Binding="{Binding IsHandsFreeMode}" Value="False">
-                <Setter Property="HandsFreeModeToggleColor" Value="{StaticResource Secondary}"/>
+                <Setter Property="HandsFreeModeColor" Value="{StaticResource Secondary}"/>
             </DataTrigger>
+
         </chat:Chat.Triggers>
-        
     </chat:Chat>
 </ContentPage>
-    

@@ -1,9 +1,7 @@
 ![nuget.png](https://raw.githubusercontent.com/ArturWyszomirski/Plugin.Maui.Chat/main/nuget.png)
 # Plugin.Maui.Chat
 
-`Plugin.Maui.Chat` provides highly customizable chat control. By default colors corresponds to those set in `Resources\Styles\Colors.xaml`, but can be easily changed (see: [Customized usage](https://github.com/ArturWyszomirski/Plugin.Maui.Chat/edit/Documentation/README.md#customized-usage)).
-
-As for now this control enables only text messaging but it will be upgraded with some additional features like voice messages, speech-to-text transcription, text-to-speech converter and much more:)
+`Plugin.Maui.Chat` provides highly customizable chat control providing text and voice messaging. 
 
 > [!NOTE]
 > The UI was tested only on Android. In near future the Windows version will also be polished.
@@ -31,17 +29,19 @@ Install with the dotnet CLI: `dotnet add package Plugin.Maui.Chat`, or through t
 - Collection of messages of `ChatMessages` type.
 - User message entry field with buttons attached.
 
-`ChatMessage` consist four properties:
+`ChatMessage` properties:
 - `DateTime` which is getter only and provides the date and time at which `ChatMessage` was created. The visibility of message timestamp can be set by related property (see: [Sent and received messages](https://github.com/ArturWyszomirski/Plugin.Maui.Chat/edit/Documentation/README.md#sent-and-received-messages));
 - `Type` of `MessageType` which can be `Sent` (written by user), `Received` (sent to the user) or `System` (informational type).
 - `Author` of string type is the author of the message. The visibility of message author can be set by related property (see: [Sent and received messages](https://github.com/ArturWyszomirski/Plugin.Maui.Chat/edit/Documentation/README.md#sent-and-received-messages));
-- `Text` is message's content
+- `TextContent` is message's text content
+- `AudioContent` is message's audio content
 
 The send button is by default disabled if the field is empty or consist only whitespace characters.
 
-Visibility of other buttons in the user message entry field as well as their's icons, colors and behaviors can be easily switched on or off. See: Customized usage.
+Visibility of other buttons in the user message entry field as well as their's icons, colors and behaviors can be easily switched on or off (see: [Customized usage](https://github.com/ArturWyszomirski/Plugin.Maui.Chat/edit/Documentation/README.md#customized-usage)).
 
-Below examples assumes using MVVM architecture with ViewModel binded to the XAML page.
+> [!NOTE]
+> Below examples assumes using MVVM architecture with ViewModel binded to the XAML page.
 
 ### Dependency Injection
 
@@ -66,8 +66,13 @@ To use `Chat` you need to register `Plugin.Maui.Chat.Controls` namespace by addi
 
 ### Simple usage
 
+> [!NOTE]
+> By default colors corresponds to those set in `Resources\Styles\Colors.xaml`, but can be easily changed (see: [Customized usage](https://github.com/ArturWyszomirski/Plugin.Maui.Chat/edit/Documentation/README.md#customized-usage)).
+
+#### Text messaging
+
 All you have to do to get started is to deal with those three properties:
-- `UserMessage` of string type which holds the user input,
+- `TextContent` of string type which holds the user input,
 - `ChatMessages` which is a collection of `ChatMessage`,
 - `SendMessageCommand` where you decide what happens after firing Send message button.
 
@@ -75,7 +80,7 @@ Example below shows how to bind properties. In this scenario every sent message 
 
 View:
 ```xaml
-<chat:Chat UserMessage="{Binding UserMessage}"
+<chat:Chat TextContent="{Binding TextContent}"
            ChatMessages="{Binding ChatMessages}"
            SendMessageCommand="{Binding SendMessageCommand}"
            Margin="10"/>
@@ -84,7 +89,7 @@ View:
 ViewModel:
 ```csharp
 [ObservableProperty]
-string? _userMessage;
+string? textContent;
 
 public ObservableCollection<ChatMessage> ChatMessages { get; set; } = [];
 
@@ -95,10 +100,10 @@ async Task SendMessageAsync()
     {
         Type = MessageType.Sent,
         Author = "You",
-        Text = UserMessage
+        Text = TextContent
     });
 
-    UserMessage = null;
+    TextContent = null;
 
     await Task.Delay(1000);
 
@@ -111,9 +116,43 @@ async Task SendMessageAsync()
 }
 ```
 
+#### Voice messaging
+
+`Chat` provides built-in functionality for voice messaging based on `Plugin.Maui.Audio`. Audio Recorder is equipped in silence detection, so recording should stop automatically when user stops speaking.
+
+> [!WARNING]
+> Silence detection is not yet available on iOS and MacOS.
+
+In order to add voice messaging capability, just turn on Audio Recorder button visibility and add a property that will hold recorded audio content.
+
+View:
+```xaml
+IsAudioRecorderVisible="True"
+AudioContent="{Binding AudioContent}"
+```
+
+ViewModel:
+```csharp
+[ObservableProperty]
+object? audioContent;
+```
+
+> [!NOTE]
+> Audio Recorder icon, color and behavior can be changed as shown in [Audio recorder](https://github.com/ArturWyszomirski/Plugin.Maui.Chat/edit/Documentation/README.md#audio-recorder)
+
+When recording is finished the Audio Player icon will pop up in the user message frame. Tap on it to listen to the recorder content.
+
+> [!NOTE]
+> Audio Player icon, color and behavior can be changed as shown in [Audio player](https://github.com/ArturWyszomirski/Plugin.Maui.Chat/edit/Documentation/README.md#audio-player)
+
+Audio player will show up in every received and send message where `AudioContent` is not null.
+
+> [!NOTE]
+> Built-in methods can also be changed to custom ones. In order to do that bind your own method to Audio Recorder or Player command property.
+
 ### Customized usage
 
-Below you will find code snippets for each section of `Chat` control and some descriptions.
+Many UI elements apperance can be easily changed as well as methods bound to commands in buttons. Below you will find code snippets for each section of `Chat` control and some descriptions.
 
 #### Messages
 
@@ -128,6 +167,7 @@ SentMessageAuthorTextColor="{StaticResource Secondary}"
 IsSentMessageTimestampVisible="True"
 SentMessageTimestampTextColor="{StaticResource Secondary}"
 SentMessageContentTextColor="{StaticResource Secondary}"
+SentMessageAudioContentColor="{StaticResource Secondary}"
 
 ReceivedMessageBackgroundColor="{StaticResource Secondary}"
 IsReceivedMessageAuthorVisible="True"
@@ -135,6 +175,7 @@ ReceivedMessageAuthorTextColor="{StaticResource Tertiary}"
 IsReceivedMessageTimestampVisible="True"
 ReceivedMessageTimestampTextColor="{StaticResource Tertiary}"
 ReceivedMessageContentTextColor="{StaticResource Primary}"
+ReceivedMessageAudioContentColor="{StaticResource Primary}"
 ```
 
 ##### System message
@@ -149,6 +190,7 @@ SystemMessageTextColor="{StaticResource Gray900}"
 #### Status field
 
 Status is a field just above the user entry. The purpose of this field is to inform user about some actions taking place, i.e. "Sandy is typing..."
+
 ```xaml
 Status="{Binding Status}"
 IsStatusVisible="{Binding IsStatusVisible}"
@@ -159,11 +201,63 @@ StatusTextColor="{StaticResource Gray500}"
 
 #### Buttons
 
+All buttons expose properties that enable changing icons, colors, visibilty and commands.
+
+##### Audio recorder
+
+By default audio recorder button is bound to `Plugin.Maui.Audio` recoder using a silence detection which will automatically stop recording when user stop speaking. While recording the button will turn red.
+
+```xaml
+AudioRecorderCommand="{Binding AudioRecorderCommand}"
+IsAudioRecorderVisible="True"
+AudioRecorderIcon="{Static resources:Icons.Microphone}"
+AudioRecorderColor="{StaticResource Primary}"
+```
+
+##### Audio player
+
+Whenever `AudioContent` is not null an audio player will pop up using `Plugin.Maui.Audio` to enable playing voice messages. While playing record the icon will turn green. 
+
+```xaml
+AudioContent="{Binding AudioContent}"
+AudioPlayerCommand="{Binding PlayAudioCommand}"
+AudioContentIcon="{Static resources:Icons.Waveform}"
+AudioContentColor="{StaticResource Primary}"
+```
+
+##### Hands-free mode
+
+```xaml
+HandsFreeModeCommand="{Binding HandsFreeModeCommand}"
+IsHandsFreeModeVisible="True"
+HandsFreeModeIcon="{Static resources:Icons.Headphones}"
+HandsFreeModeColor="{StaticResource Primary}"
+```
+
+##### Take photo
+
+```xaml
+AddAttachmentCommand="{Binding AddAttachmentCommand}"
+IsAddAttachmentVisible="True"
+AddAttachmentIcon="{Static resources:Icons.PaperClip}"
+AddAttachmentColor="{StaticResource Primary}"
+```
+
+##### Add attachment
+
+```xaml
+TakePhotoCommand="{Binding TakePhotoCommand}"
+IsTakePhotoVisible="True"
+TakePhotoIcon="{Static resources:Icons.Camera}"
+TakePhotoColor="{StaticResource Primary}"
+```
+
 ##### Send message
 
-By default button is disabled when user message entry is empty or consist only whitespace characters. This can be changed by setting the `IsSendMessageEnabled` property.
+By default button is disabled when user text entry is empty or consist only whitespace characters and no other content is present in the message.
 
-By default button is not visible, but it has already set icon and color. You can easily change button's icon, color, visibility and of course bind the method (command) triggered by pushing the button.
+> [!NOTE]
+> This behavior can be changed by setting the `IsSendMessageEnabled` property.
 
 ```xaml
 SendMessageCommand="{Binding SendMessageCommand}"
@@ -172,32 +266,14 @@ SendMessageIcon="{Static resources:Icons.PaperPlane}"
 SendMessageColor="{StaticResource Primary}"
 ```
 
-##### Start/stop record toggle, Hands-free mode toggle, Take photo and Add attachment buttons
-
-Analogous to Send message button there are already presetted colors and icon's which can easily be changed by related properties. For now there are no default commands binded to buttons.
-
-```
-StartStopRecordToggleCommand="{Binding StartStopRecordToggleCommand}"
-IsStartStopRecordToggleVisible="True"
-StartStopRecordToggleIcon="{Static resources:Icons.Microphone}"
-
-HandsFreeModeToggleCommand="{Binding HandsFreeModeToggleCommand}"
-IsHandsFreeModeToggleVisible="True"
-HandsFreeModeToggleIcon="{Static resources:Icons.Headphones}"
-
-AddAttachmentCommand="{Binding AddAttachmentCommand}"
-IsAddAttachmentVisible="True"
-AddAttachmentIcon="{Static resources:Icons.PaperClip}"
-AddAttachmentColor="{StaticResource Primary}"
-
-TakePhotoCommand="{Binding TakePhotoCommand}"
-IsTakePhotoVisible="True"
-TakePhotoIcon="{Static resources:Icons.Camera}"
-TakePhotoColor="{StaticResource Primary}"
-```
-
 ## Credits
+
+### Icons
 
 All icons comes from [flaticon.com](https://www.flaticon.com)'s UICONS series.
 
 Icon was coloured using https://onlinepngtools.com/change-png-color and converted to svg using https://convertio.co
+
+### Music
+
+"The Happy Ukulele Song" by Stanislav Fomin

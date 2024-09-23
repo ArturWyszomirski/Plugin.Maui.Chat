@@ -7,11 +7,18 @@
     Shell.FlyoutBehavior="Disabled"
     Title="Plugin.Maui.Chat.Sample">
     <TabBar>
-    <ShellContent Title="Simple chat"
-                  ContentTemplate="{DataTemplate pages:SimpleChatPage}"
-                  Route="SimpleChat" />
-    <ShellContent Title="Customized chat"
-                  ContentTemplate="{DataTemplate pages:CustomizedChatPage}"
-                  Route="CustomizedChat" />
+        
+        <ShellContent Title="Simple chat"
+                      ContentTemplate="{DataTemplate pages:SimpleChatPage}"
+                      Route="SimpleChat" />
+        
+        <ShellContent Title="Audio chat"
+                      ContentTemplate="{DataTemplate pages:AudioChatPage}"
+                      Route="AudioChat" />
+
+        <ShellContent Title="Customized chat"
+                      ContentTemplate="{DataTemplate pages:CustomizedChatPage}"
+                      Route="CustomizedChat" />
+        
     </TabBar>
 </Shell>

@@ -104,5 +104,14 @@ namespace Plugin.Maui.Chat.Sample.Resources {
                 return ResourceManager.GetString("PaperPlane", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to waveform_ss.png.
+        /// </summary>
+        internal static string Waveform {
+            get {
+                return ResourceManager.GetString("Waveform", resourceCulture);
+            }
+        }
     }
 }

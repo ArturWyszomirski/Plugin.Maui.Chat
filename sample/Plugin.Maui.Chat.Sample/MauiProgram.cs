@@ -1,5 +1,4 @@
-﻿using CommunityToolkit.Maui;
-using Microsoft.Extensions.Logging;
+﻿using Microsoft.Extensions.Logging;
 
 namespace Plugin.Maui.Chat.Sample;
 
@@ -23,8 +22,11 @@ public static class MauiProgram
 
         builder.Services.AddTransient<SimpleChatViewModel>();
         builder.Services.AddTransient<CustomizedChatViewModel>();
+        builder.Services.AddTransient<AudioChatViewModel>();
+
         builder.Services.AddTransient<SimpleChatPage>();
         builder.Services.AddTransient<CustomizedChatPage>();
+        builder.Services.AddTransient<AudioChatPage>();
 
         return builder.Build();
     }

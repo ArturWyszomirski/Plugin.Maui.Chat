@@ -1,6 +1,4 @@
-﻿using CommunityToolkit.Maui;
-
-namespace Plugin.Maui.Chat;
+﻿namespace Plugin.Maui.Chat;
 
 public static class MauiProgram
 {
@@ -8,7 +6,8 @@ public static class MauiProgram
     {
         var builder = MauiApp.CreateBuilder();
         builder
-            .UseMauiCommunityToolkit()
+            .AddAudio()
+            .UseMauiCommunityToolkit() // used for tint color in image buttons
             .ConfigureFonts(fonts =>
             {
                 fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
