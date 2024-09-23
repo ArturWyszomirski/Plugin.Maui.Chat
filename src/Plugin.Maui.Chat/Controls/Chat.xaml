@@ -20,11 +20,12 @@
                       x:DataType="models:ChatMessage">
             
             <Grid ColumnDefinitions="*, 3*"
-                  Margin="0, 5">
+                  Margin="0, 0,15, 0">
                 
                 <Frame Grid.Column="1"
                        HorizontalOptions="End"
                        CornerRadius="25"
+                       Margin="0,0,5,0"
                        Padding="16, 12"
                        BackgroundColor="{Binding SentMessageBackgroundColor, Source={x:Reference chat}}">
                     
@@ -68,11 +69,12 @@
                       x:DataType="models:ChatMessage">
             
             <Grid ColumnDefinitions="3*, *"
-                  Margin="0, 5">
+                  Margin="0,0,0, 0">
                 
                 <Frame Grid.Column="0"
                        HorizontalOptions="Start"
                        CornerRadius="25"
+                       Margin="5,0,5,0"
                        Padding="16, 12"
                        BackgroundColor="{Binding ReceivedMessageBackgroundColor, Source={x:Reference chat}}">
                     
@@ -119,7 +121,7 @@
                    CornerRadius="5"
                    Padding="16, 6"
                    BackgroundColor="{Binding SystemMessageBackgroundColor, Source={x:Reference chat}}"
-                   Margin="0, 5">
+                   Margin="5,15,5,15">
 
                 <Label Text="{Binding TextContent}"
                        TextColor="{Binding SystemMessageTextColor, Source={x:Reference chat}}"/>
@@ -132,18 +134,20 @@
                                              ReceivedMessage="{StaticResource ReceivedMessageTemplate}"
                                              SystemMessage="{StaticResource SystemMessageTemplate}"/>
     </ContentView.Resources>
-
-    <Grid RowDefinitions="*, Auto, Auto"
+    
+    <!-- UI -->
+    <Grid x:Name="mainGridLayout" RowDefinitions="*, Auto, Auto"
           RowSpacing="10">
-
-        <ScrollView x:Name="chatMessagesScrollView" 
-                    Grid.Row="0"
-                    VerticalOptions="End">
-
-            <CollectionView x:Name="chatMessagesCollectionView"
-                            ItemsSource="{Binding ChatMessages, Source={x:Reference chat}}"
-                            ItemTemplate="{StaticResource ChatMessageTemplateSelector}"/>
-        </ScrollView>
+        <controls:CustomCollectionView x:Name="chatMessagesCollectionView"
+                                Grid.Row="0"
+                                VerticalOptions="End"
+                                ItemsUpdatingScrollMode="{OnPlatform Default=KeepLastItemInView, WinUI=KeepScrollOffset}"
+                                ItemsSource="{Binding ChatMessages, Source={x:Reference chat}}"
+                                ItemTemplate="{StaticResource ChatMessageTemplateSelector}">
+                <CollectionView.ItemsLayout>
+                    <LinearItemsLayout Orientation="Vertical" ItemSpacing="{OnPlatform Android=10, iOS=10, Default=10}" />
+                </CollectionView.ItemsLayout>
+        </controls:CustomCollectionView>
         
         <Label Grid.Row="1"
                Text="{Binding Status, Source={x:Reference chat}}"
@@ -162,8 +166,7 @@
 
                 <Grid ColumnDefinitions="*, Auto, Auto, Auto, Auto" 
                       RowDefinitions="Auto, Auto">
-
-                    <controls:AudioPlayer Grid.ColumnSpan="5" x:Name="audioPlayer"
+				<controls:AudioPlayer Grid.ColumnSpan="5" x:Name="audioPlayer"
                                           Grid.Row="0"
                                           AudioService="{Binding AudioService, Source={x:Reference chat}}"
                                           Source="{Binding AudioContent, Source={x:Reference chat}}"
@@ -174,7 +177,6 @@
                                           WidthRequest="25"
                                           HorizontalOptions="Start"
                                           Margin="5, 10, 0, 0"/>
-
                     <Editor Grid.Column="0"
                             Grid.Row="1"
                             Text="{Binding TextContent, Source={x:Reference chat}}"
@@ -182,7 +184,7 @@
                             VerticalTextAlignment="Center"
                             Keyboard="Chat"
                             AutoSize="TextChanges"
-                            TextColor="Black"/>
+                            TextColor="{Binding EditorTextColor, Source={x:Reference chat}}"/>
 
                     <ImageButton Grid.Column="1"
                                  Grid.Row="1"
@@ -243,10 +245,11 @@
             </Frame>
 
             <ImageButton Grid.Column="1"
-                         Command="{Binding SendMessageCommand, Source={x:Reference chat}}"
+                   Command="{Binding SendMessageCommand, Source={x:Reference chat}}"
                          IsEnabled="{Binding IsSendMessageEnabled, Source={x:Reference chat}}"
+                   Padding="{OnPlatform iOS=5, Default=0}"
                          Source="{Binding SendMessageIcon, Source={x:Reference chat}}"
-                         Aspect="AspectFit"
+                   Aspect="{OnPlatform iOS=Fill, Default=AspectFit}"
                          HeightRequest="25"
                          WidthRequest="25"
                          VerticalOptions="End"

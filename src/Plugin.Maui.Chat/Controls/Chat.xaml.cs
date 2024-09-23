@@ -1,5 +1,4 @@
 
-
 namespace Plugin.Maui.Chat.Controls;
 
 public partial class Chat : ContentView
@@ -7,22 +6,33 @@ public partial class Chat : ContentView
     #region Fields
     static readonly Color primaryColor = ResourceColors.GetPrimaryColor();
     static readonly Color secondaryColor = ResourceColors.GetSecondaryColor();
+    static readonly Color editorColor = GetDefaultTextColor();
+    
+    IKeyboardService _keyboardService;
     #endregion
 
     #region Constructor
     public Chat()
-	{
+    {
 		InitializeComponent();
-
-        AudioService = new(this);
+		AudioService = new(this);
 
         AudioRecorderCommand ??= new Command(async () => await StartStopRecorderAsync());
-    }
-    #endregion
 
+        SetupKeyboard();
+    }
+      #endregion
+      
     #region Bindable properties
     #region Services
-    /// <summary>
+
+    private void SetupKeyboard()
+    {
+#if IOS || ANDROID    ///  TODO Windows & MacOS
+        _keyboardService = new KeyboardService();
+        this.ParentChanged += OnParentChanged;
+#endif
+    }
     /// Holds audio service instance.
     /// </summary>
     public static readonly BindableProperty AudioServiceProperty =
@@ -71,6 +81,41 @@ public partial class Chat : ContentView
         get => (bool)GetValue(IsPlayingProperty);
         set => SetValue(IsPlayingProperty, value);
     }
+
+    #endregion
+
+    #region OnParentChanged
+    
+    private void OnParentChanged(object sender, EventArgs e)
+    {
+        if (this.Parent != null)
+        {
+            SubscribeToKeyboardEvents();
+        }
+        else
+        {
+            UnsubscribeFromKeyboardEvents();
+        }
+    }
+    
+    private void SubscribeToKeyboardEvents()
+    {
+        if (_keyboardService != null)
+        {
+            _keyboardService.Start();
+            _keyboardService.KeyboardHeightChanged += OnKeyboardHeightChanged;
+        }
+    }
+
+    private void UnsubscribeFromKeyboardEvents()
+    {
+        if (_keyboardService != null)
+        {
+            _keyboardService.Stop();
+            _keyboardService.KeyboardHeightChanged -= OnKeyboardHeightChanged;
+        }
+    }
+    
     #endregion
 
     #region Chat messages collection view
@@ -78,14 +123,15 @@ public partial class Chat : ContentView
     /// List of chat messages.
     /// </summary>
     public static readonly BindableProperty ChatMessagesProperty = 
-        BindableProperty.Create(nameof(ChatMessages), typeof(ObservableCollection<ChatMessage>), typeof(Chat), propertyChanged: OnChatMessagesChanged);
-	
-	public ObservableCollection<ChatMessage> ChatMessages
+        BindableProperty.Create(nameof(ChatMessages), typeof(ObservableCollection<ChatMessage>), typeof(Chat));
+
+    public ObservableCollection<ChatMessage> ChatMessages
 	{ 
 		get => (ObservableCollection<ChatMessage>)GetValue(ChatMessagesProperty); 
 		set => SetValue(ChatMessagesProperty, value);
     }
 
+    
     #region Sent message
     /// <summary>
     /// Sent message background color.
@@ -673,6 +719,22 @@ public partial class Chat : ContentView
     }
     #endregion
     #endregion
+
+    #region Editor
+
+    /// <summary>
+    /// Send user message.
+    /// </summary>
+    public static readonly BindableProperty EditorTextColorProperty = 
+        BindableProperty.Create(nameof(EditorTextColor), typeof(Color), typeof(Chat), editorColor);
+
+    public Color EditorTextColor
+    {
+        get => (Color)GetValue(EditorTextColorProperty);
+        set => SetValue(EditorTextColorProperty, value);
+    }
+
+    #endregion
     #endregion
 
     #region Protected methods
@@ -703,30 +765,53 @@ public partial class Chat : ContentView
         }
     }
 
-    #region Workaround for scrolling issue on Android where the last messages were hidden under the device keyboard.
-    static void OnChatMessagesChanged(BindableObject bindable, object oldValue, object newValue)
+    
+    #region Events
+    /// <summary>
+    /// Event OnKeyboardHeightChanged
+    /// </summary>
+    private void OnKeyboardHeightChanged(object sender, KeyboardEventArgs keyboardEventArgs)
     {
-        var chat = (Chat)bindable;
+        var keyboardHeight = keyboardEventArgs.KeyboardHeight;
 
-        if (oldValue is ObservableCollection<ChatMessage> oldCollection)
-            oldCollection.CollectionChanged -= chat.OnChatMessagesCollectionChanged;
-
-        if (newValue is ObservableCollection<ChatMessage> newCollection)
-            newCollection.CollectionChanged += chat.OnChatMessagesCollectionChanged;
-
-        chat.ScrollDownChatMessages();
-    }
-
-    void OnChatMessagesCollectionChanged(object? sender, NotifyCollectionChangedEventArgs e) => ScrollDownChatMessages();
-
-    void ScrollDownChatMessages()
-    {
-        MainThread.BeginInvokeOnMainThread(async () =>
+        if (keyboardHeight > 0)
         {
-            await Task.Delay(1); // need to be to scroll properly
-            await chatMessagesScrollView.ScrollToAsync(chatMessagesCollectionView, ScrollToPosition.End, true);
-        });
+            Thread.Sleep(400);
+            mainGridLayout.Margin = new Thickness(0, keyboardHeight, 0, 0);
+            //chatMessagesCollectionView.TurnOffScrollToLastItem();
+            if(chatMessagesCollectionView.ItemsUpdatingScrollMode == ItemsUpdatingScrollMode.KeepLastItemInView)
+                ScrollDownChatMessages();
+        }
+        else
+        {
+            if(chatMessagesCollectionView.ItemsUpdatingScrollMode == ItemsUpdatingScrollMode.KeepLastItemInView)
+                ScrollDownChatMessages();
+            mainGridLayout.Margin = new Thickness(0);
+        }
     }
     #endregion
+    
+    #region ScrollCollectionView
+
+    async void ScrollDownChatMessages()
+    { 
+        await Task.Delay(1);
+        chatMessagesCollectionView.TurnOnScrollToLastItem();
+        chatMessagesCollectionView.ScrollTo(ChatMessages.Count-1, position: ScrollToPosition.End);
+    }
+    
+    static Color GetDefaultTextColor()
+    {
+        if (Application.Current == null)
+            throw new ArgumentNullException(nameof(Application.Current), $"{nameof(Application.Current)} is null.");
+        
+        if (Application.Current.Resources.TryGetValue("Black", out object color))
+            return (Color)color;
+        else
+            return Colors.White;
+    }
+    
     #endregion
+    #endregion
+    
 }

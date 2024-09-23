@@ -4,13 +4,18 @@
              xmlns:chat="clr-namespace:Plugin.Maui.Chat.Controls;assembly=Plugin.Maui.Chat"
              xmlns:resources="clr-namespace:Plugin.Maui.Chat.Sample.Resources"
              xmlns:viewmodels="clr-namespace:Plugin.Maui.Chat.Sample.ViewModels"
+             xmlns:ios="clr-namespace:Microsoft.Maui.Controls.PlatformConfiguration.iOSSpecific;assembly=Microsoft.Maui.Controls"
              x:Class="Plugin.Maui.Chat.Sample.Pages.SimpleChatPage"
+             ios:Page.UseSafeArea="True"
              Title="Simple chat"
              x:DataType="viewmodels:SimpleChatViewModel">
     
     <chat:Chat TextContent="{Binding TextContent}"
                ChatMessages="{Binding ChatMessages}"
                SendMessageCommand="{Binding SendMessageCommand}"
+               EditorTextColor="{AppThemeBinding Light={StaticResource Primary}, 
+                   Dark={StaticResource Secondary}, 
+                   Default={StaticResource Magenta}}"
                Margin="10"/>
     
 </ContentPage>

@@ -1,4 +1,7 @@
-﻿namespace Plugin.Maui.Chat;
+﻿using Microsoft.Maui.Controls.Handlers.Items;
+using Plugin.Maui.Chat.Controls;
+using Plugin.Maui.Chat.Services;
+namespace Plugin.Maui.Chat;
 
 public static class MauiProgram
 {
