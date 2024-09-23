@@ -31,6 +31,8 @@ public partial class Chat : ContentView
     }
 
     #endregion
+
+    #region OnParentChanged
     
     private void OnParentChanged(object sender, EventArgs e)
     {
@@ -61,6 +63,8 @@ public partial class Chat : ContentView
             _keyboardService.KeyboardHeightChanged -= OnKeyboardHeightChanged;
         }
     }
+    
+    #endregion
 
     #region Properties
     #region Chat messages collection view
@@ -69,13 +73,14 @@ public partial class Chat : ContentView
     /// </summary>
     public static readonly BindableProperty ChatMessagesProperty = 
         BindableProperty.Create(nameof(ChatMessages), typeof(ObservableCollection<ChatMessage>), typeof(Chat));
-	
-	public ObservableCollection<ChatMessage> ChatMessages
+
+    public ObservableCollection<ChatMessage> ChatMessages
 	{ 
 		get => (ObservableCollection<ChatMessage>)GetValue(ChatMessagesProperty); 
 		set => SetValue(ChatMessagesProperty, value);
     }
 
+    
     #region Sent message
     /// <summary>
     /// Sent message background color.
@@ -578,7 +583,6 @@ public partial class Chat : ContentView
  
     #endregion
     #endregion
-    
 
     #region Private methods
     
@@ -652,4 +656,7 @@ public partial class Chat : ContentView
     
     #endregion
     #endregion
+
+
+
 }
