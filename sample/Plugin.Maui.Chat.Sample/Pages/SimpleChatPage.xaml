@@ -9,12 +9,14 @@
              ios:Page.UseSafeArea="True"
              Title="Simple chat"
              x:DataType="viewmodels:SimpleChatViewModel">
-    <chat:Chat UserMessage="{Binding UserMessage}"
+    
+    <chat:Chat TextContent="{Binding TextContent}"
                ChatMessages="{Binding ChatMessages}"
                SendMessageCommand="{Binding SendMessageCommand}"
                EditorTextColor="{AppThemeBinding Light={StaticResource Primary}, 
                    Dark={StaticResource Secondary}, 
                    Default={StaticResource Magenta}}"
                Margin="10"/>
+    
 </ContentPage>
     

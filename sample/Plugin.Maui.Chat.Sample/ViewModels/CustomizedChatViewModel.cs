@@ -8,20 +8,22 @@ public partial class CustomizedChatViewModel : ObservableRecipient
     }
 
     [ObservableProperty]
-    string? _userMessage;
+    string? textContent;
 
     [ObservableProperty]
-    string? _status;
+    string? status;
 
     [ObservableProperty]
-    bool _isStatusVisible;
+    bool isStatusVisible;
 
     [ObservableProperty]
-    bool _isRecording;
+    bool isRecording;
 
     [ObservableProperty]
-    bool _isHandsFreeMode;
+    bool isHandsFreeMode;
 
+    [ObservableProperty]
+    object? audioContent;
     public ObservableCollection<ChatMessage> ChatMessages { get; set; } = [];
 
     private void InitChatMessages()
@@ -30,34 +32,36 @@ public partial class CustomizedChatViewModel : ObservableRecipient
         {
             Type = MessageType.Sent,
             Author = "You",
-            Text = "This is a sent message sample."
+            TextContent = "This is a sent message sample."
         });
 
         ChatMessages.Add(new ChatMessage()
         {
             Type = MessageType.Received,
             Author = "Echo",
-            Text = "This is a received message sample."
+            TextContent = "This is a received message sample."
         });
 
         ChatMessages.Add(new ChatMessage()
         {
             Type = MessageType.System,
-            Text = "This is a system message sample."
+            TextContent = "This is a system message sample."
         });
 
         ChatMessages.Add(new ChatMessage()
         {
             Type = MessageType.Sent,
             Author = "You",
-            Text = "This is a little bit longer sent message sample to see how multiple lines look like."
+            TextContent = "This is a little bit longer sent message sample to see how multiple lines look like.",
+            AudioContent = new EmptyAudioSource() // TODO: add some audio content
         });
 
         ChatMessages.Add(new ChatMessage()
         {
             Type = MessageType.Received,
             Author = "Echo",
-            Text = "This is a little bit longer received message sample to see how multiple lines look like."
+            TextContent = "This is a little bit longer received message sample to see how multiple lines look like.",
+            AudioContent = new EmptyAudioSource() // TODO: add some audio content
         });
     }
 
@@ -68,12 +72,13 @@ public partial class CustomizedChatViewModel : ObservableRecipient
         {
             Type = MessageType.Sent,
             Author = "You",
-            Text = UserMessage
+            TextContent = TextContent
         });
 
-        UserMessage = null;
+        TextContent = null;
+        AudioContent = null;
 
-        Status = "Echo is typing...";
+        Status = "Echo is messaging...";
         IsStatusVisible = true;
 
         await Task.Delay(1000);
@@ -85,15 +90,35 @@ public partial class CustomizedChatViewModel : ObservableRecipient
         {
             Type = MessageType.Received,
             Author = "Echo",
-            Text = $"Echo: {ChatMessages.Last().Text}"
+            TextContent = $"Echo: {ChatMessages.Last().TextContent}"
         });
     }
 
     [RelayCommand]
-    void StartStopRecordToggle() => IsRecording = !IsRecording;
+    async Task StartStopRecordingAsync()
+    {
+        IsRecording = !IsRecording;
+
+        if (IsRecording)
+            await Shell.Current.DisplayAlert("Custom record audio command", "You can use your own commands instead of those built-in.", "Cool :)");
+
+        AudioContent = new EmptyAudioSource();
+    }
 
     [RelayCommand]
-    void HandsFreeModeToggle() => IsHandsFreeMode = !IsHandsFreeMode;
+    async Task PlayAudioAsync()
+    {
+        var audioPlayer = AudioManager.Current.CreateAsyncPlayer(await FileSystem.OpenAppPackageFileAsync("ukulele.mp3"));
+
+        await Shell.Current.DisplayAlert("Custom play audio command",
+                                         "On this page all audio contents will play \"The Happy Ukulele Song\" by Stanislav Fomin. Enjoy!",
+                                         "Aloha :)");
+
+        await audioPlayer.PlayAsync(default);
+    }
+
+    [RelayCommand]
+    void HandsFreeMode() => IsHandsFreeMode = !IsHandsFreeMode;
 
     [RelayCommand]
     void AddAttachment() { }

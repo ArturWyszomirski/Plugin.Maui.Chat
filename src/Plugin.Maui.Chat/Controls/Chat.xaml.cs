@@ -1,15 +1,12 @@
-using Plugin.Maui.Chat.Helpers;
-using Plugin.Maui.Chat.Keyboard;
-using Plugin.Maui.Chat.Services;
 
 namespace Plugin.Maui.Chat.Controls;
 
 public partial class Chat : ContentView
 {
     #region Fields
-    static readonly Color _primaryColor = GetPrimaryColor();
-    static readonly Color _secondaryColor = GetSecondaryColor();
-    static readonly Color _editorColor = GetDefaultTextColor();
+    static readonly Color primaryColor = ResourceColors.GetPrimaryColor();
+    static readonly Color secondaryColor = ResourceColors.GetSecondaryColor();
+    static readonly Color editorColor = GetDefaultTextColor();
     
     IKeyboardService _keyboardService;
     #endregion
@@ -18,9 +15,16 @@ public partial class Chat : ContentView
     public Chat()
     {
 		InitializeComponent();
+		AudioService = new(this);
+
+        AudioRecorderCommand ??= new Command(async () => await StartStopRecorderAsync());
 
         SetupKeyboard();
     }
+      #endregion
+      
+    #region Bindable properties
+    #region Services
 
     private void SetupKeyboard()
     {
@@ -28,6 +32,54 @@ public partial class Chat : ContentView
         _keyboardService = new KeyboardService();
         this.ParentChanged += OnParentChanged;
 #endif
+    }
+    /// Holds audio service instance.
+    /// </summary>
+    public static readonly BindableProperty AudioServiceProperty =
+        BindableProperty.Create(nameof(AudioService), typeof(AudioService), typeof(Chat));
+
+    public AudioService AudioService
+    {
+        get => (AudioService)GetValue(AudioServiceProperty);
+        private set => SetValue(AudioServiceProperty, value);
+    }
+    #endregion
+
+    #region State properties
+    /// <summary>
+    /// True when audio recording is on.
+    /// </summary>
+    public static readonly BindableProperty IsRecordingProperty =
+        BindableProperty.Create(nameof(IsRecording), typeof(bool), typeof(Chat), propertyChanged: OnIsRecordingChanged);
+
+    private static void OnIsRecordingChanged(BindableObject bindable, object oldValue, object newValue)
+    {
+        if (bindable is Chat chat)
+            chat.Status = (bool)newValue ? "Recording..." : string.Empty;
+    }
+
+    public bool IsRecording
+    {
+        get => (bool)GetValue(IsRecordingProperty);
+        set => SetValue(IsRecordingProperty, value);
+    }
+
+    /// <summary>
+    /// True when audio playing is on.
+    /// </summary>
+    public static readonly BindableProperty IsPlayingProperty =
+        BindableProperty.Create(nameof(IsPlaying), typeof(bool), typeof(Chat), propertyChanged: OnIsPlayingChanged);
+
+    private static void OnIsPlayingChanged(BindableObject bindable, object oldValue, object newValue)
+    {
+        if(bindable is Chat chat)
+            chat.Status = (bool)newValue ? "Playing..." : string.Empty;
+    }
+
+    public bool IsPlaying
+    {
+        get => (bool)GetValue(IsPlayingProperty);
+        set => SetValue(IsPlayingProperty, value);
     }
 
     #endregion
@@ -66,7 +118,6 @@ public partial class Chat : ContentView
     
     #endregion
 
-    #region Properties
     #region Chat messages collection view
     /// <summary>
     /// List of chat messages.
@@ -86,7 +137,7 @@ public partial class Chat : ContentView
     /// Sent message background color.
     /// </summary>
     public static readonly BindableProperty SentMessageBackgroundColorProperty = 
-        BindableProperty.Create(nameof(SentMessageBackgroundColor), typeof(Color), typeof(Chat), _primaryColor);
+        BindableProperty.Create(nameof(SentMessageBackgroundColor), typeof(Color), typeof(Chat), primaryColor);
 
     public Color SentMessageBackgroundColor
     {
@@ -110,7 +161,7 @@ public partial class Chat : ContentView
     /// Sent message author text color.
     /// </summary>
     public static readonly BindableProperty SentMessageAuthorTextColorProperty = 
-        BindableProperty.Create(nameof(SentMessageAuthorTextColor), typeof(Color), typeof(Chat), _secondaryColor);
+        BindableProperty.Create(nameof(SentMessageAuthorTextColor), typeof(Color), typeof(Chat), secondaryColor);
 
     public Color SentMessageAuthorTextColor
     {
@@ -134,7 +185,7 @@ public partial class Chat : ContentView
     /// Sent message timestamp text color.
     /// </summary>
     public static readonly BindableProperty SentMessageTimestampTextColorProperty = 
-        BindableProperty.Create(nameof(SentMessageTimestampTextColor), typeof(Color), typeof(Chat), _secondaryColor);
+        BindableProperty.Create(nameof(SentMessageTimestampTextColor), typeof(Color), typeof(Chat), secondaryColor);
 
     public Color SentMessageTimestampTextColor
     {
@@ -146,12 +197,24 @@ public partial class Chat : ContentView
     /// Sent message content text color.
     /// </summary>
     public static readonly BindableProperty SentMessageContentTextColorProperty = 
-        BindableProperty.Create(nameof(SentMessageContentTextColor), typeof(Color), typeof(Chat), _secondaryColor);
+        BindableProperty.Create(nameof(SentMessageContentTextColor), typeof(Color), typeof(Chat), secondaryColor);
 
     public Color SentMessageContentTextColor
     {
         get => (Color)GetValue(SentMessageContentTextColorProperty);
         set => SetValue(SentMessageContentTextColorProperty, value);
+    }
+
+    /// <summary>
+    /// Sent audio content button color.
+    /// </summary>
+    public static readonly BindableProperty SentMessageAudioContentColorProperty =
+        BindableProperty.Create(nameof(SentMessageAudioContentColor), typeof(Color), typeof(Chat), secondaryColor);
+
+    public Color SentMessageAudioContentColor
+    {
+        get => (Color)GetValue(SentMessageAudioContentColorProperty);
+        set => SetValue(SentMessageAudioContentColorProperty, value);
     }
     #endregion
 
@@ -160,7 +223,7 @@ public partial class Chat : ContentView
     /// Received message background color.
     /// </summary>
     public static readonly BindableProperty ReceivedMessageBackgroundColorProperty = 
-        BindableProperty.Create(nameof(ReceivedMessageBackgroundColor), typeof(Color), typeof(Chat), _secondaryColor);
+        BindableProperty.Create(nameof(ReceivedMessageBackgroundColor), typeof(Color), typeof(Chat), secondaryColor);
 
     public Color ReceivedMessageBackgroundColor
     {
@@ -185,7 +248,7 @@ public partial class Chat : ContentView
     /// Received message author text color.
     /// </summary>
     public static readonly BindableProperty ReceivedMessageAuthorTextColorProperty = 
-        BindableProperty.Create(nameof(ReceivedMessageAuthorTextColor), typeof(Color), typeof(Chat), _primaryColor);
+        BindableProperty.Create(nameof(ReceivedMessageAuthorTextColor), typeof(Color), typeof(Chat), primaryColor);
 
     public Color ReceivedMessageAuthorTextColor
     {
@@ -209,7 +272,7 @@ public partial class Chat : ContentView
     /// Received message timestamp text color.
     /// </summary>
     public static readonly BindableProperty ReceivedMessageTimestampTextColorProperty = 
-        BindableProperty.Create(nameof(ReceivedMessageTimestampTextColor), typeof(Color), typeof(Chat), _primaryColor);
+        BindableProperty.Create(nameof(ReceivedMessageTimestampTextColor), typeof(Color), typeof(Chat), primaryColor);
 
     public Color ReceivedMessageTimestampTextColor
     {
@@ -221,12 +284,24 @@ public partial class Chat : ContentView
     /// Received message text color.
     /// </summary>
     public static readonly BindableProperty ReceivedMessageContentTextColorProperty = 
-        BindableProperty.Create(nameof(ReceivedMessageContentTextColor), typeof(Color), typeof(Chat), _primaryColor);
+        BindableProperty.Create(nameof(ReceivedMessageContentTextColor), typeof(Color), typeof(Chat), primaryColor);
 
     public Color ReceivedMessageContentTextColor
     {
         get => (Color)GetValue(ReceivedMessageContentTextColorProperty);
         set => SetValue(ReceivedMessageContentTextColorProperty, value);
+    }
+
+    /// <summary>
+    /// Received audio content button color.
+    /// </summary>
+    public static readonly BindableProperty ReceivedMessageAudioContentColorProperty =
+        BindableProperty.Create(nameof(ReceivedMessageAudioContentColor), typeof(Color), typeof(Chat), primaryColor);
+
+    public Color ReceivedMessageAudioContentColor
+    {
+        get => (Color)GetValue(ReceivedMessageAudioContentColorProperty);
+        set => SetValue(ReceivedMessageAudioContentColorProperty, value);
     }
     #endregion
 
@@ -257,17 +332,41 @@ public partial class Chat : ContentView
     #endregion
     #endregion
 
-    #region User message entry
+    #region User message contents
     /// <summary>
     /// Message typed by user.
     /// </summary>
-    public static readonly BindableProperty UserMessageProperty =
-        BindableProperty.Create(nameof(UserMessage), typeof(string), typeof(Chat), defaultBindingMode: BindingMode.TwoWay);
+    public static readonly BindableProperty TextContentProperty =
+        BindableProperty.Create(nameof(TextContent), typeof(string), typeof(Chat), defaultBindingMode: BindingMode.TwoWay);
 
-    public string UserMessage
+    public string TextContent
     {
-        get => (string)GetValue(UserMessageProperty);
-        set => SetValue(UserMessageProperty, value);
+        get => (string)GetValue(TextContentProperty);
+        set => SetValue(TextContentProperty, value);
+    }
+
+    /// <summary>
+    /// Audio content in message.
+    /// </summary>
+    public static readonly BindableProperty AudioContentProperty =
+        BindableProperty.Create(nameof(AudioContent), typeof(object), typeof(Chat), defaultBindingMode: BindingMode.TwoWay);
+
+    public object AudioContent
+    {
+        get => GetValue(AudioContentProperty);
+        set => SetValue(AudioContentProperty, value);
+    }
+
+    /// <summary>
+    /// User audio content button color.
+    /// </summary>
+    public static readonly BindableProperty AudioContentColorProperty =
+        BindableProperty.Create(nameof(AudioContentColor), typeof(Color), typeof(Chat), primaryColor);
+
+    public Color AudioContentColor
+    {
+        get => (Color)GetValue(AudioContentColorProperty);
+        set => SetValue(AudioContentColorProperty, value);
     }
     #endregion
 
@@ -309,103 +408,129 @@ public partial class Chat : ContentView
     }
     #endregion
 
-    #region StartStopRecordToggle button
+    #region Audio player
+    /// <summary>
+    /// Play or stop audio message.
+    /// </summary>
+    public static readonly BindableProperty AudioPlayerCommandProperty =
+        BindableProperty.Create(nameof(AudioPlayerCommand), typeof(ICommand), typeof(Chat));
+
+    public ICommand AudioPlayerCommand
+    {
+        get => (ICommand)GetValue(AudioPlayerCommandProperty);
+        set => SetValue(AudioPlayerCommandProperty, value);
+    }
+
+    /// <summary>
+    /// Audio content button icon.
+    /// </summary>
+    public static readonly BindableProperty AudioContentIconProperty =
+        BindableProperty.Create(nameof(AudioContentIcon), typeof(ImageSource), typeof(Chat), ImageSource.FromFile(Maui.Chat.Resources.Icons.Waveform));
+
+    public ImageSource AudioContentIcon
+    {
+        get => (ImageSource)GetValue(AudioContentIconProperty);
+        set => SetValue(AudioContentIconProperty, value);
+    }
+    #endregion
+
+    #region AudioRecorder button
     /// <summary>
     /// Start or stop recording voice message.
     /// </summary>
-    public static readonly BindableProperty StartStopRecordToggleCommandProperty = 
-        BindableProperty.Create(nameof(StartStopRecordToggleCommand), typeof(ICommand), typeof(Chat));
+    public static readonly BindableProperty AudioRecorderCommandProperty = 
+        BindableProperty.Create(nameof(AudioRecorderCommand), typeof(ICommand), typeof(Chat));
 
-    public ICommand StartStopRecordToggleCommand
+    public ICommand AudioRecorderCommand
     {
-        get => (ICommand)GetValue(StartStopRecordToggleCommandProperty);
-        set => SetValue(StartStopRecordToggleCommandProperty, value);
+        get => (ICommand)GetValue(AudioRecorderCommandProperty);
+        set => SetValue(AudioRecorderCommandProperty, value);
     }
 
     /// <summary>
     /// Determines whether start/stop record toggle button is visible.
     /// </summary>
-    public static readonly BindableProperty IsStartStopRecordToggleVisibleProperty = 
-        BindableProperty.Create(nameof(IsStartStopRecordToggleVisible), typeof(bool), typeof(Chat));
+    public static readonly BindableProperty IsAudioRecorderVisibleProperty = 
+        BindableProperty.Create(nameof(IsAudioRecorderVisible), typeof(bool), typeof(Chat));
 
-    public bool IsStartStopRecordToggleVisible
+    public bool IsAudioRecorderVisible
     {
-        get => (bool)GetValue(IsStartStopRecordToggleVisibleProperty);
-        set => SetValue(IsStartStopRecordToggleVisibleProperty, value);
+        get => (bool)GetValue(IsAudioRecorderVisibleProperty);
+        set => SetValue(IsAudioRecorderVisibleProperty, value);
     }
 
     /// <summary>
     /// Start/stop record toggle button icon.
     /// </summary>
-    public static readonly BindableProperty StartStopRecordToggleIconProperty = 
-        BindableProperty.Create(nameof(StartStopRecordToggleIcon), typeof(ImageSource), typeof(Chat), ImageSource.FromFile(Maui.Chat.Resources.Icons.Microphone));
+    public static readonly BindableProperty AudioRecorderIconProperty = 
+        BindableProperty.Create(nameof(AudioRecorderIcon), typeof(ImageSource), typeof(Chat), ImageSource.FromFile(Maui.Chat.Resources.Icons.Microphone));
 
-    public ImageSource StartStopRecordToggleIcon
+    public ImageSource AudioRecorderIcon
     {
-        get => (ImageSource)GetValue(StartStopRecordToggleIconProperty);
-        set => SetValue(StartStopRecordToggleIconProperty, value);
+        get => (ImageSource)GetValue(AudioRecorderIconProperty);
+        set => SetValue(AudioRecorderIconProperty, value);
     }
 
     /// <summary>
     /// Start/stop record toggle button color.
     /// </summary>
-    public static readonly BindableProperty StartStopRecordToggleColorProperty = 
-        BindableProperty.Create(nameof(StartStopRecordToggleColor), typeof(Color), typeof(Chat), _primaryColor);
+    public static readonly BindableProperty AudioRecorderColorProperty = 
+        BindableProperty.Create(nameof(AudioRecorderColor), typeof(Color), typeof(Chat), primaryColor);
 
-    public Color StartStopRecordToggleColor
+    public Color AudioRecorderColor
     {
-        get => (Color)GetValue(StartStopRecordToggleColorProperty);
-        set => SetValue(StartStopRecordToggleColorProperty, value);
+        get => (Color)GetValue(AudioRecorderColorProperty);
+        set => SetValue(AudioRecorderColorProperty, value);
     }
     #endregion
 
-    #region HandsFreeModeToggle button
+    #region HandsFreeMode button
     /// <summary>
     /// Turn on/off hands-free mode. Hands-free mode is automated recording, transcribing and sending voice messages as well as reading received messages.
     /// </summary>
-    public static readonly BindableProperty HandsFreeModeToggleCommandProperty = 
-        BindableProperty.Create(nameof(HandsFreeModeToggleCommand), typeof(ICommand), typeof(Chat));
+    public static readonly BindableProperty HandsFreeModeCommandProperty = 
+        BindableProperty.Create(nameof(HandsFreeModeCommand), typeof(ICommand), typeof(Chat));
 
-    public ICommand HandsFreeModeToggleCommand
+    public ICommand HandsFreeModeCommand
     {
-        get => (ICommand)GetValue(HandsFreeModeToggleCommandProperty);
-        set => SetValue(HandsFreeModeToggleCommandProperty, value);
+        get => (ICommand)GetValue(HandsFreeModeCommandProperty);
+        set => SetValue(HandsFreeModeCommandProperty, value);
     }
 
     /// <summary>
     /// Determines whether hands-free mode toggle button is visible.
     /// </summary>
-    public static readonly BindableProperty IsHandsFreeModeToggleVisibleProperty = 
-        BindableProperty.Create(nameof(IsHandsFreeModeToggleVisible), typeof(bool), typeof(Chat));
+    public static readonly BindableProperty IsHandsFreeModeVisibleProperty = 
+        BindableProperty.Create(nameof(IsHandsFreeModeVisible), typeof(bool), typeof(Chat));
 
-    public bool IsHandsFreeModeToggleVisible
+    public bool IsHandsFreeModeVisible
     {
-        get => (bool)GetValue(IsHandsFreeModeToggleVisibleProperty);
-        set => SetValue(IsHandsFreeModeToggleVisibleProperty, value);
+        get => (bool)GetValue(IsHandsFreeModeVisibleProperty);
+        set => SetValue(IsHandsFreeModeVisibleProperty, value);
     }
 
     /// <summary>
     /// Hands-free mode toggle button icon.
     /// </summary>
-    public static readonly BindableProperty HandsFreeModeToggleIconProperty =
-        BindableProperty.Create(nameof(HandsFreeModeToggleIcon), typeof(ImageSource), typeof(Chat), ImageSource.FromFile(Maui.Chat.Resources.Icons.Headphones));
+    public static readonly BindableProperty HandsFreeModeIconProperty =
+        BindableProperty.Create(nameof(HandsFreeModeIcon), typeof(ImageSource), typeof(Chat), ImageSource.FromFile(Maui.Chat.Resources.Icons.Headphones));
 
-    public ImageSource HandsFreeModeToggleIcon
+    public ImageSource HandsFreeModeIcon
     {
-        get => (ImageSource)GetValue(HandsFreeModeToggleIconProperty);
-        set => SetValue(HandsFreeModeToggleIconProperty, value);
+        get => (ImageSource)GetValue(HandsFreeModeIconProperty);
+        set => SetValue(HandsFreeModeIconProperty, value);
     }
 
     /// <summary>
     /// Hands-free mode toggle button color.
     /// </summary>
-    public static readonly BindableProperty HandsFreeModeToggleColorProperty = 
-        BindableProperty.Create(nameof(HandsFreeModeToggleColor), typeof(Color), typeof(Chat), _primaryColor);
+    public static readonly BindableProperty HandsFreeModeColorProperty = 
+        BindableProperty.Create(nameof(HandsFreeModeColor), typeof(Color), typeof(Chat), primaryColor);
 
-    public Color HandsFreeModeToggleColor
+    public Color HandsFreeModeColor
     {
-        get => (Color)GetValue(HandsFreeModeToggleColorProperty);
-        set => SetValue(HandsFreeModeToggleColorProperty, value);
+        get => (Color)GetValue(HandsFreeModeColorProperty);
+        set => SetValue(HandsFreeModeColorProperty, value);
     }
     #endregion
 
@@ -450,7 +575,7 @@ public partial class Chat : ContentView
     /// Add attachment button color.
     /// </summary>
     public static readonly BindableProperty AddAttachmentColorProperty = 
-        BindableProperty.Create(nameof(AddAttachmentColor), typeof(Color), typeof(Chat), _primaryColor);
+        BindableProperty.Create(nameof(AddAttachmentColor), typeof(Color), typeof(Chat), primaryColor);
 
     public Color AddAttachmentColor
     {
@@ -500,7 +625,7 @@ public partial class Chat : ContentView
     /// Take photo button color.
     /// </summary>
     public static readonly BindableProperty TakePhotoColorProperty = 
-        BindableProperty.Create(nameof(TakePhotoColor), typeof(Color), typeof(Chat), _primaryColor);
+        BindableProperty.Create(nameof(TakePhotoColor), typeof(Color), typeof(Chat), primaryColor);
 
     public Color TakePhotoColor
     {
@@ -562,29 +687,84 @@ public partial class Chat : ContentView
     /// Send message button color.
     /// </summary>
     public static readonly BindableProperty SendMessageColorProperty = 
-        BindableProperty.Create(nameof(SendMessageColor), typeof(Color), typeof(Chat), _primaryColor);
+        BindableProperty.Create(nameof(SendMessageColor), typeof(Color), typeof(Chat), primaryColor);
 
     public Color SendMessageColor
     {
         get => (Color)GetValue(SendMessageColorProperty);
         set => SetValue(SendMessageColorProperty, value);
     }
-    
+
+    #region Style colors
     /// <summary>
-    /// Color text in Editor
+    /// Primary chat color.
     /// </summary>
-    public static readonly BindableProperty EditorTextColorProperty = 
-        BindableProperty.Create(nameof(EditorTextColor), typeof(Color), typeof(Chat), _editorColor);
-    public Color EditorTextColor 
+    public static readonly BindableProperty PrimaryColorProperty =
+        BindableProperty.Create(nameof(PrimaryColor), typeof(Color), typeof(Chat), primaryColor);
+
+    public Color PrimaryColor
     {
-       get => (Color)GetValue(EditorTextColorProperty);
-       set => SetValue(EditorTextColorProperty, value);
+        get => (Color)GetValue(PrimaryColorProperty);
     }
- 
+
+    /// <summary>
+    /// Secondary chat color.
+    /// </summary>
+    public static readonly BindableProperty SecondaryColorProperty =
+        BindableProperty.Create(nameof(SecondaryColor), typeof(Color), typeof(Chat), secondaryColor);
+
+    public Color SecondaryColor
+    {
+        get => (Color)GetValue(SecondaryColorProperty);
+    }
     #endregion
     #endregion
 
+    #region Editor
+
+    /// <summary>
+    /// Send user message.
+    /// </summary>
+    public static readonly BindableProperty EditorTextColorProperty = 
+        BindableProperty.Create(nameof(EditorTextColor), typeof(Color), typeof(Chat), editorColor);
+
+    public Color EditorTextColor
+    {
+        get => (Color)GetValue(EditorTextColorProperty);
+        set => SetValue(EditorTextColorProperty, value);
+    }
+
+    #endregion
+    #endregion
+
+    #region Protected methods
+    protected override void OnBindingContextChanged()
+    {
+        base.OnBindingContextChanged();
+
+        // workaround for StartStopCommand being null when AudioPlayer resolved (issue #14)
+        audioPlayer.StartStopCommand = AudioPlayerCommand;
+    }
+    #endregion
+
     #region Private methods
+    async Task StartStopRecorderAsync()
+    {
+        if (await Permissions.RequestAsync<Permissions.Microphone>() != PermissionStatus.Granted)
+        {
+            await Shell.Current.DisplayAlert("Permission denied", "The app needs microphone permission to record audio.", "OK");
+            AudioRecorderColor = SecondaryColor;
+        }
+        else
+        {
+            AudioRecorderColor = Colors.Red;
+
+            AudioContent = await AudioService.StartStopRecorderAsync();
+
+            AudioRecorderColor = PrimaryColor;
+        }
+    }
+
     
     #region Events
     /// <summary>
@@ -620,29 +800,6 @@ public partial class Chat : ContentView
         chatMessagesCollectionView.ScrollTo(ChatMessages.Count-1, position: ScrollToPosition.End);
     }
     
-    #endregion
-
-    #region Get default colors
-    static Color GetPrimaryColor()
-    {
-        if (Application.Current == null)
-            throw new ArgumentNullException(nameof(Application.Current), $"{nameof(Application.Current)} is null.");
-
-        if (Application.Current.Resources.TryGetValue("Primary", out object color))
-            return (Color)color;
-        else
-            return Colors.Black;
-    }
-    static Color GetSecondaryColor()
-    {
-        if (Application.Current == null)
-            throw new ArgumentNullException(nameof(Application.Current), $"{nameof(Application.Current)} is null.");
-
-        if (Application.Current.Resources.TryGetValue("Secondary", out object color))
-            return (Color)color;
-        else
-            return Colors.White;
-    }
     static Color GetDefaultTextColor()
     {
         if (Application.Current == null)
@@ -656,7 +813,5 @@ public partial class Chat : ContentView
     
     #endregion
     #endregion
-
-
-
+    
 }
