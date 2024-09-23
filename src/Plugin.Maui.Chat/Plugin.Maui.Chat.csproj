@@ -50,6 +50,10 @@
 		<None Include="..\..\nuget.png" PackagePath="icon.png" Pack="true" />
 		<None Include="..\..\README.md" Pack="true" PackagePath="\" />
 	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\..\dependencies\Plugin.Maui.Audio\src\Plugin.Maui.Audio\Plugin.Maui.Audio.csproj" PrivateAssets="All" IncludeAssets="runtime" />
+	</ItemGroup>
 	
 	<ItemGroup>
 		<PackageReference Include="CommunityToolkit.Maui" Version="9.0.3" />
@@ -101,8 +105,5 @@
 		<None Include="Resources\Images\microphone_br.png" Pack="True" PackagePath="buildTransitive\Images\" />
 		<None Include="Resources\Images\paper_clip_br.png" Pack="True" PackagePath="buildTransitive\Images\" />
 		<None Include="Resources\Images\paper_plane_br.png" Pack="True" PackagePath="buildTransitive\Images\" />
-	</ItemGroup>
-	<ItemGroup>
-	  <ProjectReference Include="..\..\dependencies\Plugin.Maui.Audio\src\Plugin.Maui.Audio\Plugin.Maui.Audio.csproj" />
 	</ItemGroup>
 </Project>
