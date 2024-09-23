@@ -76,7 +76,8 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <ProjectReference Include="..\..\src\Plugin.Maui.Chat\Plugin.Maui.Chat.csproj" />
+		<ProjectReference Include="..\..\dependencies\Plugin.Maui.Audio\src\Plugin.Maui.Audio\Plugin.Maui.Audio.csproj" PrivateAssets="All" IncludeAssets="runtime" />
+		<ProjectReference Include="..\..\src\Plugin.Maui.Chat\Plugin.Maui.Chat.csproj" />
 	</ItemGroup>
 
 	<ItemGroup>
