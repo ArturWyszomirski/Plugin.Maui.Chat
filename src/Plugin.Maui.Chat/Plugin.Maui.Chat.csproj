@@ -52,7 +52,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<ProjectReference Include="..\..\dependencies\Plugin.Maui.Audio\src\Plugin.Maui.Audio\Plugin.Maui.Audio.csproj" PrivateAssets="All" IncludeAssets="runtime" />
+		<ProjectReference Include="..\..\dependencies\Plugin.Maui.Audio\src\Plugin.Maui.Audio\Plugin.Maui.Audio.csproj" PrivateAssets="All" />
 	</ItemGroup>
 	
 	<ItemGroup>
