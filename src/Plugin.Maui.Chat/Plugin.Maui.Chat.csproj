@@ -23,7 +23,7 @@
 		<PackageProjectUrl>https://github.com/ArturWyszomirski/Plugin.Maui.Chat</PackageProjectUrl>
 		<RepositoryUrl>https://github.com/ArturWyszomirski/Plugin.Maui.Chat</RepositoryUrl>
 		<RepositoryType>git</RepositoryType>
-		<PackageTags>dotnet-maui;maui;plugin;</PackageTags>
+		<PackageTags>dotnet-maui;maui;plugin;chat;messaging;communication</PackageTags>
 		<IncludeSymbols>True</IncludeSymbols>
 		<PublishRepositoryUrl>true</PublishRepositoryUrl>
 		<EmbedUntrackedSources>true</EmbedUntrackedSources>
