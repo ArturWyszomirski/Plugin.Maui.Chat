@@ -40,17 +40,13 @@
 	<PropertyGroup>
 	  <TargetFrameworks Condition="$([MSBuild]::IsOSPlatform('windows'))">$(TargetFrameworks);net8.0-windows10.0.19041.0</TargetFrameworks>
 	</PropertyGroup>
-
-	<ItemGroup>
-	  <None Remove="Resources\Images\waveform_br.png" />
-	</ItemGroup>
 	
 	<!-- Package additions -->
 	<ItemGroup>
 		<None Include="..\..\nuget.png" PackagePath="icon.png" Pack="true" />
 		<None Include="..\..\README.md" Pack="true" PackagePath="\" />
 	</ItemGroup>
-
+	
 	<!-- Submodule dependency -->
 	<ItemGroup>
 		<ProjectReference Include="..\..\dependencies\Plugin.Maui.Audio\src\Plugin.Maui.Audio\Plugin.Maui.Audio.csproj" PrivateAssets="All" />
@@ -122,5 +118,6 @@
 		<None Include="Resources\Images\microphone_br.png" Pack="True" PackagePath="buildTransitive\Images\" />
 		<None Include="Resources\Images\paper_clip_br.png" Pack="True" PackagePath="buildTransitive\Images\" />
 		<None Include="Resources\Images\paper_plane_br.png" Pack="True" PackagePath="buildTransitive\Images\" />
+		<None Include="Resources\Images\waveform_br.png" Pack="True" PackagePath="buildTransitive\Images\" />
 	</ItemGroup>
 </Project>
