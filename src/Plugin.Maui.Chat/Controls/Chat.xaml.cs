@@ -1,5 +1,3 @@
-
-
 namespace Plugin.Maui.Chat.Controls;
 
 public partial class Chat : ContentView
@@ -25,7 +23,7 @@ public partial class Chat : ContentView
     /// <summary>
     /// Holds audio service instance.
     /// </summary>
-    public static readonly BindableProperty AudioServiceProperty =
+    internal static readonly BindableProperty AudioServiceProperty =
         BindableProperty.Create(nameof(AudioService), typeof(AudioService), typeof(Chat));
 
     public AudioService AudioService
