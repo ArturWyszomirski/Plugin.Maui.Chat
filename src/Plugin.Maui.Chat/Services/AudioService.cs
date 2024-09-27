@@ -15,15 +15,23 @@ public class AudioService
         audioRecorder = audioManager.CreateRecorder();
     }
 
-    public async Task<IAudioSource> StartStopRecorderAsync()
+    public async Task<IAudioSource?> StartStopRecorderAsync()
     {
         IAudioSource? audioSource = default;
+
+        if (await Permissions.RequestAsync<Permissions.Microphone>() != PermissionStatus.Granted)
+        {
+            await Shell.Current.DisplayAlert("Permission denied", "The app needs microphone permission to record audio.", "OK");
+            chat.AudioRecorderColor = chat.SecondaryColor;
+            return audioSource;
+        }
 
         if (!audioRecorder.IsRecording)
         {
             await audioRecorder.StartAsync();
 
             chat.IsRecording = true;
+            chat.AudioRecorderColor = Colors.Red;
 
 #if ANDROID || WINDOWS
             audioSource = await audioRecorder.StopAsync(When.SilenceIsDetected());
@@ -35,8 +43,9 @@ public class AudioService
         }
 
         chat.IsRecording = false;
+        chat.AudioRecorderColor = chat.PrimaryColor;
 
-        return audioSource!;
+        return audioSource;
     }
 
     public async Task StartStopPlayerAsync(IAudioSource? audioSource)

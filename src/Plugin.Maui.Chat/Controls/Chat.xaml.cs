@@ -14,7 +14,7 @@ public partial class Chat : ContentView
 
         AudioService = new(this);
 
-        AudioRecorderCommand ??= new Command(async () => await StartStopRecorderAsync());
+        AudioRecorderCommand ??= new Command(async () => AudioContent = await AudioService.StartStopRecorderAsync());
     }
     #endregion
 
@@ -303,7 +303,7 @@ public partial class Chat : ContentView
     public static readonly BindableProperty AudioContentProperty =
         BindableProperty.Create(nameof(AudioContent), typeof(object), typeof(Chat), defaultBindingMode: BindingMode.TwoWay);
 
-    public object AudioContent
+    public object? AudioContent
     {
         get => GetValue(AudioContentProperty);
         set => SetValue(AudioContentProperty, value);
@@ -684,23 +684,6 @@ public partial class Chat : ContentView
     #endregion
 
     #region Private methods
-    async Task StartStopRecorderAsync()
-    {
-        if (await Permissions.RequestAsync<Permissions.Microphone>() != PermissionStatus.Granted)
-        {
-            await Shell.Current.DisplayAlert("Permission denied", "The app needs microphone permission to record audio.", "OK");
-            AudioRecorderColor = SecondaryColor;
-        }
-        else
-        {
-            AudioRecorderColor = Colors.Red;
-
-            AudioContent = await AudioService.StartStopRecorderAsync();
-
-            AudioRecorderColor = PrimaryColor;
-        }
-    }
-
     #region Workaround for scrolling issue on Android where the last messages were hidden under the device keyboard.
     static void OnChatMessagesChanged(BindableObject bindable, object oldValue, object newValue)
     {
