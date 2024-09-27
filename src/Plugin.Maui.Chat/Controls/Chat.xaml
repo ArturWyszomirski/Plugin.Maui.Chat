@@ -188,7 +188,8 @@
                                  Grid.Row="1"
                                  Command="{Binding AudioRecorderCommand, Source={x:Reference chat}}"
                                  Source="{Binding AudioRecorderIcon, Source={x:Reference chat}}" 
-                                 Aspect="AspectFit"
+                                 Aspect="{OnPlatform iOS=Fill, Default=AspectFit}"
+                                 Padding="{OnPlatform iOS=5, Default=0}"
                                  HeightRequest="25"
                                  WidthRequest="25"
                                  IsVisible="{Binding IsAudioRecorderVisible, Source={x:Reference chat}}"
@@ -203,7 +204,7 @@
                            HeightRequest="25"
                            WidthRequest="25"
                            Source="{Binding HandsFreeModeIcon, Source={x:Reference chat}}" 
-                           Aspect="AspectFit"
+                           Aspect="{OnPlatform iOS=Fill, Default=AspectFit}"
                            IsVisible="{Binding IsHandsFreeModeVisible, Source={x:Reference chat}}"
                            Margin="5, 0, 0, 0">
                         <Image.Behaviors>
@@ -217,7 +218,7 @@
                            HeightRequest="25"
                            WidthRequest="25"
                            Source="{Binding AddAttachmentIcon, Source={x:Reference chat}}" 
-                           Aspect="AspectFit"
+                           Aspect="{OnPlatform iOS=Fill, Default=AspectFit}"
                            IsVisible="{Binding IsAddAttachmentVisible, Source={x:Reference chat}}"
                            Margin="5, 0, 0, 0">
                         <Image.Behaviors>
@@ -231,7 +232,7 @@
                            HeightRequest="25"
                            WidthRequest="25"
                            Source="{Binding TakePhotoIcon, Source={x:Reference chat}}" 
-                           Aspect="AspectFit"
+                           Aspect="{OnPlatform iOS=Fill, Default=AspectFit}"
                            IsVisible="{Binding IsTakePhotoVisible, Source={x:Reference chat}}"
                            Margin="5, 0, 0, 0">
                         <Image.Behaviors>
@@ -246,7 +247,8 @@
                          Command="{Binding SendMessageCommand, Source={x:Reference chat}}"
                          IsEnabled="{Binding IsSendMessageEnabled, Source={x:Reference chat}}"
                          Source="{Binding SendMessageIcon, Source={x:Reference chat}}"
-                         Aspect="AspectFit"
+                         Aspect="{OnPlatform iOS=Fill, Default=AspectFit}"
+                         Padding="{OnPlatform iOS=5, Default=0}"
                          HeightRequest="25"
                          WidthRequest="25"
                          VerticalOptions="End"

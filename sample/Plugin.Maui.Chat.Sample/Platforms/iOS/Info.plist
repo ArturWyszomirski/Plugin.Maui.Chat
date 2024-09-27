@@ -28,5 +28,10 @@
 	</array>
 	<key>XSAppIconAssets</key>
 	<string>Assets.xcassets/appicon.appiconset</string>
+
+	<!-- Permissions-->
+	<key>NSMicrophoneUsageDescription</key>
+	<string>Access to the microphone will enable sending voice messages.</string>
+	
 </dict>
 </plist>

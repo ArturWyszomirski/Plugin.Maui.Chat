@@ -1,5 +1,3 @@
-
-
 namespace Plugin.Maui.Chat.Controls;
 
 public partial class Chat : ContentView
@@ -695,11 +693,28 @@ public partial class Chat : ContentView
         }
         else
         {
+            //FIX without SilenceDetector
+#if ANDROID || WINDOWS
             AudioRecorderColor = Colors.Red;
+            
+#elif  IOS || MACCATALYST
+
+            if (AudioRecorderColor.Equals(Colors.Red))
+            { 
+                AudioRecorderColor = PrimaryColor;
+            }
+            else
+            {
+                AudioRecorderColor = Colors.Red;
+            }
+#endif
 
             AudioContent = await AudioService.StartStopRecorderAsync();
 
+            //FIX without SilenceDetector
+#if ANDROID || WINDOWS  
             AudioRecorderColor = PrimaryColor;
+#endif 
         }
     }
 
