@@ -24,9 +24,9 @@ internal class SpeechToTextService(Controls.Chat chat)
             {
                 if (!string.IsNullOrWhiteSpace(partialText))
                 {
-#if WINDOWS
+#if WINDOWS 
                     text += CapitalizeFirstLetter(partialText) + ". ";
-#elif ANDROID
+#elif ANDROID || IOS || MACCATALYST
                     text = CapitalizeFirstLetter(partialText) + ". ";
 #endif
                 }
@@ -34,7 +34,7 @@ internal class SpeechToTextService(Controls.Chat chat)
 
             if (recognitionResult.IsSuccessful)
             {
-#if ANDROID
+#if ANDROID || IOS || MACCATALYST
                 cancelSpeechToTextTokenSource.Cancel();
 
                 if (!string.IsNullOrWhiteSpace(recognitionResult.Text))
@@ -46,7 +46,7 @@ internal class SpeechToTextService(Controls.Chat chat)
                 await Toast.Make(recognitionResult.Exception?.Message ?? "Unable to recognize speech").Show(CancellationToken.None);
             }
         }
-#if ANDROID
+#if ANDROID || IOS || MACCATALYST
         else
             cancelSpeechToTextTokenSource?.Cancel();
 
@@ -58,22 +58,20 @@ internal class SpeechToTextService(Controls.Chat chat)
 
     private async Task<PermissionStatus> RequestPermission()
     {
-        if (await Permissions.RequestAsync<Permissions.Microphone>() != PermissionStatus.Granted)
-        {
-            await Shell.Current.DisplayAlert("Permission denied", "The app needs microphone permission to record audio.", "OK");
-            chat.AudioRecorderColor = chat.SecondaryColor;
-            return PermissionStatus.Denied;
-        }
-        
-#if IOS || MACCATALYST
         var isGranted = await SpeechToText.Default.RequestPermissions(CancellationToken.None);
         if (!isGranted)
         {
-            await Shell.Current.DisplayAlert("Permission denied", "This feature requires access to speech recognition.", "OK");
+#if IOS || MACCATALYST
+            await Shell.Current.DisplayAlert("Permission denied",
+                "This feature requires access to microphone and speech recognition.", "OK");
+
+#elif WINDOWS || ANDROID
+               await Shell.Current.DisplayAlert("Permission denied", "The app needs microphone permission to record audio.", "OK");
+#endif
             chat.AudioRecorderColor = chat.SecondaryColor;
             return PermissionStatus.Denied;
         }
-#endif
+
         return PermissionStatus.Granted;
     }
 
