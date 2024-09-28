@@ -118,6 +118,9 @@ async Task SendMessageAsync()
 
 #### Voice messaging
 
+> [!NOTE]
+> To use voice messaging setting relevant permissions to record audio is necessary.
+
 `Chat` provides built-in functionality for voice messaging based on `Plugin.Maui.Audio`. Audio Recorder is equipped in silence detection, so recording should stop automatically when user stops speaking.
 
 > [!WARNING]
@@ -149,6 +152,10 @@ Audio player will show up in every received and send message where `AudioContent
 
 > [!NOTE]
 > Built-in methods can also be changed to custom ones. In order to do that bind your own method to Audio Recorder or Player command property.
+
+##### Text-to-speech
+
+In order to turn on transcription set `IsSpeechToTextEnabled = True`. Then, instead of generating `AudioConent`, the voice will be converted to text and added to `TextContent`.
 
 ### Customized usage
 
