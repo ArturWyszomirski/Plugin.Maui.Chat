@@ -24,7 +24,7 @@ internal class SpeechToTextService(Controls.Chat chat)
             chat.IsRecording = true;
             chat.AudioRecorderColor = Colors.Red;
 
-            var recognitionResult = await SpeechToText.Default.ListenAsync(CultureInfo.GetCultureInfo("en-US"), new Progress<string>(partialText =>
+            var recognitionResult = await SpeechToText.Default.ListenAsync(CultureInfo.CurrentCulture, new Progress<string>(partialText =>
             {
                 if (!string.IsNullOrWhiteSpace(partialText))
                 {
