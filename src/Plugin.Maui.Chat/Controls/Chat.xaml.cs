@@ -16,6 +16,7 @@ public partial class Chat : ContentView
 
         AudioService = new(this);
         speechToTextService = new(this);
+        TextToSpeechService = new(this);
 
         AudioRecorderCommand ??= new Command(async () => await RecordAudioAsync());
     }
@@ -33,6 +34,18 @@ public partial class Chat : ContentView
     {
         get => (AudioService)GetValue(AudioServiceProperty);
         private set => SetValue(AudioServiceProperty, value);
+    }
+
+    /// <summary>
+    /// Holds text-to-speech service instance.
+    /// </summary>
+    internal static readonly BindableProperty TextToSpeechServiceProperty =
+        BindableProperty.Create(nameof(TextToSpeechService), typeof(TextToSpeechService), typeof(TextToSpeechService));
+
+    public TextToSpeechService TextToSpeechService
+    {
+        get => (TextToSpeechService)GetValue(TextToSpeechServiceProperty);
+        set => SetValue(TextToSpeechServiceProperty, value);
     }
     #endregion
 
@@ -63,7 +76,7 @@ public partial class Chat : ContentView
 
     private static void OnIsPlayingChanged(BindableObject bindable, object oldValue, object newValue)
     {
-        if(bindable is Chat chat)
+        if (bindable is Chat chat)
             chat.Status = (bool)newValue ? "Playing..." : string.Empty;
     }
 
@@ -71,6 +84,24 @@ public partial class Chat : ContentView
     {
         get => (bool)GetValue(IsPlayingProperty);
         set => SetValue(IsPlayingProperty, value);
+    }
+
+    /// <summary>
+    /// True when text is being read.
+    /// </summary>
+    public static readonly BindableProperty IsReadingProperty =
+        BindableProperty.Create(nameof(IsReading), typeof(bool), typeof(Chat), propertyChanged: OnIsReadingChanged);
+
+    private static void OnIsReadingChanged(BindableObject bindable, object oldValue, object newValue)
+    {
+        if (bindable is Chat chat)
+            chat.Status = (bool)newValue ? "Reading..." : string.Empty;
+    }
+
+    public bool IsReading
+    {
+        get => (bool)GetValue(IsReadingProperty);
+        set => SetValue(IsReadingProperty, value);
     }
     #endregion
 
@@ -174,6 +205,7 @@ public partial class Chat : ContentView
     #endregion
 
     #region Received message
+    #region UI properties
     /// <summary>
     /// Received message background color.
     /// </summary>
@@ -258,6 +290,57 @@ public partial class Chat : ContentView
         get => (Color)GetValue(ReceivedMessageAudioContentColorProperty);
         set => SetValue(ReceivedMessageAudioContentColorProperty, value);
     }
+    #endregion
+
+    #region Text reader
+    /// <summary>
+    /// Read or stop text message.
+    /// </summary>
+    public static readonly BindableProperty TextReaderCommandProperty =
+        BindableProperty.Create(nameof(TextReaderCommand), typeof(ICommand), typeof(Chat));
+
+    public ICommand TextReaderCommand
+    {
+        get => (ICommand)GetValue(TextReaderCommandProperty);
+        set => SetValue(TextReaderCommandProperty, value);
+    }
+
+    /// <summary>
+    /// Text reader button icon.
+    /// </summary>
+    public static readonly BindableProperty TextReaderIconProperty =
+        BindableProperty.Create(nameof(TextReaderIcon), typeof(ImageSource), typeof(Chat), ImageSource.FromFile(Maui.Chat.Resources.Icons.Speaker));
+
+    public ImageSource TextReaderIcon
+    {
+        get => (ImageSource)GetValue(TextReaderIconProperty);
+        set => SetValue(TextReaderIconProperty, value);
+    }
+
+    /// <summary>
+    /// Text reader button color.
+    /// </summary>
+    public static readonly BindableProperty TextReaderColorProperty =
+        BindableProperty.Create(nameof(TextReaderColor), typeof(Color), typeof(Chat), primaryColor);
+
+    public Color TextReaderColor
+    {
+        get => (Color)GetValue(TextReaderColorProperty);
+        set => SetValue(TextReaderColorProperty, value);
+    }
+
+    /// <summary>
+    /// Determines whether text-to-speech is enabled.
+    /// </summary>
+    public static readonly BindableProperty IsTextReaderVisibleProperty =
+        BindableProperty.Create(nameof(IsTextReaderVisible), typeof(bool), typeof(Chat));
+
+    public bool IsTextReaderVisible
+    {
+        get => (bool)GetValue(IsTextReaderVisibleProperty);
+        set => SetValue(IsTextReaderVisibleProperty, value);
+    }
+    #endregion
     #endregion
 
     #region System message
@@ -363,32 +446,6 @@ public partial class Chat : ContentView
     }
     #endregion
 
-    #region Audio player
-    /// <summary>
-    /// Play or stop audio message.
-    /// </summary>
-    public static readonly BindableProperty AudioPlayerCommandProperty =
-        BindableProperty.Create(nameof(AudioPlayerCommand), typeof(ICommand), typeof(Chat));
-
-    public ICommand AudioPlayerCommand
-    {
-        get => (ICommand)GetValue(AudioPlayerCommandProperty);
-        set => SetValue(AudioPlayerCommandProperty, value);
-    }
-
-    /// <summary>
-    /// Audio content button icon.
-    /// </summary>
-    public static readonly BindableProperty AudioContentIconProperty =
-        BindableProperty.Create(nameof(AudioContentIcon), typeof(ImageSource), typeof(Chat), ImageSource.FromFile(Maui.Chat.Resources.Icons.Waveform));
-
-    public ImageSource AudioContentIcon
-    {
-        get => (ImageSource)GetValue(AudioContentIconProperty);
-        set => SetValue(AudioContentIconProperty, value);
-    }
-    #endregion
-
     #region AudioRecorder
     /// <summary>
     /// Start or stop recording voice message.
@@ -448,6 +505,32 @@ public partial class Chat : ContentView
     {
         get => (bool)GetValue(IsSpeechToTextEnabledProperty);
         set => SetValue(IsSpeechToTextEnabledProperty, value);
+    }
+    #endregion
+
+    #region Audio player
+    /// <summary>
+    /// Play or stop audio message.
+    /// </summary>
+    public static readonly BindableProperty AudioPlayerCommandProperty =
+        BindableProperty.Create(nameof(AudioPlayerCommand), typeof(ICommand), typeof(Chat));
+
+    public ICommand AudioPlayerCommand
+    {
+        get => (ICommand)GetValue(AudioPlayerCommandProperty);
+        set => SetValue(AudioPlayerCommandProperty, value);
+    }
+
+    /// <summary>
+    /// Audio content button icon.
+    /// </summary>
+    public static readonly BindableProperty AudioContentIconProperty =
+        BindableProperty.Create(nameof(AudioContentIcon), typeof(ImageSource), typeof(Chat), ImageSource.FromFile(Maui.Chat.Resources.Icons.Waveform));
+
+    public ImageSource AudioContentIcon
+    {
+        get => (ImageSource)GetValue(AudioContentIconProperty);
+        set => SetValue(AudioContentIconProperty, value);
     }
     #endregion
 

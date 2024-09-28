@@ -118,6 +118,11 @@ public partial class CustomizedChatViewModel : ObservableRecipient
     }
 
     [RelayCommand]
+    async Task ReadMessage() => await Shell.Current.DisplayAlert("Custom read text command",
+                                                                 "Bla bla bla bla...",
+                                                                 "Que?");
+
+    [RelayCommand]
     void HandsFreeMode() => IsHandsFreeMode = !IsHandsFreeMode;
 
     [RelayCommand]

@@ -65,6 +65,7 @@
 	  <None Remove="Resources\Images\microphone_ss.png" />
 	  <None Remove="Resources\Images\paper_clip_ss.png" />
 	  <None Remove="Resources\Images\paper_plane_ss.png" />
+	  <None Remove="Resources\Images\speaker_ss.png" />
 	  <None Remove="Resources\Images\waveform_ss.png" />
 	  <None Remove="Resources\Raw\ukulele.mp3" />
 	</ItemGroup>
