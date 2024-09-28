@@ -182,7 +182,7 @@
                             VerticalTextAlignment="Center"
                             Keyboard="Chat"
                             AutoSize="TextChanges"
-                            TextColor="Black"/>
+                            TextColor="{OnPlatform Android=Black, WinUI=White}"/>
 
                     <ImageButton Grid.Column="1"
                                  Grid.Row="1"
