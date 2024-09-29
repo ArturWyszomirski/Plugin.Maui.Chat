@@ -82,6 +82,9 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <Compile Update="Pages\TranscriptionChatPage.xaml.cs">
+	    <DependentUpon>TranscriptionChatPage.xaml</DependentUpon>
+	  </Compile>
 	  <Compile Update="Pages\AudioChatPage.xaml.cs">
 	    <DependentUpon>AudioChatPage.xaml</DependentUpon>
 	  </Compile>
@@ -103,6 +106,9 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <MauiXaml Update="Pages\TranscriptionChatPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
 	  <MauiXaml Update="Pages\CustomizedChatPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>

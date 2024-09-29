@@ -15,7 +15,7 @@ public class AudioService
         audioRecorder = audioManager.CreateRecorder();
     }
 
-    public async Task<IAudioSource> StartStopRecorderAsync()
+    public async Task<IAudioSource?> StartOrStopRecorderAsync()
     {
         IAudioSource? audioSource = default;
 
@@ -24,6 +24,7 @@ public class AudioService
             await audioRecorder.StartAsync();
 
             chat.IsRecording = true;
+            chat.AudioRecorderColor = Colors.Red;
 
 #if ANDROID || WINDOWS
             audioSource = await audioRecorder.StopAsync(When.SilenceIsDetected());
@@ -34,9 +35,7 @@ public class AudioService
             audioSource = await audioRecorder.StopAsync(When.Immediately());
         }
 
-        chat.IsRecording = false;
-
-        return audioSource!;
+        return audioSource;
     }
 
     public async Task StartStopPlayerAsync(IAudioSource? audioSource)

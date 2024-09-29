@@ -19,11 +19,12 @@ public partial class AudioPlayer : ContentView
     }
     #endregion
 
+    #region Bindable properties
     /// <summary>
     /// Holds audio service instance.
     /// </summary>
-    public static readonly BindableProperty AudioServiceProperty =
-        BindableProperty.Create(nameof(AudioService), typeof(AudioService), typeof(Chat));
+    internal static readonly BindableProperty AudioServiceProperty =
+        BindableProperty.Create(nameof(AudioService), typeof(AudioService), typeof(AudioService));
 
     public AudioService AudioService
     {
@@ -109,7 +110,9 @@ public partial class AudioPlayer : ContentView
         get => (Color)GetValue(ColorProperty);
         set => SetValue(ColorProperty, value);
     }
+    #endregion
 
+    #region Private methods
     async Task StartStopAudioAsync()
     {
         Color = isPlayingColor;
@@ -118,4 +121,5 @@ public partial class AudioPlayer : ContentView
 
         Color = isStoppedColor;
     }
+    #endregion
 }

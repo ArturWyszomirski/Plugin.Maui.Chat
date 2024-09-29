@@ -1,5 +1,3 @@
-
-
 namespace Plugin.Maui.Chat.Controls;
 
 public partial class Chat : ContentView
@@ -7,6 +5,8 @@ public partial class Chat : ContentView
     #region Fields
     static readonly Color primaryColor = ResourceColors.GetPrimaryColor();
     static readonly Color secondaryColor = ResourceColors.GetSecondaryColor();
+
+    SpeechToTextService speechToTextService;
     #endregion
 
     #region Constructor
@@ -15,8 +15,9 @@ public partial class Chat : ContentView
 		InitializeComponent();
 
         AudioService = new(this);
+        speechToTextService = new(this);
 
-        AudioRecorderCommand ??= new Command(async () => await StartStopRecorderAsync());
+        AudioRecorderCommand ??= new Command(async () => await RecordAudioAsync());
     }
     #endregion
 
@@ -25,7 +26,7 @@ public partial class Chat : ContentView
     /// <summary>
     /// Holds audio service instance.
     /// </summary>
-    public static readonly BindableProperty AudioServiceProperty =
+    internal static readonly BindableProperty AudioServiceProperty =
         BindableProperty.Create(nameof(AudioService), typeof(AudioService), typeof(Chat));
 
     public AudioService AudioService
@@ -293,7 +294,7 @@ public partial class Chat : ContentView
     public static readonly BindableProperty TextContentProperty =
         BindableProperty.Create(nameof(TextContent), typeof(string), typeof(Chat), defaultBindingMode: BindingMode.TwoWay);
 
-    public string TextContent
+    public string? TextContent
     {
         get => (string)GetValue(TextContentProperty);
         set => SetValue(TextContentProperty, value);
@@ -305,7 +306,7 @@ public partial class Chat : ContentView
     public static readonly BindableProperty AudioContentProperty =
         BindableProperty.Create(nameof(AudioContent), typeof(object), typeof(Chat), defaultBindingMode: BindingMode.TwoWay);
 
-    public object AudioContent
+    public object? AudioContent
     {
         get => GetValue(AudioContentProperty);
         set => SetValue(AudioContentProperty, value);
@@ -388,7 +389,7 @@ public partial class Chat : ContentView
     }
     #endregion
 
-    #region AudioRecorder button
+    #region AudioRecorder
     /// <summary>
     /// Start or stop recording voice message.
     /// </summary>
@@ -435,6 +436,18 @@ public partial class Chat : ContentView
     {
         get => (Color)GetValue(AudioRecorderColorProperty);
         set => SetValue(AudioRecorderColorProperty, value);
+    }
+    
+    /// <summary>
+    /// Determines whether speech-to-text is enabled.
+    /// </summary>
+    public static readonly BindableProperty IsSpeechToTextEnabledProperty = 
+        BindableProperty.Create(nameof(IsSpeechToTextEnabled), typeof(bool), typeof(Chat));
+
+    public bool IsSpeechToTextEnabled
+    {
+        get => (bool)GetValue(IsSpeechToTextEnabledProperty);
+        set => SetValue(IsSpeechToTextEnabledProperty, value);
     }
     #endregion
 
@@ -686,21 +699,22 @@ public partial class Chat : ContentView
     #endregion
 
     #region Private methods
-    async Task StartStopRecorderAsync()
+    private async Task RecordAudioAsync()
     {
         if (await Permissions.RequestAsync<Permissions.Microphone>() != PermissionStatus.Granted)
         {
             await Shell.Current.DisplayAlert("Permission denied", "The app needs microphone permission to record audio.", "OK");
             AudioRecorderColor = SecondaryColor;
+            return;
         }
+
+        if (IsSpeechToTextEnabled)
+            TextContent += await speechToTextService.StartOrStopTranscriptionAsync();
         else
-        {
-            AudioRecorderColor = Colors.Red;
+            AudioContent = await AudioService.StartOrStopRecorderAsync();
 
-            AudioContent = await AudioService.StartStopRecorderAsync();
-
-            AudioRecorderColor = PrimaryColor;
-        }
+        IsRecording = false;
+        AudioRecorderColor = PrimaryColor;
     }
 
     #region Workaround for scrolling issue on Android where the last messages were hidden under the device keyboard.
