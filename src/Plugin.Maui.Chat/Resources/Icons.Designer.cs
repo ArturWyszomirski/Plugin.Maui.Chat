@@ -106,6 +106,15 @@ namespace Plugin.Maui.Chat.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to speaker_br.png.
+        /// </summary>
+        internal static string Speaker {
+            get {
+                return ResourceManager.GetString("Speaker", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to waveform_br.png.
         /// </summary>
         internal static string Waveform {

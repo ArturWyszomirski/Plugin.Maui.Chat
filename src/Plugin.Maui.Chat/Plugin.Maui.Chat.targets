@@ -5,6 +5,7 @@
 		<MauiImage Include="$(MSBuildThisFileDirectory)\Images\microphone_br.png" />
 		<MauiImage Include="$(MSBuildThisFileDirectory)\Images\paper_clip_br.png" />
 		<MauiImage Include="$(MSBuildThisFileDirectory)\Images\paper_plane_br.png" />
+		<MauiImage Include="$(MSBuildThisFileDirectory)\Images\speaker_br.png" />
 		<MauiImage Include="$(MSBuildThisFileDirectory)\Images\waveform_br.png" />
 	</ItemGroup>
 </Project>

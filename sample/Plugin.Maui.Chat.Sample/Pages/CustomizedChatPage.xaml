@@ -27,6 +27,11 @@
                ReceivedMessageContentTextColor="{StaticResource Primary}"
                ReceivedMessageAudioContentColor="{StaticResource Primary}"
                
+               TextReaderCommand="{Binding ReadMessageCommand}"
+               IsTextReaderVisible="True"
+               TextReaderColor="{StaticResource Tertiary}"
+               TextReaderIcon="{Static resources:Icons.Speaker}"
+               
                SystemMessageBackgroundColor="{StaticResource Gray200}"
                SystemMessageTextColor="{StaticResource Gray900}"
                
@@ -43,7 +48,7 @@
                AudioPlayerCommand="{Binding PlayAudioCommand}"
                AudioContentIcon="{Static resources:Icons.Waveform}"
                AudioContentColor="{StaticResource Primary}"
-
+               
                HandsFreeModeCommand="{Binding HandsFreeModeCommand}"
                IsHandsFreeModeVisible="True"
                HandsFreeModeIcon="{Static resources:Icons.Headphones}"

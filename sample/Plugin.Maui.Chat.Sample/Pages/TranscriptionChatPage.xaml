@@ -7,7 +7,7 @@
              x:Class="Plugin.Maui.Chat.Sample.Pages.TranscriptionChatPage"
              Title="Transcription chat"
              x:DataType="viewmodels:TranscriptionChatViewModel">
-    
+
     <chat:Chat TextContent="{Binding TextContent}"
                ChatMessages="{Binding ChatMessages}"
                SendMessageCommand="{Binding SendMessageCommand}"
@@ -18,7 +18,8 @@
                IsAudioRecorderVisible="True"
                IsSpeechToTextEnabled="True"
                
+               IsTextReaderVisible="True"
+               
                Margin="10"/>
-    
+
 </ContentPage>
-    

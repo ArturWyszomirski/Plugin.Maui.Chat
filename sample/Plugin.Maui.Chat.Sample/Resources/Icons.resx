@@ -135,4 +135,7 @@
   <data name="Waveform" xml:space="preserve">
     <value>waveform_ss.png</value>
   </data>
+  <data name="Speaker" xml:space="preserve">
+    <value>speaker_ss.png</value>
+  </data>
 </root>

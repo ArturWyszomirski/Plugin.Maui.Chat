@@ -52,13 +52,13 @@
                                 <behaviors:EmpyLabelVisibilityBehavior/>
                             </Label.Behaviors>
                         </Label>
-                        
-                        <Label HorizontalOptions="End"
+
+                            <Label HorizontalOptions="End"
                                Text="{Binding DateTime, StringFormat='{0:HH:mm}'}" 
                                FontSize="Micro"
                                TextColor="{Binding SentMessageTimestampTextColor, Source={x:Reference chat}}"
                                IsVisible="{Binding IsSentMessageTimestampVisible, Source={x:Reference chat}}"/>
-                        
+
                     </VerticalStackLayout>
                 </Frame>
             </Grid>
@@ -77,12 +77,27 @@
                        BackgroundColor="{Binding ReceivedMessageBackgroundColor, Source={x:Reference chat}}">
                     
                     <VerticalStackLayout>
-                        
-                        <Label HorizontalOptions="Start"
-                               Text="{Binding Author}"
-                               TextColor="{Binding ReceivedMessageAuthorTextColor, Source={x:Reference chat}}"
-                               FontAttributes="Bold"
-                               IsVisible="{Binding IsReceivedMessageAuthorVisible, Source={x:Reference chat}}"/>
+
+                        <Grid ColumnDefinitions="*, Auto"
+                              RowSpacing="5">
+
+                            <Label HorizontalOptions="Start"
+                                   Text="{Binding Author}"
+                                   TextColor="{Binding ReceivedMessageAuthorTextColor, Source={x:Reference chat}}"
+                                   FontAttributes="Bold"
+                                   IsVisible="{Binding IsReceivedMessageAuthorVisible, Source={x:Reference chat}}"/>
+
+                            <controls:TextReader TextToSpeechService="{Binding TextToSpeechService, Source={x:Reference chat}}" 
+                                                 Source="{Binding TextContent}"
+                                                 StartStopCommand="{Binding TextReaderCommand, Source={x:Reference chat}}"
+                                                 Icon="{Binding TextReaderIcon, Source={x:Reference chat}}"
+                                                 Color="{Binding TextReaderColor, Source={x:Reference chat}}"
+                                                 HeightRequest="15"
+                                                 WidthRequest="15"
+                                                 HorizontalOptions="End"
+                                                 IsVisible="{Binding IsTextReaderVisible, Source={x:Reference chat}}"/>
+                            
+                        </Grid>
 
                         <controls:AudioPlayer AudioService="{Binding AudioService, Source={x:Reference chat}}"
                                               Source="{Binding AudioContent}"
@@ -102,11 +117,11 @@
                         </Label>
 
                         <Label HorizontalOptions="End"
-                               Text="{Binding DateTime, StringFormat='{0:HH:mm}'}" 
-                               FontSize="Micro"
-                               TextColor="{Binding ReceivedMessageTimestampTextColor, Source={x:Reference chat}}"
-                               IsVisible="{Binding IsReceivedMessageTimestampVisible, Source={x:Reference chat}}"/>
-                        
+                                Text="{Binding DateTime, StringFormat='{0:HH:mm}'}" 
+                                FontSize="Micro"
+                                TextColor="{Binding ReceivedMessageTimestampTextColor, Source={x:Reference chat}}"
+                                IsVisible="{Binding IsReceivedMessageTimestampVisible, Source={x:Reference chat}}"/>
+
                     </VerticalStackLayout>
                 </Frame>
             </Grid>
@@ -136,8 +151,7 @@
     <Grid RowDefinitions="*, Auto, Auto"
           RowSpacing="10">
 
-        <ScrollView x:Name="chatMessagesScrollView" 
-                    Grid.Row="0"
+        <ScrollView Grid.Row="0" x:Name="chatMessagesScrollView"
                     VerticalOptions="End">
 
             <CollectionView x:Name="chatMessagesCollectionView"

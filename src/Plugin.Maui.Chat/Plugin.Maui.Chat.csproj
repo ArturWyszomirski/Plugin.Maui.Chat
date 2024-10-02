@@ -55,18 +55,10 @@
 
 	<!-- Include submodule libraries in nuget pack --> 
 	<ItemGroup>
-		<None Include="..\..\dependencies\Plugin.Maui.Audio\src\Plugin.Maui.Audio\bin\$(Configuration)\net8.0-android\*.*"
-              Pack="true"
-              PackagePath="lib/net8.0-android34.0/" />
-		<None Include="..\..\dependencies\Plugin.Maui.Audio\src\Plugin.Maui.Audio\bin\$(Configuration)\net8.0-ios\*.*"
-              Pack="true"
-              PackagePath="lib/net8.0-ios17.5/" />
-		<None Include="..\..\dependencies\Plugin.Maui.Audio\src\Plugin.Maui.Audio\bin\$(Configuration)\net8.0-maccatalyst\*.*"
-              Pack="true"
-              PackagePath="lib/net8.0-maccatalyst17.5/" />
-		<None Include="..\..\dependencies\Plugin.Maui.Audio\src\Plugin.Maui.Audio\bin\$(Configuration)\net8.0-windows10.0.19041.0\*.*"
-              Pack="true"
-              PackagePath="lib/net8.0-windows10.0.19041/" />
+		<None Include="..\..\dependencies\Plugin.Maui.Audio\src\Plugin.Maui.Audio\bin\$(Configuration)\net8.0-android\*.*" Pack="true" PackagePath="lib/net8.0-android34.0/" />
+		<None Include="..\..\dependencies\Plugin.Maui.Audio\src\Plugin.Maui.Audio\bin\$(Configuration)\net8.0-ios\*.*" Pack="true" PackagePath="lib/net8.0-ios17.5/" />
+		<None Include="..\..\dependencies\Plugin.Maui.Audio\src\Plugin.Maui.Audio\bin\$(Configuration)\net8.0-maccatalyst\*.*" Pack="true" PackagePath="lib/net8.0-maccatalyst17.5/" />
+		<None Include="..\..\dependencies\Plugin.Maui.Audio\src\Plugin.Maui.Audio\bin\$(Configuration)\net8.0-windows10.0.19041.0\*.*" Pack="true" PackagePath="lib/net8.0-windows10.0.19041/" />
 	</ItemGroup>
 	
 	<ItemGroup>
@@ -77,6 +69,9 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <MauiXaml Update="Controls\TextReader.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
 	  <MauiXaml Update="Controls\AudioPlayer.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
@@ -91,10 +86,14 @@
 		<MauiImage Include="Resources\Images\microphone_br.png" />
 		<MauiImage Include="Resources\Images\paper_clip_br.png" />
 		<MauiImage Include="Resources\Images\paper_plane_br.png" />
+		<MauiImage Include="Resources\Images\speaker_br.png" />
 		<MauiImage Include="Resources\Images\waveform_br.png" />
 	</ItemGroup>
 
 	<ItemGroup>
+	  <Compile Update="Controls\TextReader.xaml.cs">
+	    <DependentUpon>TextReader.xaml</DependentUpon>
+	  </Compile>
 	  <Compile Update="Resources\Icons.Designer.cs">
 	    <DesignTime>True</DesignTime>
 	    <AutoGen>True</AutoGen>
@@ -119,6 +118,7 @@
 		<None Include="Resources\Images\microphone_br.png" Pack="True" PackagePath="buildTransitive\Images\" />
 		<None Include="Resources\Images\paper_clip_br.png" Pack="True" PackagePath="buildTransitive\Images\" />
 		<None Include="Resources\Images\paper_plane_br.png" Pack="True" PackagePath="buildTransitive\Images\" />
+		<None Include="Resources\Images\speaker_br.png" Pack="True" PackagePath="buildTransitive\Images\" />
 		<None Include="Resources\Images\waveform_br.png" Pack="True" PackagePath="buildTransitive\Images\" />
 	</ItemGroup>
 </Project>
