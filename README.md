@@ -155,7 +155,14 @@ Audio player will show up in every received and send message where `AudioContent
 
 ##### Text-to-speech
 
-In order to turn on transcription set `IsSpeechToTextEnabled = True`. Then, instead of generating `AudioConent`, the voice will be converted to text and added to `TextContent`.
+In order to turn on transcription set `IsSpeechToTextEnabled="True"`. Then, instead of generating `AudioConent`, the voice will be converted to text and added to `TextContent`.
+
+##### Speech-to-text
+
+Setting `IsTextReaderVisible="True"` will result in showing up a text reader icon in every received message. 
+
+> [!NOTE]
+> This functionality utilize native text-to-speech converter, but you're able to change this by setting `TextReaderCommand`. As always icon and its color can also be changed.
 
 ### Customized usage
 
@@ -223,13 +230,24 @@ AudioRecorderColor="{StaticResource Primary}"
 
 ##### Audio player
 
-Whenever `AudioContent` is not null an audio player will pop up using `Plugin.Maui.Audio` to enable playing voice messages. While playing record the icon will turn green. 
+Whenever `AudioContent` in message is not null an audio player will pop up using `Plugin.Maui.Audio` to enable playing voice messages. While playing record the icon will turn green. 
 
 ```xaml
 AudioContent="{Binding AudioContent}"
 AudioPlayerCommand="{Binding PlayAudioCommand}"
 AudioContentIcon="{Static resources:Icons.Waveform}"
 AudioContentColor="{StaticResource Primary}"
+```
+
+##### Text reader
+
+By default text reader is not visible. To turn it on set `IsTextReaderVisible="True"`. Text reader uses framework's native text-to-speech, but you are permised to change it binding your own method to `TextReaderCommand` property.
+
+```xaml
+TextReaderCommand="{Binding ReadMessageCommand}"
+IsTextReaderVisible="True"
+TextReaderColor="{StaticResource Tertiary}"
+TextReaderIcon="{Static resources:Icons.Speaker}"
 ```
 
 ##### Hands-free mode
