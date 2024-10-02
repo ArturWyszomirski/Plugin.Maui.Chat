@@ -1,6 +1,4 @@
-﻿using System.Threading;
-
-namespace Plugin.Maui.Chat.Services;
+﻿namespace Plugin.Maui.Chat.Services;
 
 internal class SpeechToTextService(Controls.Chat chat)
 {
@@ -49,8 +47,9 @@ internal class SpeechToTextService(Controls.Chat chat)
 #if ANDROID || IOS || MACCATALYST
         else
             cancelSpeechToTextTokenSource?.Cancel();
-
-        await SpeechToText.Default.DisposeAsync();
+        
+        if(cancelSpeechToTextTokenSource?.IsCancellationRequested == false)
+            await SpeechToText.Default.DisposeAsync();
 #endif
 
         return text;
