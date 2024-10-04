@@ -22,7 +22,7 @@
 
             <Grid x:Name="sentMessageGrid"
                   ColumnDefinitions="*, 3*"
-                  Margin="0, 5">
+                  Padding="0, 5">
 
                 <Frame x:Name="sentMessageFrame"
                        Grid.Column="1"
@@ -76,7 +76,7 @@
 
             <Grid x:Name="receivedMessageGrid" 
                   ColumnDefinitions="3*, *"
-                  Margin="0, 5">
+                  Padding="0, 5">
 
                 <Frame x:Name="receivedMessageFrame" 
                        Grid.Column="0"
