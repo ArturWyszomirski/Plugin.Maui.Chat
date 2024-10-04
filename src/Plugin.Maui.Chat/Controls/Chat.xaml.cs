@@ -800,7 +800,7 @@ public partial class Chat : ContentView
         base.OnBindingContextChanged();
 
         // workaround for StartStopCommand being null when AudioPlayer resolved (issue #14)
-        audioPlayer.StartStopCommand = AudioPlayerCommand;
+        audioPlayerControl.StartStopCommand = AudioPlayerCommand;
     }
     #endregion
 
