@@ -141,12 +141,12 @@ object? audioContent;
 ```
 
 > [!NOTE]
-> Audio Recorder icon, color and behavior can be changed as shown in [Audio recorder](https://github.com/ArturWyszomirski/Plugin.Maui.Chat/edit/Documentation/README.md#audio-recorder)
+> Audio Recorder icon, color and behavior can be changed as shown in [Audio recorder button chapter](https://github.com/ArturWyszomirski/Plugin.Maui.Chat/edit/Documentation/README.md#audio-recorder-button)
 
 When recording is finished the Audio Player icon will pop up in the user message frame. Tap on it to listen to the recorder content.
 
 > [!NOTE]
-> Audio Player icon, color and behavior can be changed as shown in [Audio player](https://github.com/ArturWyszomirski/Plugin.Maui.Chat/edit/Documentation/README.md#audio-player)
+> Audio Player icon, color and behavior can be changed as shown in [Audio player button chapter](https://github.com/ArturWyszomirski/Plugin.Maui.Chat/edit/Documentation/README.md#audio-player-button)
 
 Audio player will show up in every received and send message where `AudioContent` is not null.
 
@@ -163,6 +163,17 @@ Setting `IsTextReaderVisible="True"` will result in showing up a text reader ico
 
 > [!NOTE]
 > This functionality utilize native text-to-speech converter, but you're able to change this by setting `TextReaderCommand`. As always icon and its color can also be changed.
+
+##### Hands-free mode
+
+Hands-free mode is especially useful when using chat to communicate with bots. The idea is to loop those three steps:
+- transcribe user's speech to text,
+- send text, 
+- read received answer.
+
+The loop breaks when: user stops speaking and there is nothing to transcribe, speech-to-text was for some reason unsuccessful or user manually turns off hands-free mode.
+
+This kind of functionality is strongly bound to send method and therefore it can't be delivered as a built-in feature. However to give en example how it could be implemented, there is a sample prepared. This sample uses Chat's `SpeechToTextService` and `TextToSpeechService` which are exposed in properties with the same names. Binding to those properties enables using native transcription and read methods.
 
 ### Customized usage
 
@@ -217,7 +228,7 @@ StatusTextColor="{StaticResource Gray500}"
 
 All buttons expose properties that enable changing icons, colors, visibilty and commands.
 
-##### Audio recorder
+##### Audio recorder button
 
 By default audio recorder button is bound to `Plugin.Maui.Audio` recoder using a silence detection which will automatically stop recording when user stop speaking. While recording the button will turn red.
 
@@ -228,7 +239,7 @@ AudioRecorderIcon="{Static resources:Icons.Microphone}"
 AudioRecorderColor="{StaticResource Primary}"
 ```
 
-##### Audio player
+##### Audio player button
 
 Whenever `AudioContent` in message is not null an audio player will pop up using `Plugin.Maui.Audio` to enable playing voice messages. While playing record the icon will turn green. 
 
@@ -239,7 +250,7 @@ AudioContentIcon="{Static resources:Icons.Waveform}"
 AudioContentColor="{StaticResource Primary}"
 ```
 
-##### Text reader
+##### Text reader button
 
 By default text reader is not visible. To turn it on set `IsTextReaderVisible="True"`. Text reader uses framework's native text-to-speech, but you are permised to change it binding your own method to `TextReaderCommand` property.
 
@@ -250,7 +261,9 @@ TextReaderColor="{StaticResource Tertiary}"
 TextReaderIcon="{Static resources:Icons.Speaker}"
 ```
 
-##### Hands-free mode
+##### Hands-free mode button
+
+By default hand-free mode is not visible and there is no method bound to its command. As this functionality is strictly bound to send method, you have to implement it by yourself. For more information, check out [Hands-free mode chapter](https://github.com/ArturWyszomirski/Plugin.Maui.Chat/edit/Documentation/README.md#hands-free-mode)
 
 ```xaml
 HandsFreeModeCommand="{Binding HandsFreeModeCommand}"
@@ -259,7 +272,7 @@ HandsFreeModeIcon="{Static resources:Icons.Headphones}"
 HandsFreeModeColor="{StaticResource Primary}"
 ```
 
-##### Take photo
+##### Take photo button
 
 ```xaml
 AddAttachmentCommand="{Binding AddAttachmentCommand}"
@@ -268,7 +281,7 @@ AddAttachmentIcon="{Static resources:Icons.PaperClip}"
 AddAttachmentColor="{StaticResource Primary}"
 ```
 
-##### Add attachment
+##### Add attachment button
 
 ```xaml
 TakePhotoCommand="{Binding TakePhotoCommand}"
@@ -277,7 +290,7 @@ TakePhotoIcon="{Static resources:Icons.Camera}"
 TakePhotoColor="{StaticResource Primary}"
 ```
 
-##### Send message
+##### Send message button
 
 By default button is disabled when user text entry is empty or consist only whitespace characters and no other content is present in the message.
 
@@ -290,6 +303,22 @@ IsSendMessageVisible="True"
 SendMessageIcon="{Static resources:Icons.PaperPlane}"
 SendMessageColor="{StaticResource Primary}"
 ```
+
+### Services
+
+Services used by `Chat` are exposed through relevant properties. Below you'll find list of services and available methods.
+
+#### `AudioService`: 
+- `StartOrStopRecorderAsync` - start or stops audio recording depending on `IsRecording` property. Method uses silence detection and will autonomously stops recording when user stop speaking. Methods return recording as `IAudioSource`.
+- `StartStopPlayerAsync(IAudioSource? audioSource)` - start or stops playing audio depending on `IsPlaying` property.
+
+#### `SpeechToTextService`:
+- `StartOrStopTranscriptionAsync` - start or stops speech-to-text conversion depending on `IsRecording` property. Method uses silence detection and will autonomously stops recording when user stop speaking. Methods return transcription as `string`.
+- `CancelSpeechToTextTokenSource` - use this token source to manually turn-off transcription. You'll find usage example in Hands-free mode sample.
+
+#### `TextToSpeechService`:
+- `StartOrStopReadAsync(string? text)` - start or stops text-to-speech conversion depending on `IsReading` property. 
+- `CancelReadingTokenSource` - use this token source to manually turn-off reading. You'll find usage example in Hands-free mode sample.
 
 ## Credits
 
