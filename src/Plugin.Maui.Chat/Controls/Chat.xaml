@@ -89,9 +89,10 @@
 
                         <Grid x:Name="receivedMessageHeaderGrid"
                               ColumnDefinitions="*, Auto"
-                              RowSpacing="5">
+                              ColumnSpacing="5">
 
                             <Label x:Name="receivedMessageAuthorLabel"
+                                   Grid.Column="0"
                                    HorizontalOptions="Start"
                                    Text="{Binding Author}"
                                    TextColor="{Binding ReceivedMessageAuthorTextColor, Source={x:Reference chat}}"
@@ -99,6 +100,7 @@
                                    IsVisible="{Binding IsReceivedMessageAuthorVisible, Source={x:Reference chat}}"/>
 
                             <controls:TextReader x:Name="receivedMessageTextReaderControl"
+                                                 Grid.Column="1"
                                                  TextToSpeechService="{Binding TextToSpeechService, Source={x:Reference chat}}" 
                                                  Source="{Binding TextContent}"
                                                  StartStopCommand="{Binding TextReaderCommand, Source={x:Reference chat}}"
