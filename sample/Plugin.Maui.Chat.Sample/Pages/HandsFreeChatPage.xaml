@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:chat="clr-namespace:Plugin.Maui.Chat.Controls;assembly=Plugin.Maui.Chat"
+             xmlns:resources="clr-namespace:Plugin.Maui.Chat.Sample.Resources"
+             xmlns:viewmodels="clr-namespace:Plugin.Maui.Chat.Sample.ViewModels"
+             x:Class="Plugin.Maui.Chat.Sample.Pages.HandsFreeChatPage"
+             Title="Hands-free chat"
+             x:DataType="viewmodels:HandsFreeChatViewModel">
+
+    <chat:Chat SpeechToTextService="{Binding SpeechToTextSvc}"
+               TextToSpeechService="{Binding TextToSpeechSvc}"
+               
+               ChatMessages="{Binding ChatMessages}"
+               IsSentMessageAuthorVisible="True"
+               IsSentMessageTimestampVisible="True"
+               IsReceivedMessageAuthorVisible="True"
+               IsReceivedMessageTimestampVisible="True"
+               IsTextReaderVisible="True"
+               
+               Status="{Binding Status}"
+               IsStatusVisible="True"
+               
+               TextContent="{Binding TextContent}"
+               
+               IsAudioRecorderVisible="True"
+               IsSpeechToTextEnabled="True"
+               
+               HandsFreeModeCommand="{Binding StartOrStopHandsFreeModeCommand}"
+               IsHandsFreeModeOn="{Binding IsHandsFreeModeOn}"
+               IsHandsFreeModeVisible="True"
+               
+               SendMessageCommand="{Binding SendMessageCommand}"
+               
+               Margin="10">
+        
+        <chat:Chat.Triggers>
+            <DataTrigger TargetType="chat:Chat" Binding="{Binding IsHandsFreeModeOn}" Value="True">
+                <Setter Property="HandsFreeModeColor" Value="Green"/>
+            </DataTrigger>
+            <DataTrigger TargetType="chat:Chat" Binding="{Binding IsHandsFreeModeOn}" Value="False">
+                <Setter Property="HandsFreeModeColor" Value="{StaticResource Primary}"/>
+            </DataTrigger>
+        </chat:Chat.Triggers>
+        
+    </chat:Chat>
+
+</ContentPage>

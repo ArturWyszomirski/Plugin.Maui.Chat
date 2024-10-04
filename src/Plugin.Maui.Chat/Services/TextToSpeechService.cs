@@ -2,22 +2,26 @@
 
 public class TextToSpeechService(Controls.Chat chat)
 {
-    CancellationTokenSource? cancelReadingTokenSource;
+    public CancellationTokenSource? CancelReadingTokenSource { get; private set; }
 
-    public async Task StartOrStopReadAsync(string text)
+    public async Task StartOrStopReadAsync(string? text)
     {
+        if (string.IsNullOrWhiteSpace(text)) 
+            return;
+
         if (!chat.IsReading)
         {
-            cancelReadingTokenSource = new();
+            CancelReadingTokenSource = new();
 
             chat.IsReading = true;
 
-            await TextToSpeech.Default.SpeakAsync(text, cancelToken: cancelReadingTokenSource.Token);
+            await TextToSpeech.Default.SpeakAsync(text, cancelToken: CancelReadingTokenSource.Token);
         }
         else
         {
-            cancelReadingTokenSource?.Cancel();
-            chat.IsReading = false;
+            CancelReadingTokenSource?.Cancel();
         }
+
+        chat.IsReading = false;
     }
 }

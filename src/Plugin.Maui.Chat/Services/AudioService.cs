@@ -35,6 +35,9 @@ public class AudioService
             audioSource = await audioRecorder.StopAsync(When.Immediately());
         }
 
+        chat.IsRecording = false;
+        chat.AudioRecorderColor = chat.PrimaryColor;
+
         return audioSource;
     }
 

@@ -2,6 +2,7 @@
 <ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:behaviors="clr-namespace:Plugin.Maui.Chat.Behaviors"
+             xmlns:converters="clr-namespace:Plugin.Maui.Chat.Converters"
              xmlns:controls="clr-namespace:Plugin.Maui.Chat.Controls"
              xmlns:helpers="clr-namespace:Plugin.Maui.Chat.Helpers"
              xmlns:models="clr-namespace:Plugin.Maui.Chat.Models"
@@ -11,34 +12,35 @@
              x:Name="chat">
 
     <ContentView.Behaviors>
-        <behaviors:UserMessageValidationBehavior/>
+        <behaviors:SendMessageButtonEnableBehavior/>
     </ContentView.Behaviors>
 
     <ContentView.Resources>
-        
+
         <DataTemplate x:Key="SentMessageTemplate" 
                       x:DataType="models:ChatMessage">
-            
+
             <Grid ColumnDefinitions="*, 3*"
                   Margin="0, 5">
-                
+
                 <Frame Grid.Column="1"
                        HorizontalOptions="End"
                        CornerRadius="25"
                        Padding="16, 12"
                        BackgroundColor="{Binding SentMessageBackgroundColor, Source={x:Reference chat}}">
-                    
+
                     <VerticalStackLayout>
-                        
+
                         <Label HorizontalOptions="Start"
                                Text="{Binding Author}"
                                TextColor="{Binding SentMessageAuthorTextColor, Source={x:Reference chat}}"
                                FontAttributes="Bold"
                                IsVisible="{Binding IsSentMessageAuthorVisible, Source={x:Reference chat}}"/>
-                        
+
                         <controls:AudioPlayer AudioService="{Binding AudioService, Source={x:Reference chat}}"
                                               Source="{Binding AudioContent}"
                                               StartStopCommand="{Binding AudioPlayerCommand, Source={x:Reference chat}}"
+                                              IsEnabled="{Binding IsHandsFreeModeOn, Source={x:Reference chat}, Converter={x:StaticResource Key=InverseBooleanConverter}}"
                                               Icon="{Binding AudioContentIcon, Source={x:Reference chat}}"
                                               Color="{Binding SentMessageAudioContentColor, Source={x:Reference chat}}"
                                               HeightRequest="25"
@@ -49,11 +51,11 @@
                         <Label Text="{Binding TextContent}"
                                TextColor="{Binding SentMessageContentTextColor, Source={x:Reference chat}}">
                             <Label.Behaviors>
-                                <behaviors:EmpyLabelVisibilityBehavior/>
+                                <behaviors:EmptyLabelVisibilityBehavior/>
                             </Label.Behaviors>
                         </Label>
 
-                            <Label HorizontalOptions="End"
+                        <Label HorizontalOptions="End"
                                Text="{Binding DateTime, StringFormat='{0:HH:mm}'}" 
                                FontSize="Micro"
                                TextColor="{Binding SentMessageTimestampTextColor, Source={x:Reference chat}}"
@@ -63,19 +65,19 @@
                 </Frame>
             </Grid>
         </DataTemplate>
-        
+
         <DataTemplate x:Key="ReceivedMessageTemplate"
                       x:DataType="models:ChatMessage">
-            
+
             <Grid ColumnDefinitions="3*, *"
                   Margin="0, 5">
-                
+
                 <Frame Grid.Column="0"
                        HorizontalOptions="Start"
                        CornerRadius="25"
                        Padding="16, 12"
                        BackgroundColor="{Binding ReceivedMessageBackgroundColor, Source={x:Reference chat}}">
-                    
+
                     <VerticalStackLayout>
 
                         <Grid ColumnDefinitions="*, Auto"
@@ -90,18 +92,20 @@
                             <controls:TextReader TextToSpeechService="{Binding TextToSpeechService, Source={x:Reference chat}}" 
                                                  Source="{Binding TextContent}"
                                                  StartStopCommand="{Binding TextReaderCommand, Source={x:Reference chat}}"
+                                                 IsEnabled="{Binding IsHandsFreeModeOn, Source={x:Reference chat}, Converter={x:StaticResource Key=InverseBooleanConverter}}"
                                                  Icon="{Binding TextReaderIcon, Source={x:Reference chat}}"
                                                  Color="{Binding TextReaderColor, Source={x:Reference chat}}"
                                                  HeightRequest="15"
                                                  WidthRequest="15"
                                                  HorizontalOptions="End"
                                                  IsVisible="{Binding IsTextReaderVisible, Source={x:Reference chat}}"/>
-                            
+
                         </Grid>
 
                         <controls:AudioPlayer AudioService="{Binding AudioService, Source={x:Reference chat}}"
                                               Source="{Binding AudioContent}"
                                               StartStopCommand="{Binding AudioPlayerCommand, Source={x:Reference chat}}"
+                                              IsEnabled="{Binding IsHandsFreeModeOn, Source={x:Reference chat}, Converter={x:StaticResource Key=InverseBooleanConverter}}"
                                               Icon="{Binding AudioContentIcon, Source={x:Reference chat}}"
                                               Color="{Binding ReceivedMessageAudioContentColor, Source={x:Reference chat}}"
                                               HeightRequest="25"
@@ -112,7 +116,7 @@
                         <Label Text="{Binding TextContent}"
                                TextColor="{Binding ReceivedMessageContentTextColor, Source={x:Reference chat}}">
                             <Label.Behaviors>
-                                <behaviors:EmpyLabelVisibilityBehavior/>
+                                <behaviors:EmptyLabelVisibilityBehavior/>
                             </Label.Behaviors>
                         </Label>
 
@@ -126,10 +130,10 @@
                 </Frame>
             </Grid>
         </DataTemplate>
-        
+
         <DataTemplate x:Key="SystemMessageTemplate"
                       x:DataType="models:ChatMessage">
-            
+
             <Frame HorizontalOptions="Center"
                    CornerRadius="5"
                    Padding="16, 6"
@@ -138,14 +142,17 @@
 
                 <Label Text="{Binding TextContent}"
                        TextColor="{Binding SystemMessageTextColor, Source={x:Reference chat}}"/>
-                
+
             </Frame>
         </DataTemplate>
+        
+        <converters:InverseBooleanConverter x:Key="InverseBooleanConverter"/>
 
         <helpers:ChatMessageTemplateSelector x:Key="ChatMessageTemplateSelector"
                                              SentMessage="{StaticResource SentMessageTemplate}"
                                              ReceivedMessage="{StaticResource ReceivedMessageTemplate}"
                                              SystemMessage="{StaticResource SystemMessageTemplate}"/>
+        
     </ContentView.Resources>
 
     <Grid RowDefinitions="*, Auto, Auto"
@@ -182,6 +189,7 @@
                                           AudioService="{Binding AudioService, Source={x:Reference chat}}"
                                           Source="{Binding AudioContent, Source={x:Reference chat}}"
                                           StartStopCommand="{Binding AudioPlayerCommand, Source={x:Reference chat}}"
+                                          IsEnabled="{Binding IsHandsFreeModeOn, Source={x:Reference chat}, Converter={x:StaticResource Key=InverseBooleanConverter}}"
                                           Icon="{Binding AudioContentIcon, Source={x:Reference chat}}"
                                           Color="{Binding AudioContentColor, Source={x:Reference chat}}"
                                           HeightRequest="25"
@@ -201,6 +209,7 @@
                     <ImageButton Grid.Column="1"
                                  Grid.Row="1"
                                  Command="{Binding AudioRecorderCommand, Source={x:Reference chat}}"
+                                 IsEnabled="{Binding IsHandsFreeModeOn, Source={x:Reference chat}, Converter={x:StaticResource Key=InverseBooleanConverter}}"
                                  Source="{Binding AudioRecorderIcon, Source={x:Reference chat}}" 
                                  Aspect="AspectFit"
                                  HeightRequest="25"
@@ -212,47 +221,49 @@
                         </ImageButton.Behaviors>
                     </ImageButton>
 
-                    <Image Grid.Column="2"
-                           Grid.Row="1"
-                           HeightRequest="25"
-                           WidthRequest="25"
-                           Source="{Binding HandsFreeModeIcon, Source={x:Reference chat}}" 
-                           Aspect="AspectFit"
-                           IsVisible="{Binding IsHandsFreeModeVisible, Source={x:Reference chat}}"
-                           Margin="5, 0, 0, 0">
-                        <Image.Behaviors>
+                    <ImageButton Grid.Column="2"
+                                 Grid.Row="1"
+                                 Command="{Binding HandsFreeModeCommand, Source={x:Reference chat}}"
+                                 Source="{Binding HandsFreeModeIcon, Source={x:Reference chat}}" 
+                                 Aspect="AspectFit"
+                                 HeightRequest="25"
+                                 WidthRequest="25"
+                                 IsVisible="{Binding IsHandsFreeModeVisible, Source={x:Reference chat}}"
+                                 Margin="5, 0, 0, 0">
+                        <ImageButton.Behaviors>
                             <toolkit:IconTintColorBehavior TintColor="{Binding HandsFreeModeColor, Source={x:Reference chat}}"/>
-                            <toolkit:ImageTouchBehavior Command="{Binding HandsFreeModeCommand, Source={x:Reference chat}}"/>
-                        </Image.Behaviors>
-                    </Image>
+                        </ImageButton.Behaviors>
+                    </ImageButton>
 
-                    <Image Grid.Column="3"
-                           Grid.Row="1"
-                           HeightRequest="25"
-                           WidthRequest="25"
-                           Source="{Binding AddAttachmentIcon, Source={x:Reference chat}}" 
-                           Aspect="AspectFit"
-                           IsVisible="{Binding IsAddAttachmentVisible, Source={x:Reference chat}}"
-                           Margin="5, 0, 0, 0">
-                        <Image.Behaviors>
+                    <ImageButton Grid.Column="3"
+                                 Grid.Row="1"
+                                 Command="{Binding AddAttachmentCommand, Source={x:Reference chat}}"
+                                 IsEnabled="{Binding IsHandsFreeModeOn, Source={x:Reference chat}, Converter={x:StaticResource Key=InverseBooleanConverter}}"
+                                 Source="{Binding AddAttachmentIcon, Source={x:Reference chat}}" 
+                                 Aspect="AspectFit"
+                                 HeightRequest="25"
+                                 WidthRequest="25"
+                                 IsVisible="{Binding IsAddAttachmentVisible, Source={x:Reference chat}}"
+                                 Margin="5, 0, 0, 0">
+                        <ImageButton.Behaviors>
                             <toolkit:IconTintColorBehavior TintColor="{Binding AddAttachmentColor, Source={x:Reference chat}}"/>
-                            <toolkit:ImageTouchBehavior Command="{Binding AddAttachmentCommand, Source={x:Reference chat}}"/>
-                        </Image.Behaviors>
-                    </Image>
+                        </ImageButton.Behaviors>
+                    </ImageButton>
 
-                    <Image Grid.Column="4"
-                           Grid.Row="1"
-                           HeightRequest="25"
-                           WidthRequest="25"
-                           Source="{Binding TakePhotoIcon, Source={x:Reference chat}}" 
-                           Aspect="AspectFit"
-                           IsVisible="{Binding IsTakePhotoVisible, Source={x:Reference chat}}"
-                           Margin="5, 0, 0, 0">
-                        <Image.Behaviors>
+                    <ImageButton Grid.Column="4"
+                                 Grid.Row="1"
+                                 Command="{Binding TakePhotoCommand, Source={x:Reference chat}}"
+                                 IsEnabled="{Binding IsHandsFreeModeOn, Source={x:Reference chat}, Converter={x:StaticResource Key=InverseBooleanConverter}}"
+                                 Source="{Binding TakePhotoIcon, Source={x:Reference chat}}"
+                                 Aspect="AspectFit"
+                                 HeightRequest="25"
+                                 WidthRequest="25"
+                                 IsVisible="{Binding IsTakePhotoVisible, Source={x:Reference chat}}"
+                                 Margin="5, 0, 0, 0">
+                        <ImageButton.Behaviors>
                             <toolkit:IconTintColorBehavior TintColor="{Binding TakePhotoColor, Source={x:Reference chat}}"/>
-                            <toolkit:ImageTouchBehavior Command="{Binding TakePhotoCommand, Source={x:Reference chat}}"/>
-                        </Image.Behaviors>
-                    </Image>
+                        </ImageButton.Behaviors>
+                    </ImageButton>
                 </Grid>
             </Frame>
 

@@ -8,18 +8,23 @@
              Title="Transcription chat"
              x:DataType="viewmodels:TranscriptionChatViewModel">
 
-    <chat:Chat TextContent="{Binding TextContent}"
-               ChatMessages="{Binding ChatMessages}"
-               SendMessageCommand="{Binding SendMessageCommand}"
+    <chat:Chat ChatMessages="{Binding ChatMessages}"
+               IsSentMessageAuthorVisible="True"
+               IsSentMessageTimestampVisible="True"
+               IsReceivedMessageAuthorVisible="True"
+               IsReceivedMessageTimestampVisible="True"
+               IsTextReaderVisible="True"
                
                Status="{Binding Status}"
                IsStatusVisible="True"
+        
+               TextContent="{Binding TextContent}"
                
                IsAudioRecorderVisible="True"
                IsSpeechToTextEnabled="True"
-               
-               IsTextReaderVisible="True"
-               
+        
+               SendMessageCommand="{Binding SendMessageCommand}"
+        
                Margin="10"/>
 
 </ContentPage>

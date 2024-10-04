@@ -3,9 +3,9 @@
 namespace Plugin.Maui.Chat.Behaviors;
 
 /// <summary>
-/// Disables send message button if user message is empty or white space.
+/// Hides label if empty.
 /// </summary>
-internal class EmpyLabelVisibilityBehavior : Behavior<Label>
+internal class EmptyLabelVisibilityBehavior : Behavior<Label>
 {
     protected override void OnAttachedTo(BindableObject bindable)
     {
