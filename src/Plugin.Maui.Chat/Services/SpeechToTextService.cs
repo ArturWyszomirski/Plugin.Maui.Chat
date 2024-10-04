@@ -1,8 +1,8 @@
 ﻿namespace Plugin.Maui.Chat.Services;
 
-internal class SpeechToTextService(Controls.Chat chat)
+public class SpeechToTextService(Controls.Chat chat)
 {
-    CancellationTokenSource? cancelSpeechToTextTokenSource;
+    public CancellationTokenSource? CancelSpeechToTextTokenSource { get; private set; }
 
     public async Task<string?> StartOrStopTranscriptionAsync()
     {
@@ -13,7 +13,7 @@ internal class SpeechToTextService(Controls.Chat chat)
         
         if (!chat.IsRecording) // couldn't use SpeechToText.Default.CurrentState because is always in Listenig state on Windows OS
         {
-            cancelSpeechToTextTokenSource = new();
+            CancelSpeechToTextTokenSource = new();
 
             chat.IsRecording = true;
             chat.AudioRecorderColor = Colors.Red;
@@ -28,12 +28,12 @@ internal class SpeechToTextService(Controls.Chat chat)
                     text = CapitalizeFirstLetter(partialText) + ". ";
 #endif
                 }
-            }), cancelSpeechToTextTokenSource.Token);
+            }), CancelSpeechToTextTokenSource.Token);
 
             if (recognitionResult.IsSuccessful)
             {
 #if ANDROID || IOS || MACCATALYST
-                cancelSpeechToTextTokenSource.Cancel();
+                CancelSpeechToTextTokenSource.Cancel();
 
                 if (!string.IsNullOrWhiteSpace(recognitionResult.Text))
                     text = CapitalizeFirstLetter(recognitionResult.Text) + ". ";
@@ -46,11 +46,14 @@ internal class SpeechToTextService(Controls.Chat chat)
         }
 #if ANDROID || IOS || MACCATALYST
         else
-            cancelSpeechToTextTokenSource?.Cancel();
+            CancelSpeechToTextTokenSource?.Cancel();
         
-        if(cancelSpeechToTextTokenSource?.IsCancellationRequested == false)
+        if (CancelSpeechToTextTokenSource?.IsCancellationRequested == false)
             await SpeechToText.Default.DisposeAsync();
 #endif
+
+        chat.IsRecording = false;
+        chat.AudioRecorderColor = chat.PrimaryColor;
 
         return text;
     }
@@ -65,7 +68,7 @@ internal class SpeechToTextService(Controls.Chat chat)
                 "This feature requires access to microphone and speech recognition.", "OK");
 
 #elif WINDOWS || ANDROID
-               await Shell.Current.DisplayAlert("Permission denied", "The app needs microphone permission to record audio.", "OK");
+            await Shell.Current.DisplayAlert("Permission denied", "The app needs microphone permission to record audio.", "OK");
 #endif
             chat.AudioRecorderColor = chat.SecondaryColor;
             return PermissionStatus.Denied;

@@ -83,6 +83,9 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <Compile Update="Pages\HandsFreeChatPage.xaml.cs">
+	    <DependentUpon>HandsFreeChatPage.xaml</DependentUpon>
+	  </Compile>
 	  <Compile Update="Pages\TranscriptionChatPage.xaml.cs">
 	    <DependentUpon>TranscriptionChatPage.xaml</DependentUpon>
 	  </Compile>
@@ -107,6 +110,9 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <MauiXaml Update="Pages\HandsFreeChatPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
 	  <MauiXaml Update="Pages\TranscriptionChatPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>

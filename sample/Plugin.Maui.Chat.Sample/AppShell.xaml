@@ -15,12 +15,16 @@
         <ShellContent Title="Audio"
                       ContentTemplate="{DataTemplate pages:AudioChatPage}"
                       Route="AudioChat" />
-        
-        <ShellContent Title="Transcription"
+
+        <ShellContent Title="Transcript"
                       ContentTemplate="{DataTemplate pages:TranscriptionChatPage}"
                       Route="TranscriptionChat" />
 
-        <ShellContent Title="Customized"
+        <ShellContent Title="Hands-free"
+                      ContentTemplate="{DataTemplate pages:HandsFreeChatPage}"
+                      Route="HandsFreeChat" />
+
+        <ShellContent Title="Custom"
                       ContentTemplate="{DataTemplate pages:CustomizedChatPage}"
                       Route="CustomizedChat" />
         

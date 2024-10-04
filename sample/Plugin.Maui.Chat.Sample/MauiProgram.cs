@@ -20,15 +20,17 @@ public static class MauiProgram
 		builder.Logging.AddDebug();
 #endif
 
-        builder.Services.AddTransient<SimpleChatViewModel>();
-        builder.Services.AddTransient<CustomizedChatViewModel>();
-        builder.Services.AddTransient<AudioChatViewModel>();
-        builder.Services.AddTransient<TranscriptionChatViewModel>();
+        builder.Services.AddTransient<SimpleChatViewModel>()
+                        .AddTransient<CustomizedChatViewModel>()
+                        .AddTransient<AudioChatViewModel>()
+                        .AddTransient<TranscriptionChatViewModel>()
+                        .AddTransient<HandsFreeChatViewModel>()
 
-        builder.Services.AddTransient<SimpleChatPage>();
-        builder.Services.AddTransient<CustomizedChatPage>();
-        builder.Services.AddTransient<AudioChatPage>();
-        builder.Services.AddTransient<TranscriptionChatPage>();
+                        .AddTransient<SimpleChatPage>()
+                        .AddTransient<CustomizedChatPage>()
+                        .AddTransient<AudioChatPage>()
+                        .AddTransient<TranscriptionChatPage>()
+                        .AddTransient<HandsFreeChatPage>();
 
         return builder.Build();
     }
