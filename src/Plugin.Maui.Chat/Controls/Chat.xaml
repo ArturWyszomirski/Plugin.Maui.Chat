@@ -173,7 +173,17 @@
                                              SentMessage="{StaticResource SentMessageTemplate}"
                                              ReceivedMessage="{StaticResource ReceivedMessageTemplate}"
                                              SystemMessage="{StaticResource SystemMessageTemplate}"/>
-        
+
+
+        <Style x:Key="ChatFeatureButtonStyle" TargetType="ImageButton">
+            <Setter Property="Aspect" Value="AspectFit"/>
+            <Setter Property="HeightRequest" Value="25"/>
+            <Setter Property="WidthRequest" Value="25"/>
+            <Setter Property="BackgroundColor" Value="Transparent"/>
+            <Setter Property="VerticalOptions" Value="End"/>
+            <Setter Property="Margin" Value="5, 0, 0, 10"/>
+        </Style>
+
     </ContentView.Resources>
 
     <Grid x:Name="chatGrid"
@@ -241,13 +251,8 @@
                                  Command="{Binding AudioRecorderCommand, Source={x:Reference chat}}"
                                  IsEnabled="{Binding IsHandsFreeModeOn, Source={x:Reference chat}, Converter={x:StaticResource Key=InverseBooleanConverter}}"
                                  Source="{Binding AudioRecorderIcon, Source={x:Reference chat}}" 
-                                 Aspect="AspectFit"
-                                 HeightRequest="25"
-                                 WidthRequest="25"
-                                 BackgroundColor="Transparent"
                                  IsVisible="{Binding IsAudioRecorderVisible, Source={x:Reference chat}}"
-                                 VerticalOptions="End"
-                                 Margin="5, 0, 0, 10">
+                                 Style="{StaticResource ChatFeatureButtonStyle}">
                         <ImageButton.Behaviors>
                             <toolkit:IconTintColorBehavior TintColor="{Binding AudioRecorderColor, Source={x:Reference chat}}"/>
                         </ImageButton.Behaviors>
@@ -257,14 +262,9 @@
                                  Grid.Column="2"
                                  Grid.Row="1"
                                  Command="{Binding HandsFreeModeCommand, Source={x:Reference chat}}"
-                                 Source="{Binding HandsFreeModeIcon, Source={x:Reference chat}}" 
-                                 Aspect="AspectFit"
-                                 HeightRequest="25"
-                                 WidthRequest="25"
-                                 BackgroundColor="Transparent"
+                                 Source="{Binding HandsFreeModeIcon, Source={x:Reference chat}}"
                                  IsVisible="{Binding IsHandsFreeModeVisible, Source={x:Reference chat}}"
-                                 VerticalOptions="End"
-                                 Margin="5, 0, 0, 10">
+                                 Style="{StaticResource ChatFeatureButtonStyle}">
                         <ImageButton.Behaviors>
                             <toolkit:IconTintColorBehavior TintColor="{Binding HandsFreeModeColor, Source={x:Reference chat}}"/>
                         </ImageButton.Behaviors>
@@ -275,14 +275,9 @@
                                  Grid.Row="1"
                                  Command="{Binding AddAttachmentCommand, Source={x:Reference chat}}"
                                  IsEnabled="{Binding IsHandsFreeModeOn, Source={x:Reference chat}, Converter={x:StaticResource Key=InverseBooleanConverter}}"
-                                 Source="{Binding AddAttachmentIcon, Source={x:Reference chat}}" 
-                                 Aspect="AspectFit"
-                                 HeightRequest="25"
-                                 WidthRequest="25"
-                                 BackgroundColor="Transparent"
+                                 Source="{Binding AddAttachmentIcon, Source={x:Reference chat}}"
                                  IsVisible="{Binding IsAddAttachmentVisible, Source={x:Reference chat}}"
-                                 VerticalOptions="End"
-                                 Margin="5, 0, 0, 10">
+                                 Style="{StaticResource ChatFeatureButtonStyle}">
                         <ImageButton.Behaviors>
                             <toolkit:IconTintColorBehavior TintColor="{Binding AddAttachmentColor, Source={x:Reference chat}}"/>
                         </ImageButton.Behaviors>
@@ -294,13 +289,8 @@
                                  Command="{Binding TakePhotoCommand, Source={x:Reference chat}}"
                                  IsEnabled="{Binding IsHandsFreeModeOn, Source={x:Reference chat}, Converter={x:StaticResource Key=InverseBooleanConverter}}"
                                  Source="{Binding TakePhotoIcon, Source={x:Reference chat}}"
-                                 Aspect="AspectFit"
-                                 HeightRequest="25"
-                                 WidthRequest="25"
-                                 BackgroundColor="Transparent"
                                  IsVisible="{Binding IsTakePhotoVisible, Source={x:Reference chat}}"
-                                 VerticalOptions="End"
-                                 Margin="5, 0, 0, 10">
+                                 Style="{StaticResource ChatFeatureButtonStyle}">
                         <ImageButton.Behaviors>
                             <toolkit:IconTintColorBehavior TintColor="{Binding TakePhotoColor, Source={x:Reference chat}}"/>
                         </ImageButton.Behaviors>
@@ -313,12 +303,8 @@
                          Command="{Binding SendMessageCommand, Source={x:Reference chat}}"
                          IsEnabled="{Binding IsSendMessageEnabled, Source={x:Reference chat}}"
                          Source="{Binding SendMessageIcon, Source={x:Reference chat}}"
-                         Aspect="AspectFit"
-                         HeightRequest="25"
-                         WidthRequest="25"
-                         BackgroundColor="Transparent"
                          IsVisible="{Binding IsSendMessageVisible, Source={x:Reference chat}}"
-                         VerticalOptions="End"
+                         Style="{StaticResource ChatFeatureButtonStyle}"
                          Margin="0, 11">
                 <ImageButton.Behaviors>
                     <toolkit:IconTintColorBehavior TintColor="{Binding SendMessageColor, Source={x:Reference chat}}"/>
