@@ -147,17 +147,24 @@
         <DataTemplate x:Key="SystemMessageTemplate"
                       x:DataType="models:ChatMessage">
 
-            <Frame x:Name="systemMessageFrame"
-                   HorizontalOptions="Center"
-                   CornerRadius="5"
-                   Padding="16, 6"
-                   BackgroundColor="{Binding SystemMessageBackgroundColor, Source={x:Reference chat}}"
-                   Margin="0, 5">
+            <Grid x:Name="systemMessageGrid"
+                  ColumnDefinitions="*, 5*, *">
+                
+                <Frame x:Name="systemMessageFrame"
+                       Grid.Column="1"
+                       HorizontalOptions="Fill"
+                       CornerRadius="5"
+                       Padding="16, 6"
+                       BackgroundColor="{Binding SystemMessageBackgroundColor, Source={x:Reference chat}}"
+                       Margin="0, 5">
 
-                <Label x:Name="systemMessageLabel" Text="{Binding TextContent}"
-                       TextColor="{Binding SystemMessageTextColor, Source={x:Reference chat}}"/>
+                    <Label x:Name="systemMessageLabel" 
+                           Text="{Binding TextContent}"
+                           TextColor="{Binding SystemMessageTextColor, Source={x:Reference chat}}"
+                           HorizontalOptions="Center"/>
 
-            </Frame>
+                </Frame>
+            </Grid>
         </DataTemplate>
         
         <converters:InverseBooleanConverter x:Key="InverseBooleanConverter"/>
