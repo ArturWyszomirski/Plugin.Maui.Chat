@@ -30,15 +30,15 @@ Install with the dotnet CLI: `dotnet add package Plugin.Maui.Chat`, or through t
 - User message entry field with buttons attached.
 
 `ChatMessage` properties:
-- `DateTime` which is getter only and provides the date and time at which `ChatMessage` was created. The visibility of message timestamp can be set by related property (see: [Sent and received messages](https://github.com/ArturWyszomirski/Plugin.Maui.Chat/edit/Documentation/README.md#sent-and-received-messages));
+- `DateTime` which is getter only and provides the date and time at which `ChatMessage` was created. The visibility of message timestamp can be set by related property (see: [Sent and received messages](https://github.com/ArturWyszomirski/Plugin.Maui.Chat?tab=readme-ov-file#sent-and-received-messages));
 - `Type` of `MessageType` which can be `Sent` (written by user), `Received` (sent to the user) or `System` (informational type).
-- `Author` of string type is the author of the message. The visibility of message author can be set by related property (see: [Sent and received messages](https://github.com/ArturWyszomirski/Plugin.Maui.Chat/edit/Documentation/README.md#sent-and-received-messages));
+- `Author` of string type is the author of the message. The visibility of message author can be set by related property (see: [Sent and received messages](https://github.com/ArturWyszomirski/Plugin.Maui.Chat?tab=readme-ov-file#sent-and-received-messages));
 - `TextContent` is message's text content
 - `AudioContent` is message's audio content
 
 The send button is by default disabled if the field is empty or consist only whitespace characters.
 
-Visibility of other buttons in the user message entry field as well as their's icons, colors and behaviors can be easily switched on or off (see: [Customized usage](https://github.com/ArturWyszomirski/Plugin.Maui.Chat/edit/Documentation/README.md#customized-usage)).
+Visibility of other buttons in the user message entry field as well as their's icons, colors and behaviors can be easily switched on or off (see: [Customized usage](https://github.com/ArturWyszomirski/Plugin.Maui.Chat?tab=readme-ov-file#customized-usage)).
 
 > [!NOTE]
 > Below examples assumes using MVVM architecture with ViewModel binded to the XAML page.
@@ -67,7 +67,7 @@ To use `Chat` you need to register `Plugin.Maui.Chat.Controls` namespace by addi
 ### Simple usage
 
 > [!NOTE]
-> By default colors corresponds to those set in `Resources\Styles\Colors.xaml`, but can be easily changed (see: [Customized usage](https://github.com/ArturWyszomirski/Plugin.Maui.Chat/edit/Documentation/README.md#customized-usage)).
+> By default colors corresponds to those set in `Resources\Styles\Colors.xaml`, but can be easily changed (see: [Customized usage](https://github.com/ArturWyszomirski/Plugin.Maui.Chat?tab=readme-ov-file#customized-usage)).
 
 #### Text messaging
 
@@ -141,12 +141,12 @@ object? audioContent;
 ```
 
 > [!NOTE]
-> Audio Recorder icon, color and behavior can be changed as shown in [Audio recorder button chapter](https://github.com/ArturWyszomirski/Plugin.Maui.Chat/edit/Documentation/README.md#audio-recorder-button)
+> Audio Recorder icon, color and behavior can be changed as shown in [Audio recorder button chapter](https://github.com/ArturWyszomirski/Plugin.Maui.Chat?tab=readme-ov-file#audio-recorder-button)
 
 When recording is finished the Audio Player icon will pop up in the user message frame. Tap on it to listen to the recorder content.
 
 > [!NOTE]
-> Audio Player icon, color and behavior can be changed as shown in [Audio player button chapter](https://github.com/ArturWyszomirski/Plugin.Maui.Chat/edit/Documentation/README.md#audio-player-button)
+> Audio Player icon, color and behavior can be changed as shown in [Audio player button chapter](https://github.com/ArturWyszomirski/Plugin.Maui.Chat?tab=readme-ov-file#audio-player-button)
 
 Audio player will show up in every received and send message where `AudioContent` is not null.
 
@@ -263,7 +263,7 @@ TextReaderIcon="{Static resources:Icons.Speaker}"
 
 ##### Hands-free mode button
 
-By default hand-free mode is not visible and there is no method bound to its command. As this functionality is strictly bound to send method, you have to implement it by yourself. For more information, check out [Hands-free mode chapter](https://github.com/ArturWyszomirski/Plugin.Maui.Chat/edit/Documentation/README.md#hands-free-mode)
+By default hand-free mode is not visible and there is no method bound to its command. As this functionality is strictly bound to send method, you have to implement it by yourself. For more information, check out [Hands-free mode chapter](https://github.com/ArturWyszomirski/Plugin.Maui.Chat?tab=readme-ov-file#hands-free-mode)
 
 ```xaml
 HandsFreeModeCommand="{Binding HandsFreeModeCommand}"
