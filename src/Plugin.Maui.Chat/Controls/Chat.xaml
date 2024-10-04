@@ -238,7 +238,8 @@
                                  HeightRequest="25"
                                  WidthRequest="25"
                                  IsVisible="{Binding IsAudioRecorderVisible, Source={x:Reference chat}}"
-                                 Margin="5, 0, 0, 0">
+                                 VerticalOptions="End"
+                                 Margin="5, 0, 0, 10">
                         <ImageButton.Behaviors>
                             <toolkit:IconTintColorBehavior TintColor="{Binding AudioRecorderColor, Source={x:Reference chat}}"/>
                         </ImageButton.Behaviors>
@@ -253,7 +254,8 @@
                                  HeightRequest="25"
                                  WidthRequest="25"
                                  IsVisible="{Binding IsHandsFreeModeVisible, Source={x:Reference chat}}"
-                                 Margin="5, 0, 0, 0">
+                                 VerticalOptions="End"
+                                 Margin="5, 0, 0, 10">
                         <ImageButton.Behaviors>
                             <toolkit:IconTintColorBehavior TintColor="{Binding HandsFreeModeColor, Source={x:Reference chat}}"/>
                         </ImageButton.Behaviors>
@@ -269,7 +271,8 @@
                                  HeightRequest="25"
                                  WidthRequest="25"
                                  IsVisible="{Binding IsAddAttachmentVisible, Source={x:Reference chat}}"
-                                 Margin="5, 0, 0, 0">
+                                 VerticalOptions="End"
+                                 Margin="5, 0, 0, 10">
                         <ImageButton.Behaviors>
                             <toolkit:IconTintColorBehavior TintColor="{Binding AddAttachmentColor, Source={x:Reference chat}}"/>
                         </ImageButton.Behaviors>
@@ -285,7 +288,8 @@
                                  HeightRequest="25"
                                  WidthRequest="25"
                                  IsVisible="{Binding IsTakePhotoVisible, Source={x:Reference chat}}"
-                                 Margin="5, 0, 0, 0">
+                                 VerticalOptions="End"
+                                 Margin="5, 0, 0, 10">
                         <ImageButton.Behaviors>
                             <toolkit:IconTintColorBehavior TintColor="{Binding TakePhotoColor, Source={x:Reference chat}}"/>
                         </ImageButton.Behaviors>
