@@ -1,4 +1,3 @@
-
 namespace Plugin.Maui.Chat.Controls;
 
 public partial class Chat : ContentView

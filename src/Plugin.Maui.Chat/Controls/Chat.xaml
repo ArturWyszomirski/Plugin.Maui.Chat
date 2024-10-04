@@ -244,6 +244,7 @@
                                  Aspect="AspectFit"
                                  HeightRequest="25"
                                  WidthRequest="25"
+                                 BackgroundColor="Transparent"
                                  IsVisible="{Binding IsAudioRecorderVisible, Source={x:Reference chat}}"
                                  VerticalOptions="End"
                                  Margin="5, 0, 0, 10">
@@ -260,6 +261,7 @@
                                  Aspect="AspectFit"
                                  HeightRequest="25"
                                  WidthRequest="25"
+                                 BackgroundColor="Transparent"
                                  IsVisible="{Binding IsHandsFreeModeVisible, Source={x:Reference chat}}"
                                  VerticalOptions="End"
                                  Margin="5, 0, 0, 10">
@@ -277,6 +279,7 @@
                                  Aspect="AspectFit"
                                  HeightRequest="25"
                                  WidthRequest="25"
+                                 BackgroundColor="Transparent"
                                  IsVisible="{Binding IsAddAttachmentVisible, Source={x:Reference chat}}"
                                  VerticalOptions="End"
                                  Margin="5, 0, 0, 10">
@@ -294,6 +297,7 @@
                                  Aspect="AspectFit"
                                  HeightRequest="25"
                                  WidthRequest="25"
+                                 BackgroundColor="Transparent"
                                  IsVisible="{Binding IsTakePhotoVisible, Source={x:Reference chat}}"
                                  VerticalOptions="End"
                                  Margin="5, 0, 0, 10">
@@ -312,9 +316,10 @@
                          Aspect="AspectFit"
                          HeightRequest="25"
                          WidthRequest="25"
+                         BackgroundColor="Transparent"
+                         IsVisible="{Binding IsSendMessageVisible, Source={x:Reference chat}}"
                          VerticalOptions="End"
-                         Margin="0, 11"
-                         IsVisible="{Binding IsSendMessageVisible, Source={x:Reference chat}}">
+                         Margin="0, 11">
                 <ImageButton.Behaviors>
                     <toolkit:IconTintColorBehavior TintColor="{Binding SendMessageColor, Source={x:Reference chat}}"/>
                 </ImageButton.Behaviors>
