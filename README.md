@@ -72,7 +72,7 @@ To use `Chat` you need to register `Plugin.Maui.Chat.Controls` namespace by addi
 #### Text messaging
 
 <a href="./assets/screenshots/simple_chat_01.png">
-  <img src="./assets/screenshots/simple_chat_01" alt="Thumbnail" width="200">
+  <img src="./assets/screenshots/simple_chat_01.png" alt="Thumbnail" width="200">
 </a>
 
 All you have to do to get started is to deal with those three properties:
