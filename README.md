@@ -71,6 +71,13 @@ To use `Chat` you need to register `Plugin.Maui.Chat.Controls` namespace by addi
 
 #### Text messaging
 
+<a href="./assets/screenshots/simple_chat_01.png">
+  <img src="./assets/screenshots/simple_chat_01.png" alt="Thumbnail" width="200">
+</a>
+<a href="./assets/screenshots/simple_chat_02.png">
+  <img src="./assets/screenshots/simple_chat_02.png" alt="Thumbnail" width="200">
+</a>
+
 All you have to do to get started is to deal with those three properties:
 - `TextContent` of string type which holds the user input,
 - `ChatMessages` which is a collection of `ChatMessage`,
@@ -118,6 +125,19 @@ async Task SendMessageAsync()
 
 #### Voice messaging
 
+<a href="./assets/screenshots/audio_chat_01.png">
+  <img src="./assets/screenshots/audio_chat_01.png" alt="Thumbnail" width="200">
+</a>
+<a href="./assets/screenshots/audio_chat_03.png">
+  <img src="./assets/screenshots/audio_chat_03.png" alt="Thumbnail" width="200">
+</a>
+<a href="./assets/screenshots/audio_chat_04.png">
+  <img src="./assets/screenshots/audio_chat_04.png" alt="Thumbnail" width="200">
+</a>
+<a href="./assets/screenshots/audio_chat_05.png">
+  <img src="./assets/screenshots/audio_chat_05.png" alt="Thumbnail" width="200">
+</a>
+
 > [!NOTE]
 > To use voice messaging setting relevant permissions to record audio is necessary.
 
@@ -153,11 +173,18 @@ Audio player will show up in every received and send message where `AudioContent
 > [!NOTE]
 > Built-in methods can also be changed to custom ones. In order to do that bind your own method to Audio Recorder or Player command property.
 
-##### Text-to-speech
+##### Speech-to-text
 
 In order to turn on transcription set `IsSpeechToTextEnabled="True"`. Then, instead of generating `AudioConent`, the voice will be converted to text and added to `TextContent`.
 
-##### Speech-to-text
+##### Text-to-speech
+
+<a href="./assets/screenshots/trascription_chat_01.png">
+  <img src="./assets/screenshots/trascription_chat_01.png" alt="Thumbnail" width="200">
+</a>
+<a href="./assets/screenshots/trascription_chat_02.png">
+  <img src="./assets/screenshots/trascription_chat_02.png" alt="Thumbnail" width="200">
+</a>
 
 Setting `IsTextReaderVisible="True"` will result in showing up a text reader icon in every received message. 
 
@@ -165,6 +192,13 @@ Setting `IsTextReaderVisible="True"` will result in showing up a text reader ico
 > This functionality utilize native text-to-speech converter, but you're able to change this by setting `TextReaderCommand`. As always icon and its color can also be changed.
 
 ##### Hands-free mode
+
+<a href="./assets/screenshots/hands_free_chat_01.png">
+  <img src="./assets/screenshots/hands_free_chat_01.png" alt="Thumbnail" width="200">
+</a>
+<a href="./assets/screenshots/hands_free_chat_02.png">
+  <img src="./assets/screenshots/hands_free_chat_02.png" alt="Thumbnail" width="200">
+</a>
 
 Hands-free mode is especially useful when using chat to communicate with bots. The idea is to loop those three steps:
 - transcribe user's speech to text,
@@ -176,6 +210,10 @@ The loop breaks when: user stops speaking and there is nothing to transcribe, sp
 This kind of functionality is strongly bound to send method and therefore it can't be delivered as a built-in feature. However to give en example how it could be implemented, there is a sample prepared. This sample uses Chat's `SpeechToTextService` and `TextToSpeechService` which are exposed in properties with the same names. Binding to those properties enables using native transcription and read methods.
 
 ### Customized usage
+
+<a href="./assets/screenshots/customized_chat_01.png">
+  <img src="./assets/screenshots/customized_chat_01.png" alt="Thumbnail" width="200">
+</a>
 
 Many UI elements apperance can be easily changed as well as methods bound to commands in buttons. Below you will find code snippets for each section of `Chat` control and some descriptions.
 
