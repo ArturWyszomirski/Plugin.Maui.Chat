@@ -118,24 +118,24 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="Camera" xml:space="preserve">
-    <value>camera_br.png</value>
+    <value>https://raw.githubusercontent.com/ArturWyszomirski/Plugin.Maui.Chat/refs/heads/main/src/Plugin.Maui.Chat/Resources/Images/camera_br.png</value>
   </data>
   <data name="Headphones" xml:space="preserve">
-    <value>headphones_br.png</value>
+    <value>https://raw.githubusercontent.com/ArturWyszomirski/Plugin.Maui.Chat/refs/heads/main/src/Plugin.Maui.Chat/Resources/Images/headphones_br.png</value>
   </data>
   <data name="Microphone" xml:space="preserve">
-    <value>microphone_br.png</value>
+    <value>https://raw.githubusercontent.com/ArturWyszomirski/Plugin.Maui.Chat/refs/heads/main/src/Plugin.Maui.Chat/Resources/Images/microphone_br.png</value>
   </data>
   <data name="PaperClip" xml:space="preserve">
-    <value>paper_clip_br.png</value>
+    <value>https://raw.githubusercontent.com/ArturWyszomirski/Plugin.Maui.Chat/refs/heads/main/src/Plugin.Maui.Chat/Resources/Images/paper_clip_br.png</value>
   </data>
   <data name="PaperPlane" xml:space="preserve">
-    <value>paper_plane_br.png</value>
+    <value>https://raw.githubusercontent.com/ArturWyszomirski/Plugin.Maui.Chat/refs/heads/main/src/Plugin.Maui.Chat/Resources/Images/paper_plane_br.png</value>
   </data>
   <data name="Waveform" xml:space="preserve">
-    <value>waveform_br.png</value>
+    <value>https://raw.githubusercontent.com/ArturWyszomirski/Plugin.Maui.Chat/refs/heads/main/src/Plugin.Maui.Chat/Resources/Images/waveform_br.png</value>
   </data>
   <data name="Speaker" xml:space="preserve">
-    <value>speaker_br.png</value>
+    <value>https://raw.githubusercontent.com/ArturWyszomirski/Plugin.Maui.Chat/refs/heads/main/src/Plugin.Maui.Chat/Resources/Images/speaker_br.png</value>
   </data>
 </root>
