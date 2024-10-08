@@ -216,8 +216,9 @@
 
             <Frame x:Name="messageEntryFrame"
                    Grid.Column="0"
-                   Padding="5, 0, 10, 0"
-                   BorderColor="LightGray">
+                   BackgroundColor="{Binding MessageEntryBackgroundColor, Source={x:Reference chat}}"
+                   BorderColor="LightGray"
+                   Padding="5, 0, 10, 0">
 
                 <Grid x:Name="messageEntryGrid"
                       ColumnDefinitions="*, Auto, Auto, Auto, Auto" 
@@ -242,6 +243,7 @@
                             Grid.Row="1"
                             Text="{Binding TextContent, Source={x:Reference chat}}"
                             Placeholder="Type your message..."
+                            TextColor="{Binding TextContentColor, Source={x:Reference chat}}"
                             VerticalTextAlignment="Center"
                             Keyboard="Chat"
                             AutoSize="TextChanges"/>

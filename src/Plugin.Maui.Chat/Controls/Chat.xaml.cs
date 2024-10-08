@@ -392,44 +392,6 @@ public partial class Chat : ContentView
     #endregion
     #endregion
 
-    #region User message contents
-    /// <summary>
-    /// Message typed by user.
-    /// </summary>
-    public static readonly BindableProperty TextContentProperty =
-        BindableProperty.Create(nameof(TextContent), typeof(string), typeof(Chat), defaultBindingMode: BindingMode.TwoWay);
-
-    public string? TextContent
-    {
-        get => (string)GetValue(TextContentProperty);
-        set => SetValue(TextContentProperty, value);
-    }
-
-    /// <summary>
-    /// Audio content in message.
-    /// </summary>
-    public static readonly BindableProperty AudioContentProperty =
-        BindableProperty.Create(nameof(AudioContent), typeof(object), typeof(Chat), defaultBindingMode: BindingMode.TwoWay);
-
-    public object? AudioContent
-    {
-        get => GetValue(AudioContentProperty);
-        set => SetValue(AudioContentProperty, value);
-    }
-
-    /// <summary>
-    /// User audio content button color.
-    /// </summary>
-    public static readonly BindableProperty AudioContentColorProperty =
-        BindableProperty.Create(nameof(AudioContentColor), typeof(Color), typeof(Chat), primaryColor);
-
-    public Color AudioContentColor
-    {
-        get => (Color)GetValue(AudioContentColorProperty);
-        set => SetValue(AudioContentColorProperty, value);
-    }
-    #endregion
-
     #region Status label
     /// <summary>
     /// Status shown just above the user message entry field e.g. "John Doe is typing..."
@@ -556,7 +518,61 @@ public partial class Chat : ContentView
     }
     #endregion
 
-    #region HandsFreeMode button
+    #region Message content entry
+
+    #region Text content
+    /// <summary>
+    /// Message typed by user.
+    /// </summary>
+    public static readonly BindableProperty TextContentProperty =
+        BindableProperty.Create(nameof(TextContent), typeof(string), typeof(Chat), defaultBindingMode: BindingMode.TwoWay);
+
+    public string? TextContent
+    {
+        get => (string)GetValue(TextContentProperty);
+        set => SetValue(TextContentProperty, value);
+    }
+
+    /// <summary>
+    /// Text content color.
+    /// </summary>
+    public static readonly BindableProperty TextContentColorProperty =
+        BindableProperty.Create(nameof(TextContentColor), typeof(Color), typeof(Chat), Colors.Black);
+
+    public Color TextContentColor
+    {
+        get => (Color)GetValue(TextContentColorProperty);
+        set => SetValue(TextContentColorProperty, value);
+    }
+    #endregion
+
+    #region Audio content
+    /// <summary>
+    /// Audio content in message.
+    /// </summary>
+    public static readonly BindableProperty AudioContentProperty =
+        BindableProperty.Create(nameof(AudioContent), typeof(object), typeof(Chat), defaultBindingMode: BindingMode.TwoWay);
+
+    public object? AudioContent
+    {
+        get => GetValue(AudioContentProperty);
+        set => SetValue(AudioContentProperty, value);
+    }
+
+    /// <summary>
+    /// User audio content button color.
+    /// </summary>
+    public static readonly BindableProperty AudioContentColorProperty =
+        BindableProperty.Create(nameof(AudioContentColor), typeof(Color), typeof(Chat), primaryColor);
+
+    public Color AudioContentColor
+    {
+        get => (Color)GetValue(AudioContentColorProperty);
+        set => SetValue(AudioContentColorProperty, value);
+    }
+    #endregion
+
+    #region Hands-free mode button
     /// <summary>
     /// Turn on/off hands-free mode. Hands-free mode is automated recording, transcribing and sending voice messages as well as reading received messages.
     /// </summary>
@@ -606,7 +622,7 @@ public partial class Chat : ContentView
     }
     #endregion
 
-    #region AddAttachment button
+    #region Add attachment button
     /// <summary>
     /// Turn on/off hands-free mode. Hands-free mode is automated recording, transcribing and sending voice messages as well as reading received messages.
     /// </summary>
@@ -656,7 +672,7 @@ public partial class Chat : ContentView
     }
     #endregion
 
-    #region TakePhoto button
+    #region Take photo button
     /// <summary>
     /// Turn on/off hands-free mode. Hands-free mode is automated recording, transcribing and sending voice messages as well as reading received messages.
     /// </summary>
@@ -706,7 +722,22 @@ public partial class Chat : ContentView
     }
     #endregion
 
-    #region SendMessage button
+    #region Background color
+    /// <summary>
+    /// Message entry background color.
+    /// </summary>
+    public static readonly BindableProperty MessageEntryBackgroundColorProperty =
+        BindableProperty.Create(nameof(MessageEntryBackgroundColor), typeof(Color), typeof(Chat), Colors.White);
+
+    public Color MessageEntryBackgroundColor
+    {
+        get => (Color)GetValue(MessageEntryBackgroundColorProperty);
+        set => SetValue(MessageEntryBackgroundColorProperty, value);
+    }
+    #endregion
+    #endregion
+
+    #region Send message button
     /// <summary>
     /// Send user message.
     /// </summary>
