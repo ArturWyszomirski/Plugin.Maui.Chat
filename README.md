@@ -262,6 +262,15 @@ StatusTextColor="{StaticResource Gray500}"
 
 `Status` is a string type. `IsStatusVisible` is a bool type. 
 
+#### Message editor
+
+To set up text editor colors set thoses properties.
+
+```xaml
+TextContentColor="{StaticResource Primary}"
+MessageEntryBackgroundColor="{StaticResource Secondary}"
+```
+
 #### Buttons
 
 All buttons expose properties that enable changing icons, colors, visibilty and commands.

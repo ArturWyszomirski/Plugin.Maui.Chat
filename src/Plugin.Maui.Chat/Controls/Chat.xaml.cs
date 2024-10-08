@@ -537,7 +537,7 @@ public partial class Chat : ContentView
     /// Text content color.
     /// </summary>
     public static readonly BindableProperty TextContentColorProperty =
-        BindableProperty.Create(nameof(TextContentColor), typeof(Color), typeof(Chat), Colors.Black);
+        BindableProperty.Create(nameof(TextContentColor), typeof(Color), typeof(Chat));
 
     public Color TextContentColor
     {
@@ -727,7 +727,7 @@ public partial class Chat : ContentView
     /// Message entry background color.
     /// </summary>
     public static readonly BindableProperty MessageEntryBackgroundColorProperty =
-        BindableProperty.Create(nameof(MessageEntryBackgroundColor), typeof(Color), typeof(Chat), Colors.White);
+        BindableProperty.Create(nameof(MessageEntryBackgroundColor), typeof(Color), typeof(Chat));
 
     public Color MessageEntryBackgroundColor
     {
