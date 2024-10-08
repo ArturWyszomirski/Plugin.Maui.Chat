@@ -39,6 +39,8 @@
                IsStatusVisible="{Binding IsStatusVisible}"
                StatusTextColor="{StaticResource Gray500}"
                
+               TextContentColor="{StaticResource Primary}"
+               
                AudioRecorderCommand="{Binding StartStopRecordingCommand}"
                IsAudioRecorderVisible="True"
                AudioRecorderIcon="{Static resources:Icons.Microphone}"
@@ -68,24 +70,26 @@
                SendMessageIcon="{Static resources:Icons.PaperPlane}"
                SendMessageColor="{StaticResource Primary}"
                
+               MessageEntryBackgroundColor="{StaticResource Secondary}"
+               
                Margin="10">
 
         <chat:Chat.Triggers>
 
             <DataTrigger TargetType="chat:Chat" Binding="{Binding IsRecording}" Value="True">
-                <Setter Property="AudioRecorderColor" Value="{StaticResource Primary}"/>
+                <Setter Property="AudioRecorderColor" Value="{StaticResource Magenta}"/>
             </DataTrigger>
 
             <DataTrigger TargetType="chat:Chat" Binding="{Binding IsRecording}" Value="False">
-                <Setter Property="AudioRecorderColor" Value="{StaticResource Secondary}"/>
+                <Setter Property="AudioRecorderColor" Value="{StaticResource Primary}"/>
             </DataTrigger>
 
             <DataTrigger TargetType="chat:Chat" Binding="{Binding IsHandsFreeMode}" Value="True">
-                <Setter Property="HandsFreeModeColor" Value="{StaticResource Primary}"/>
+                <Setter Property="HandsFreeModeColor" Value="{StaticResource Magenta}"/>
             </DataTrigger>
 
             <DataTrigger TargetType="chat:Chat" Binding="{Binding IsHandsFreeMode}" Value="False">
-                <Setter Property="HandsFreeModeColor" Value="{StaticResource Secondary}"/>
+                <Setter Property="HandsFreeModeColor" Value="{StaticResource Primary}"/>
             </DataTrigger>
 
         </chat:Chat.Triggers>
