@@ -468,7 +468,7 @@ public partial class Chat : ContentView
     }
     #endregion
 
-    #region AudioRecorder
+    #region Audio recorder
     /// <summary>
     /// Start or stop recording voice message.
     /// </summary>
