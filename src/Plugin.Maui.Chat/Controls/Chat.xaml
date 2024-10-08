@@ -244,8 +244,7 @@
                             Placeholder="Type your message..."
                             VerticalTextAlignment="Center"
                             Keyboard="Chat"
-                            AutoSize="TextChanges"
-                            TextColor="{OnPlatform Android=Black, WinUI=White}"/>
+                            AutoSize="TextChanges"/>
 
                     <ImageButton x:Name="audioRecorderImageButton"
                                  Grid.Column="1"
