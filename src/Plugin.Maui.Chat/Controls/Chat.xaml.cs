@@ -494,7 +494,7 @@ public partial class Chat : ContentView
     /// Text content color.
     /// </summary>
     public static readonly BindableProperty TextContentColorProperty =
-        BindableProperty.Create(nameof(TextContentColor), typeof(Color), typeof(Chat));
+        BindableProperty.Create(nameof(TextContentColor), typeof(Color), typeof(Chat), SetTextContentDefaultColor());
 
     public Color TextContentColor
     {
@@ -684,7 +684,7 @@ public partial class Chat : ContentView
     /// Message entry background color.
     /// </summary>
     public static readonly BindableProperty MessageEntryBackgroundColorProperty =
-        BindableProperty.Create(nameof(MessageEntryBackgroundColor), typeof(Color), typeof(Chat));
+        BindableProperty.Create(nameof(MessageEntryBackgroundColor), typeof(Color), typeof(Chat), Colors.Transparent);
 
     public Color MessageEntryBackgroundColor
     {
@@ -782,6 +782,16 @@ public partial class Chat : ContentView
     #endregion
 
     #region Private methods
+    static Color SetTextContentDefaultColor()
+    {
+        var theme = Application.Current?.RequestedTheme;
+
+        if (theme == AppTheme.Light)
+            return Colors.Black;
+        else
+            return Colors.White;
+    }
+
     #region Audio service changed
     static void OnAudioServiceChanged(BindableObject bindable, object oldValue, object newValue)
     {
