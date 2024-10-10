@@ -50,7 +50,7 @@ public partial class SpeechToTextService : ObservableRecipient, ISpeechToTextSer
         return text;
     }
 
-    public async Task<string> StopTranscriptionAsync()
+    public async Task<string?> StopTranscriptionAsync()
     {
 #if ANDROID || IOS || MACCATALYST
         cancelSpeechToTextTokenSource?.Cancel();

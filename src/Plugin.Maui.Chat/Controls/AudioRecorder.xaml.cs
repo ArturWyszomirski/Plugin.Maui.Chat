@@ -72,7 +72,7 @@ public partial class AudioRecorder : ContentView
     /// Message typed by user.
     /// </summary>
     public static readonly BindableProperty TextContentProperty =
-        BindableProperty.Create(nameof(TextContent), typeof(string), typeof(AudioRecorder), defaultBindingMode: BindingMode.OneWayToSource);
+        BindableProperty.Create(nameof(TextContent), typeof(string), typeof(AudioRecorder), defaultBindingMode: BindingMode.TwoWay);
 
     public string? TextContent
     {
