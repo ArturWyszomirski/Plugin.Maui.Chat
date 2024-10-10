@@ -5,7 +5,7 @@
              x:Class="Plugin.Maui.Chat.Controls.AudioPlayer"
              x:Name="player">
 
-    <ImageButton Command="{Binding StartStopCommand, Source={x:Reference player}}"
+    <ImageButton x:Name="playerButton" 
                  Source="{Binding Icon, Source={x:Reference player}}">
         <ImageButton.Behaviors>
             <toolkit:IconTintColorBehavior TintColor="{Binding Color, Source={x:Reference player}}"/>

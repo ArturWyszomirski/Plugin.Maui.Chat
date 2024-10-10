@@ -1,27 +1,28 @@
 ﻿namespace Plugin.Maui.Chat.Services;
 
-public class TextToSpeechService(Controls.Chat chat)
+public partial class TextToSpeechService : ObservableRecipient, ITextToSpeechService
 {
-    public CancellationTokenSource? CancelReadingTokenSource { get; private set; }
+    CancellationTokenSource? cancelReadingTokenSource;
 
-    public async Task StartOrStopReadAsync(string? text)
+    [ObservableProperty]
+    public bool isReading;
+
+    public async Task StartReadingAsync(string? text)
     {
-        if (string.IsNullOrWhiteSpace(text)) 
+        if (string.IsNullOrWhiteSpace(text))
             return;
 
-        if (!chat.IsReading)
-        {
-            CancelReadingTokenSource = new();
+        cancelReadingTokenSource = new();
+        IsReading = true;
 
-            chat.IsReading = true;
+        await TextToSpeech.Default.SpeakAsync(text, cancelToken: cancelReadingTokenSource.Token);
 
-            await TextToSpeech.Default.SpeakAsync(text, cancelToken: CancelReadingTokenSource.Token);
-        }
-        else
-        {
-            CancelReadingTokenSource?.Cancel();
-        }
+        IsReading = false;
+    }
 
-        chat.IsReading = false;
+    public void StopReading()
+    {
+        cancelReadingTokenSource?.Cancel();
+        IsReading = false;
     }
 }

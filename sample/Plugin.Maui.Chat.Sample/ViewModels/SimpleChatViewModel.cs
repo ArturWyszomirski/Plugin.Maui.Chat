@@ -6,11 +6,10 @@ public partial class SimpleChatViewModel : ObservableRecipient
     {
         InitChatMessages();
     }
+    public ObservableCollection<ChatMessage> ChatMessages { get; } = [];
 
     [ObservableProperty]
     string? textContent;
-
-    public ObservableCollection<ChatMessage> ChatMessages { get; set; } = [];
 
     private void InitChatMessages()
     {

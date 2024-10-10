@@ -12,10 +12,10 @@ public partial class AudioPlayer : ContentView
 	{
 		InitializeComponent();
 
-        StartStopCommand ??= new Command(async () => await StartStopAudioAsync());
-
         isStoppedColor = Color;
         IsVisible = false;
+
+        playerButton.Command = new Command(async () => await StartOrStopAsync());
     }
     #endregion
 
@@ -24,11 +24,11 @@ public partial class AudioPlayer : ContentView
     /// Holds audio service instance.
     /// </summary>
     internal static readonly BindableProperty AudioServiceProperty =
-        BindableProperty.Create(nameof(AudioService), typeof(AudioService), typeof(AudioService));
+        BindableProperty.Create(nameof(AudioService), typeof(IAudioService), typeof(AudioPlayer));
 
-    public AudioService AudioService
+    public IAudioService AudioService
     {
-        get => (AudioService)GetValue(AudioServiceProperty);
+        get => (IAudioService)GetValue(AudioServiceProperty);
         set => SetValue(AudioServiceProperty, value);
     }
 
@@ -38,45 +38,10 @@ public partial class AudioPlayer : ContentView
     public static readonly BindableProperty SourceProperty =
         BindableProperty.Create(nameof(Source), typeof(IAudioSource), typeof(AudioPlayer), defaultBindingMode: BindingMode.TwoWay, propertyChanged: OnSourceChanged);
 
-    private static void OnSourceChanged(BindableObject bindable, object oldValue, object newValue)
-    {
-        var control = (AudioPlayer)bindable;
-        control.OnSourceChanged(newValue);
-    }
-
-    private void OnSourceChanged(object newValue) => IsVisible = newValue != null;
-
     public IAudioSource Source
     {
         get => (IAudioSource)GetValue(SourceProperty);
         set => SetValue(SourceProperty, value);
-    }
-
-    /// <summary>
-    /// Play audio message.
-    /// </summary>
-    public static readonly BindableProperty StartStopCommandProperty =
-        BindableProperty.Create(nameof(StartStopCommand), typeof(ICommand), typeof(AudioPlayer), propertyChanged: OnStartStopCommandChanged);
-
-    /// <summary>
-    /// Necessary to expose StartStopCommand as a bindable property
-    /// </summary>
-    private static void OnStartStopCommandChanged(BindableObject bindable, object oldValue, object newValue)
-    {
-        var control = (AudioPlayer)bindable;
-        control.OnStartStopCommandChanged(newValue);
-    }
-
-    private void OnStartStopCommandChanged(object newValue)
-    {
-        if (newValue is null) 
-            StartStopCommand = new Command(async () => await StartStopAudioAsync());
-    }
-
-    public ICommand StartStopCommand
-    {
-        get => (ICommand)GetValue(StartStopCommandProperty);
-        set => SetValue(StartStopCommandProperty, value);
     }
 
     /// <summary>
@@ -97,14 +62,6 @@ public partial class AudioPlayer : ContentView
     public static readonly BindableProperty ColorProperty =
         BindableProperty.Create(nameof(Color), typeof(Color), typeof(AudioPlayer), default, propertyChanged: OnColorChanged);
 
-    private static void OnColorChanged(BindableObject bindable, object oldValue, object newValue)
-    {
-        var control = (AudioPlayer)bindable;
-
-        if (oldValue == default)
-            control.isStoppedColor = (Color)newValue;
-    }
-
     public Color Color
     {
         get => (Color)GetValue(ColorProperty);
@@ -113,11 +70,35 @@ public partial class AudioPlayer : ContentView
     #endregion
 
     #region Private methods
-    async Task StartStopAudioAsync()
+    private static void OnSourceChanged(BindableObject bindable, object oldValue, object newValue)
     {
-        Color = isPlayingColor;
+        var control = (AudioPlayer)bindable;
 
-        await AudioService.StartStopPlayerAsync(Source);
+        control.OnSourceChanged(newValue);
+    }
+
+    private static void OnColorChanged(BindableObject bindable, object oldValue, object newValue)
+    {
+        var control = (AudioPlayer)bindable;
+
+        if (oldValue == default)
+            control.isStoppedColor = (Color)newValue;
+    }
+
+    private void OnSourceChanged(object newValue) => IsVisible = newValue != null;
+
+    async Task StartOrStopAsync()
+    {
+        if (!AudioService.IsPlaying)
+        {
+            Color = isPlayingColor;
+
+            await AudioService.StartPlayingAsync(Source);
+        }
+        else
+        {
+            AudioService.StopPlaying();
+        }
 
         Color = isStoppedColor;
     }

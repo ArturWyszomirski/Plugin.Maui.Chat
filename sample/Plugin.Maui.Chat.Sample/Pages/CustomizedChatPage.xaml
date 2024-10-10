@@ -8,8 +8,13 @@
              Title="Customized chat"
              x:DataType="viewmodels:CustomizedChatViewModel">
 
-    <chat:Chat TextContent="{Binding TextContent}"
+    <chat:Chat AudioService="{Binding AudioService}" 
+               TextToSpeechService="{Binding TextToSpeechService}"
+               
                ChatMessages="{Binding ChatMessages}"
+               
+               TextContent="{Binding TextContent}"
+               AudioContent="{Binding AudioContent}"
                
                SentMessageBackgroundColor="{StaticResource Primary}"
                IsSentMessageAuthorVisible="True"
@@ -27,7 +32,6 @@
                ReceivedMessageContentTextColor="{StaticResource Primary}"
                ReceivedMessageAudioContentColor="{StaticResource Primary}"
                
-               TextReaderCommand="{Binding ReadMessageCommand}"
                IsTextReaderVisible="True"
                TextReaderColor="{StaticResource Tertiary}"
                TextReaderIcon="{Static resources:Icons.Speaker}"
@@ -41,13 +45,10 @@
                
                TextContentColor="{StaticResource Primary}"
                
-               AudioRecorderCommand="{Binding StartStopRecordingCommand}"
                IsAudioRecorderVisible="True"
                AudioRecorderIcon="{Static resources:Icons.Microphone}"
                AudioRecorderColor="{StaticResource Primary}"
                
-               AudioContent="{Binding AudioContent}"
-               AudioPlayerCommand="{Binding PlayAudioCommand}"
                AudioContentIcon="{Static resources:Icons.Waveform}"
                AudioContentColor="{StaticResource Primary}"
                

@@ -1,67 +1,75 @@
 ﻿namespace Plugin.Maui.Chat.Services;
 
-public class AudioService
+public partial class AudioService : ObservableRecipient, IAudioService
 {
-    readonly Controls.Chat chat;
-
     readonly AudioManager audioManager = new();
     readonly IAudioRecorder audioRecorder;
     AsyncAudioPlayer? audioPlayer;
 
-    public AudioService(Controls.Chat chat)
+    public AudioService()
     {
-        this.chat = chat;
-
         audioRecorder = audioManager.CreateRecorder();
     }
 
-    public async Task<IAudioSource?> StartOrStopRecorderAsync()
+    [ObservableProperty]
+    bool isRecording;
+
+    [ObservableProperty]
+    bool isPlaying;
+
+    public async Task<IAudioSource?> StartRecordingUntilSilenceDetectedAsync()
     {
         IAudioSource? audioSource = default;
 
+        if (await Permissions.RequestAsync<Permissions.Microphone>() != PermissionStatus.Granted)
+        {
+            await Shell.Current.DisplayAlert("Permission denied", "The app needs microphone permission to record audio.", "OK");
+            return audioSource;
+        }
+
         if (!audioRecorder.IsRecording)
         {
-            await audioRecorder.StartAsync();
+            IsRecording = true;
 
-            chat.IsRecording = true;
-            chat.AudioRecorderColor = Colors.Red;
+            await audioRecorder.StartAsync();
 
 #if ANDROID || WINDOWS
             audioSource = await audioRecorder.StopAsync(When.SilenceIsDetected());
 #endif
         }
-        else
-        {
-            audioSource = await audioRecorder.StopAsync(When.Immediately());
-        }
 
-        chat.IsRecording = false;
-        chat.AudioRecorderColor = chat.PrimaryColor;
+        IsRecording = false;
 
         return audioSource;
     }
 
-    public async Task StartStopPlayerAsync(IAudioSource? audioSource)
+    public async Task<IAudioSource?> StopRecordingAsync()
     {
-        if (audioSource == null || audioSource.GetType() == typeof(EmptyAudioSource)) 
+        IAudioSource? audioSource = await audioRecorder.StopAsync(When.Immediately());
+        
+        IsRecording = false;
+
+        return audioSource;
+    }
+
+    public async Task StartPlayingAsync(IAudioSource? audioSource)
+    {
+        if (audioSource == null || audioSource.GetType() == typeof(EmptyAudioSource))
             return;
 
-        if (!chat.IsPlaying)
-        {
-            chat.IsPlaying = true;
+        audioPlayer = audioManager.CreateAsyncPlayer(((FileAudioSource)audioSource).GetAudioStream());
+        audioPlayer.Volume = 1;
+        IsPlaying = true;
 
-            audioPlayer = audioManager.CreateAsyncPlayer(((FileAudioSource)audioSource).GetAudioStream());
-            audioPlayer.Volume = 1;
+        await audioPlayer.PlayAsync(CancellationToken.None);
 
-            await audioPlayer.PlayAsync(CancellationToken.None);
+        IsPlaying = false;
+    }
 
-            chat.IsPlaying = false;
-        }
-        else
-        {
-            audioPlayer?.Stop();
+    public void StopPlaying()
+    {
+        audioPlayer?.Stop();
 
-            chat.IsPlaying = false;
-        }
+        IsPlaying = false;
     }
 }
