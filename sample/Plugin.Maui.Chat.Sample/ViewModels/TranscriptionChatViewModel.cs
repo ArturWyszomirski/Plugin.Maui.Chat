@@ -7,13 +7,13 @@ public partial class TranscriptionChatViewModel : ObservableRecipient
         InitChatMessages();
     }
 
+    public ObservableCollection<ChatMessage> ChatMessages { get; } = [];
+
     [ObservableProperty]
     string? textContent;
 
     [ObservableProperty]
     string? status;
-
-    public ObservableCollection<ChatMessage> ChatMessages { get; set; } = [];
 
     private void InitChatMessages()
     {
@@ -74,8 +74,7 @@ public partial class TranscriptionChatViewModel : ObservableRecipient
         {
             Type = MessageType.Received,
             Author = "Echo",
-            TextContent = !string.IsNullOrEmpty(ChatMessages.Last().TextContent) ? $"Echo: {ChatMessages.Last().TextContent}" : string.Empty,
-            AudioContent = ChatMessages.Last().AudioContent
+            TextContent = !string.IsNullOrEmpty(ChatMessages.Last().TextContent) ? $"Echo: {ChatMessages.Last().TextContent}" : string.Empty
         });
     }
 }

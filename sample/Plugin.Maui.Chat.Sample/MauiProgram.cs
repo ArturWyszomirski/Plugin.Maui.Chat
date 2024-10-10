@@ -20,7 +20,10 @@ public static class MauiProgram
 		builder.Logging.AddDebug();
 #endif
 
-        builder.Services.AddTransient<SimpleChatViewModel>()
+        builder.Services.AddSingleton<IAudioService, CustomAudioService>()
+                        .AddSingleton<ITextToSpeechService, CustomTextToSpeechService>()
+
+                        .AddTransient<SimpleChatViewModel>()
                         .AddTransient<CustomizedChatViewModel>()
                         .AddTransient<AudioChatViewModel>()
                         .AddTransient<TranscriptionChatViewModel>()

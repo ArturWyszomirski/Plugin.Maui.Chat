@@ -12,7 +12,7 @@ public partial class TextReader : ContentView
 	{
 		InitializeComponent();
 
-        StartStopCommand ??= new Command(async () => await StartOrStopReadingAsync());
+        readerButton.Command = new Command(async () => await StartOrStopReadingAsync());
 
         isStoppedColor = Color;
     }
@@ -23,11 +23,11 @@ public partial class TextReader : ContentView
     /// Holds text-to-speech service instance.
     /// </summary>
     internal static readonly BindableProperty TextToSpeechServiceProperty =
-        BindableProperty.Create(nameof(TextToSpeechService), typeof(TextToSpeechService), typeof(TextReader));
+        BindableProperty.Create(nameof(TextToSpeechService), typeof(ITextToSpeechService), typeof(TextReader));
 
-    public TextToSpeechService TextToSpeechService
+    public ITextToSpeechService TextToSpeechService
     {
-        get => (TextToSpeechService)GetValue(TextToSpeechServiceProperty);
+        get => (ITextToSpeechService)GetValue(TextToSpeechServiceProperty);
         set => SetValue(TextToSpeechServiceProperty, value);
     }
 
@@ -41,30 +41,6 @@ public partial class TextReader : ContentView
     {
         get => (string)GetValue(SourceProperty);
         set => SetValue(SourceProperty, value);
-    }
-
-    /// <summary>
-    /// Read text message.
-    /// </summary>
-    public static readonly BindableProperty StartStopCommandProperty =
-        BindableProperty.Create(nameof(StartStopCommand), typeof(ICommand), typeof(TextReader), propertyChanged: OnStartStopCommandChanged);
-
-    private static void OnStartStopCommandChanged(BindableObject bindable, object oldValue, object newValue)
-    {
-        var control = (TextReader)bindable;
-        control.OnStartStopCommandChanged(newValue);
-    }
-
-    private void OnStartStopCommandChanged(object newValue)
-    {
-        if (newValue is null) 
-            StartStopCommand = new Command(async () => await StartOrStopReadingAsync());
-    }
-
-    public ICommand StartStopCommand
-    {
-        get => (ICommand)GetValue(StartStopCommandProperty);
-        set => SetValue(StartStopCommandProperty, value);
     }
 
     /// <summary>
@@ -85,14 +61,6 @@ public partial class TextReader : ContentView
     public static readonly BindableProperty ColorProperty =
         BindableProperty.Create(nameof(Color), typeof(Color), typeof(TextReader), default, propertyChanged: OnColorChanged);
 
-    private static void OnColorChanged(BindableObject bindable, object oldValue, object newValue)
-    {
-        var control = (TextReader)bindable;
-
-        if (oldValue == default)
-            control.isStoppedColor = (Color)newValue;
-    }
-
     public Color Color
     {
         get => (Color)GetValue(ColorProperty);
@@ -101,11 +69,26 @@ public partial class TextReader : ContentView
     #endregion
 
     #region Private methods
+    private static void OnColorChanged(BindableObject bindable, object oldValue, object newValue)
+    {
+        var control = (TextReader)bindable;
+
+        if (oldValue == default)
+            control.isStoppedColor = (Color)newValue;
+    }
+
     async Task StartOrStopReadingAsync()
     {
-        Color = isReadingColor;
+        if (!TextToSpeechService.IsReading)
+        {
+            Color = isReadingColor;
 
-        await TextToSpeechService.StartOrStopReadAsync(Source);
+            await TextToSpeechService.StartReadingAsync(Source);
+        }
+        else
+        {
+            TextToSpeechService.StopReading();
+        }
 
         Color = isStoppedColor;
     }

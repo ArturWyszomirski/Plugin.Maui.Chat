@@ -40,10 +40,9 @@
                                FontAttributes="Bold"
                                IsVisible="{Binding IsSentMessageAuthorVisible, Source={x:Reference chat}}"/>
 
-                        <controls:AudioPlayer x:Name="sentMessageAudioPlayerControl"
+                        <controls:AudioPlayer x:Name="sentMessageAudioPlayer"
                                               AudioService="{Binding AudioService, Source={x:Reference chat}}"
                                               Source="{Binding AudioContent}"
-                                              StartStopCommand="{Binding AudioPlayerCommand, Source={x:Reference chat}}"
                                               IsEnabled="{Binding IsHandsFreeModeOn, Source={x:Reference chat}, Converter={x:StaticResource Key=InverseBooleanConverter}}"
                                               Icon="{Binding AudioContentIcon, Source={x:Reference chat}}"
                                               Color="{Binding SentMessageAudioContentColor, Source={x:Reference chat}}"
@@ -99,11 +98,10 @@
                                    FontAttributes="Bold"
                                    IsVisible="{Binding IsReceivedMessageAuthorVisible, Source={x:Reference chat}}"/>
 
-                            <controls:TextReader x:Name="receivedMessageTextReaderControl"
+                            <controls:TextReader x:Name="receivedMessageTextReader"
                                                  Grid.Column="1"
                                                  TextToSpeechService="{Binding TextToSpeechService, Source={x:Reference chat}}" 
                                                  Source="{Binding TextContent}"
-                                                 StartStopCommand="{Binding TextReaderCommand, Source={x:Reference chat}}"
                                                  IsEnabled="{Binding IsHandsFreeModeOn, Source={x:Reference chat}, Converter={x:StaticResource Key=InverseBooleanConverter}}"
                                                  Icon="{Binding TextReaderIcon, Source={x:Reference chat}}"
                                                  Color="{Binding TextReaderColor, Source={x:Reference chat}}"
@@ -114,10 +112,9 @@
 
                         </Grid>
 
-                        <controls:AudioPlayer x:Name="receivedMessageAudioPlayerControl"
+                        <controls:AudioPlayer x:Name="receivedMessageAudioPlayer"
                                               AudioService="{Binding AudioService, Source={x:Reference chat}}"
                                               Source="{Binding AudioContent}"
-                                              StartStopCommand="{Binding AudioPlayerCommand, Source={x:Reference chat}}"
                                               IsEnabled="{Binding IsHandsFreeModeOn, Source={x:Reference chat}, Converter={x:StaticResource Key=InverseBooleanConverter}}"
                                               Icon="{Binding AudioContentIcon, Source={x:Reference chat}}"
                                               Color="{Binding ReceivedMessageAudioContentColor, Source={x:Reference chat}}"
@@ -224,12 +221,11 @@
                       ColumnDefinitions="*, Auto, Auto, Auto, Auto" 
                       RowDefinitions="Auto, Auto">
 
-                    <controls:AudioPlayer x:Name="audioPlayerControl"
+                    <controls:AudioPlayer x:Name="audioPlayer"
                                           Grid.ColumnSpan="5"
                                           Grid.Row="0"
                                           AudioService="{Binding AudioService, Source={x:Reference chat}}"
                                           Source="{Binding AudioContent, Source={x:Reference chat}}"
-                                          StartStopCommand="{Binding AudioPlayerCommand, Source={x:Reference chat}}"
                                           IsEnabled="{Binding IsHandsFreeModeOn, Source={x:Reference chat}, Converter={x:StaticResource Key=InverseBooleanConverter}}"
                                           Icon="{Binding AudioContentIcon, Source={x:Reference chat}}"
                                           Color="{Binding AudioContentColor, Source={x:Reference chat}}"
@@ -248,18 +244,20 @@
                             Keyboard="Chat"
                             AutoSize="TextChanges"/>
 
-                    <ImageButton x:Name="audioRecorderImageButton"
-                                 Grid.Column="1"
-                                 Grid.Row="1"
-                                 Command="{Binding AudioRecorderCommand, Source={x:Reference chat}}"
-                                 IsEnabled="{Binding IsHandsFreeModeOn, Source={x:Reference chat}, Converter={x:StaticResource Key=InverseBooleanConverter}}"
-                                 Source="{Binding AudioRecorderIcon, Source={x:Reference chat}}" 
-                                 IsVisible="{Binding IsAudioRecorderVisible, Source={x:Reference chat}}"
-                                 Style="{StaticResource ChatFeatureButtonStyle}">
-                        <ImageButton.Behaviors>
-                            <toolkit:IconTintColorBehavior TintColor="{Binding AudioRecorderColor, Source={x:Reference chat}}"/>
-                        </ImageButton.Behaviors>
-                    </ImageButton>
+                    <controls:AudioRecorder x:Name="audioRecorder"
+                                            Grid.Column="1"
+                                            Grid.Row="1"
+                                            AudioService="{Binding AudioService, Source={x:Reference chat}}"
+                                            SpeechToTextService="{Binding SpeechToTextService, Source={x:Reference chat}}"
+                                            IsSpeechToTextEnabled="{Binding IsSpeechToTextEnabled, Source={x:Reference chat}}"
+                                            AudioContent="{Binding AudioContent, Source={x:Reference chat}}"
+                                            TextContent="{Binding TextContent, Source={x:Reference chat}}"
+                                            IsEnabled="{Binding IsHandsFreeModeOn, Source={x:Reference chat}, Converter={x:StaticResource Key=InverseBooleanConverter}}"
+                                            Icon="{Binding AudioRecorderIcon, Source={x:Reference chat}}" 
+                                            Color="{Binding AudioRecorderColor, Source={x:Reference chat}}"
+                                            IsVisible="{Binding IsAudioRecorderVisible, Source={x:Reference chat}}"
+                                            Style="{StaticResource ChatFeatureButtonStyle}">
+                    </controls:AudioRecorder>
 
                     <ImageButton x:Name="handsFreeModeImageButton"
                                  Grid.Column="2"
