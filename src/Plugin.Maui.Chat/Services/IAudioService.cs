@@ -3,6 +3,7 @@
 public interface IAudioService : INotifyPropertyChanged
 {
     bool IsRecording { get; }
+    bool SoundDetected { get; }
     bool IsPlaying { get; }
 
     Task<IAudioSource?> StartRecordingUntilSilenceDetectedAsync();

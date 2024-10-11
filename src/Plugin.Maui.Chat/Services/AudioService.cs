@@ -14,6 +14,8 @@ public partial class AudioService : ObservableRecipient, IAudioService
     [ObservableProperty]
     bool isRecording;
 
+    public bool SoundDetected { get; private set; }
+
     [ObservableProperty]
     bool isPlaying;
 
@@ -38,7 +40,7 @@ public partial class AudioService : ObservableRecipient, IAudioService
 #endif
         }
 
-        IsRecording = false;
+        await UpdatedStatuses();
 
         return audioSource;
     }
@@ -47,9 +49,24 @@ public partial class AudioService : ObservableRecipient, IAudioService
     {
         IAudioSource? audioSource = await audioRecorder.StopAsync(When.Immediately());
         
-        IsRecording = false;
+        await UpdatedStatuses();
 
         return audioSource;
+    }
+
+    private async Task UpdatedStatuses()
+    {
+        IsRecording = false;
+
+#if ANDROID || WINDOWS
+        SoundDetected = audioRecorder.SoundDetected;
+
+        if (!SoundDetected)
+        {
+            var toast = Toast.Make("No sound detected.");
+            await toast.Show();
+        }
+#endif
     }
 
     public async Task StartPlayingAsync(IAudioSource? audioSource)
