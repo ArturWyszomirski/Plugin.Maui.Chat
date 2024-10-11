@@ -91,22 +91,28 @@ public partial class HandsFreeChatViewModel : ObservableRecipient
     [RelayCommand]
     async Task StartOrStopHandsFreeModeAsync()
     {
+        ArgumentNullException.ThrowIfNull(SpeechToTextService);
+        ArgumentNullException.ThrowIfNull(TextToSpeechService);
+
         IsHandsFreeModeOn = !IsHandsFreeModeOn;
 
-        await SpeechToTextService!.StopTranscriptionAsync();
-        TextToSpeechService!.StopReading();
+        if (SpeechToTextService.IsTranscribing)
+            await SpeechToTextService.StopTranscriptionAsync();
+
+        if (TextToSpeechService.IsReading)
+            TextToSpeechService.StopReading();
 
         MainThread.BeginInvokeOnMainThread(async () =>
         {
             while (IsHandsFreeModeOn)
             {
-                TextContent += await SpeechToTextService!.StartTranscriptionAsync();
+                TextContent += await SpeechToTextService.StartTranscriptionAsync();
 
                 if (string.IsNullOrWhiteSpace(TextContent))
                     break;
 
                 await SendMessageAsync();
-                await TextToSpeechService!.StartReadingAsync(ChatMessages.Last().TextContent);
+                await TextToSpeechService.StartReadingAsync(ChatMessages.Last().TextContent);
             }
 
             IsHandsFreeModeOn = false;

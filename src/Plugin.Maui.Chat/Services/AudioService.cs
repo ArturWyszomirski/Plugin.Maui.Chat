@@ -14,10 +14,12 @@ public partial class AudioService : ObservableRecipient, IAudioService
     [ObservableProperty]
     bool isRecording;
 
+    public bool SoundDetected { get; private set; }
+
     [ObservableProperty]
     bool isPlaying;
 
-    public async Task<IAudioSource?> StartRecordingUntilSilenceDetectedAsync()
+    public async Task<IAudioSource?> StartRecordingAsync(bool silenceDetection, double silenceTreshold, TimeSpan silenceDuration)
     {
         IAudioSource? audioSource = default;
 
@@ -34,11 +36,12 @@ public partial class AudioService : ObservableRecipient, IAudioService
             await audioRecorder.StartAsync();
 
 #if ANDROID || WINDOWS
-            audioSource = await audioRecorder.StopAsync(When.SilenceIsDetected());
+            if (silenceDetection) 
+                audioSource = await audioRecorder.StopAsync(When.SilenceIsDetected(silenceTreshold, silenceDuration));
 #endif
         }
 
-        IsRecording = false;
+        await UpdatedStatuses();
 
         return audioSource;
     }
@@ -46,10 +49,25 @@ public partial class AudioService : ObservableRecipient, IAudioService
     public async Task<IAudioSource?> StopRecordingAsync()
     {
         IAudioSource? audioSource = await audioRecorder.StopAsync(When.Immediately());
-        
-        IsRecording = false;
+
+        await UpdatedStatuses();
 
         return audioSource;
+    }
+
+    private async Task UpdatedStatuses()
+    {
+        IsRecording = false;
+
+#if ANDROID || WINDOWS
+        SoundDetected = audioRecorder.SoundDetected;
+
+        if (!SoundDetected)
+        {
+            var toast = Toast.Make("No sound detected.");
+            await toast.Show();
+        }
+#endif
     }
 
     public async Task StartPlayingAsync(IAudioSource? audioSource)
