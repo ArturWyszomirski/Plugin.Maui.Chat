@@ -6,7 +6,7 @@ public interface IAudioService : INotifyPropertyChanged
     bool SoundDetected { get; }
     bool IsPlaying { get; }
 
-    Task<IAudioSource?> StartRecordingUntilSilenceDetectedAsync();
+    Task<IAudioSource?> StartRecordingAsync(bool silenceDetection = true, double silenceTreshold = 2, TimeSpan silenceDuration = default);
     Task<IAudioSource?> StopRecordingAsync();
     Task StartPlayingAsync(IAudioSource? audioSource);
     void StopPlaying();

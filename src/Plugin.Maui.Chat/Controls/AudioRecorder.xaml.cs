@@ -133,7 +133,7 @@ public partial class AudioRecorder : ContentView
             {
                 Color = isRecordingColor;
 
-                AudioContent = await AudioService.StartRecordingUntilSilenceDetectedAsync();
+                AudioContent = await AudioService.StartRecordingAsync();
             }
             else
             {
