@@ -879,11 +879,13 @@ public partial class Chat : ContentView
         if (bindable is Chat chat)
             chat.Status = (bool)newValue ? "Transcribing..." : string.Empty;
     }
+
     private static void OnIsPlayingChanged(BindableObject bindable, object oldValue, object newValue)
     {
         if (bindable is Chat chat)
             chat.Status = (bool)newValue ? "Playing..." : string.Empty;
     }
+
     private static void OnIsReadingChanged(BindableObject bindable, object oldValue, object newValue)
     {
         if (bindable is Chat chat)
