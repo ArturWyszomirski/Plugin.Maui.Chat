@@ -83,6 +83,9 @@ All you have to do to get started is to deal with those three properties:
 - `TextContent` of string type which holds the user input,
 - `SendMessageCommand` where you decide what happens after firing Send message button.
 
+> [!NOTE]
+> Send messagge button is disabled if message content is empty or chat is recording, transcribing or hands-free mode is on. This behavior can be overwritten by setting `IsSendMessageEnabled` property.
+
 Example below shows how to bind properties. In this scenario every sent message will be repeated and send back after 1 second.
 
 View:
@@ -138,7 +141,7 @@ async Task SendMessageAsync()
   <img src="./assets/screenshots/audio_chat_05.png" alt="Thumbnail" width="200">
 </a>
 
-> [!NOTE]
+> [!WARNING]
 > To use voice messaging setting relevant permissions to record audio is necessary.
 
 `Chat` provides built-in functionality for voice messaging based on `Plugin.Maui.Audio`. Audio Recorder is equipped in silence detection, so recording should stop automatically when user stops speaking.
@@ -341,10 +344,8 @@ TakePhotoColor="{StaticResource Primary}"
 
 ##### Send message button
 
-By default button is disabled when user text entry is empty or consist only whitespace characters and no other content is present in the message.
-
 > [!NOTE]
-> This behavior can be changed by setting the `IsSendMessageEnabled` property.
+> Send messagge button is disabled if message content is empty or chat is recording, transcribing or hands-free mode is on. This behavior can be overwritten by settind `IsSendMessageEnabled` property.
 
 ```xaml
 SendMessageCommand="{Binding SendMessageCommand}"
@@ -364,13 +365,54 @@ Services used by `Chat` are exposed through relevant properties. This enables ei
 > See how to use your own services in `CustomizedViewModel` sample.
 
 #### `AudioService`: 
+
 Implements `IAudioService`. Utilizes `Plugin.Maui.Audio`. Responsible for recording and playing audio.
 
+##### Properties
+
+`IsRecording` - shows whether audio is being currently recorded.
+
+`SoundDetected` - set to true if there was a sound detected in latest recording in the latest recording (updated after recording is finished).
+
+`IsPlaying` - shows whether audio is being currently played.
+
+##### Methods
+
+`Task<IAudioSource?> StartRecordingAsync(bool silenceDetection = true, double silenceTreshold = 2, TimeSpan silenceDuration = default)` - fired when audio recorder button is pressed, `IsRecording = false` and `IsSpeechToTextEnabled = false`.
+
+`Task<IAudioSource?> StopRecordingAsync()` - fired when audio redorder button is pressed, `IsRecording = true` and `IsSpeechToTextEnabled = false`.
+
+`Task StartPlayingAsync(IAudioSource? audioSource)` - fired when audio player button is pressed and `IsPlaying = false`.
+    
+`void StopPlaying()` - fired when audio player button is pressed and `IsPlaying = true`.
+
 #### `SpeechToTextService`:
+
 Implements `ISpeechToTextService`. Utilizes `CommunityToolkit`'s speech-to-text feature. Responsible for speech transcription.
 
+##### Properties
+
+`IsTranscribing` - shows whether speech is currently being transcribed.
+
+##### Methods
+
+`Task<string?> StartTranscriptionAsync()` - fired when audio recorder button is pressed, `IsTransribing = false`, and `IsSpeechToTextEnabled = true`.
+
+`Task<string?> StopTranscriptionAsync()` - fired when audio recorder button is pressed, `IsTransribing = true`, and `IsSpeechToTextEnabled = true`.
+
 #### `TextToSpeechService`:
+
 Implements `ITextToSpeechService`. Utilizes MAUI's native text-to-speech feature. Responsible for reading text.
+
+##### Properties
+
+`IsReading` - shows whether text message is currently being read.
+
+##### Methods
+
+`Task StartReadingAsync(string? text)` - fired when text reader button is pressed, `IsReading = false`.
+
+`void StopReading()` - fired when text reader button is pressed, `IsReading = true`.
 
 ## Credits
 
