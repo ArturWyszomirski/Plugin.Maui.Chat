@@ -411,56 +411,6 @@ public partial class Chat : ContentView
     }
     #endregion
 
-    #region Audio recorder
-    /// <summary>
-    /// Determines whether start/stop record toggle button is visible.
-    /// </summary>
-    public static readonly BindableProperty IsAudioRecorderVisibleProperty = 
-        BindableProperty.Create(nameof(IsAudioRecorderVisible), typeof(bool), typeof(Chat));
-
-    public bool IsAudioRecorderVisible
-    {
-        get => (bool)GetValue(IsAudioRecorderVisibleProperty);
-        set => SetValue(IsAudioRecorderVisibleProperty, value);
-    }
-
-    /// <summary>
-    /// Start/stop record toggle button icon.
-    /// </summary>
-    public static readonly BindableProperty AudioRecorderIconProperty = 
-        BindableProperty.Create(nameof(AudioRecorderIcon), typeof(ImageSource), typeof(Chat), ImageSource.FromFile(Maui.Chat.Resources.Icons.Microphone));
-
-    public ImageSource AudioRecorderIcon
-    {
-        get => (ImageSource)GetValue(AudioRecorderIconProperty);
-        set => SetValue(AudioRecorderIconProperty, value);
-    }
-
-    /// <summary>
-    /// Start/stop record toggle button color.
-    /// </summary>
-    public static readonly BindableProperty AudioRecorderColorProperty = 
-        BindableProperty.Create(nameof(AudioRecorderColor), typeof(Color), typeof(Chat), primaryColor);
-
-    public Color AudioRecorderColor
-    {
-        get => (Color)GetValue(AudioRecorderColorProperty);
-        set => SetValue(AudioRecorderColorProperty, value);
-    }
-    
-    /// <summary>
-    /// Determines whether speech-to-text is enabled.
-    /// </summary>
-    public static readonly BindableProperty IsSpeechToTextEnabledProperty = 
-        BindableProperty.Create(nameof(IsSpeechToTextEnabled), typeof(bool), typeof(Chat));
-
-    public bool IsSpeechToTextEnabled
-    {
-        get => (bool)GetValue(IsSpeechToTextEnabledProperty);
-        set => SetValue(IsSpeechToTextEnabledProperty, value);
-    }
-    #endregion
-
     #region Audio player
     /// <summary>
     /// Audio content button icon.
@@ -529,9 +479,59 @@ public partial class Chat : ContentView
     }
     #endregion
 
+    #region Audio recorder button
+    /// <summary>
+    /// Determines whether start/stop record toggle button is visible.
+    /// </summary>
+    public static readonly BindableProperty IsAudioRecorderVisibleProperty =
+        BindableProperty.Create(nameof(IsAudioRecorderVisible), typeof(bool), typeof(Chat));
+
+    public bool IsAudioRecorderVisible
+    {
+        get => (bool)GetValue(IsAudioRecorderVisibleProperty);
+        set => SetValue(IsAudioRecorderVisibleProperty, value);
+    }
+
+    /// <summary>
+    /// Start/stop record toggle button icon.
+    /// </summary>
+    public static readonly BindableProperty AudioRecorderIconProperty =
+        BindableProperty.Create(nameof(AudioRecorderIcon), typeof(ImageSource), typeof(Chat), ImageSource.FromFile(Maui.Chat.Resources.Icons.Microphone));
+
+    public ImageSource AudioRecorderIcon
+    {
+        get => (ImageSource)GetValue(AudioRecorderIconProperty);
+        set => SetValue(AudioRecorderIconProperty, value);
+    }
+
+    /// <summary>
+    /// Start/stop record toggle button color.
+    /// </summary>
+    public static readonly BindableProperty AudioRecorderColorProperty =
+        BindableProperty.Create(nameof(AudioRecorderColor), typeof(Color), typeof(Chat), primaryColor);
+
+    public Color AudioRecorderColor
+    {
+        get => (Color)GetValue(AudioRecorderColorProperty);
+        set => SetValue(AudioRecorderColorProperty, value);
+    }
+
+    /// <summary>
+    /// Determines whether speech-to-text is enabled.
+    /// </summary>
+    public static readonly BindableProperty IsSpeechToTextEnabledProperty =
+        BindableProperty.Create(nameof(IsSpeechToTextEnabled), typeof(bool), typeof(Chat));
+
+    public bool IsSpeechToTextEnabled
+    {
+        get => (bool)GetValue(IsSpeechToTextEnabledProperty);
+        set => SetValue(IsSpeechToTextEnabledProperty, value);
+    }
+    #endregion
+
     #region Hands-free mode button
     /// <summary>
-    /// Turn on/off hands-free mode. Hands-free mode is automated recording, transcribing and sending voice messages as well as reading received messages.
+    /// Command that should turn on/off hands-free mode. Hands-free mode is automated speech recording, transcribing and sending messages as well as reading received messages.
     /// </summary>
     public static readonly BindableProperty HandsFreeModeCommandProperty = 
         BindableProperty.Create(nameof(HandsFreeModeCommand), typeof(ICommand), typeof(Chat));
