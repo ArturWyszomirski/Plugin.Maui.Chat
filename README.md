@@ -45,13 +45,13 @@ Visibility of other buttons in the user message entry field as well as their's i
 
 ### Dependency Injection
 
-This NuGet depends on `MAUI Community Toolkit`, so you will first need to register the `Feature` with the `MAUI Community Toolkit`.
+This NuGet depends on `MAUI Community Toolkit`, so you will first need to chain up the `MAUI Community Toolkit` in app builder.
 
 ```csharp
 builder.UseMauiCommunityToolkit();
 ```
 
-### XAML
+### XAML setup
 
 To use `Chat` you need to register `Plugin.Maui.Chat.Controls` namespace by adding below line to XAML file opening tag.
 
