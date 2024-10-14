@@ -1,6 +1,4 @@
-﻿using Plugin.Maui.Chat.Services;
-
-namespace Plugin.Maui.Chat.Sample.ViewModels;
+﻿namespace Plugin.Maui.Chat.Sample.ViewModels;
 
 public partial class HandsFreeChatViewModel : ObservableRecipient
 {
@@ -10,10 +8,10 @@ public partial class HandsFreeChatViewModel : ObservableRecipient
     }
 
     [ObservableProperty]
-    SpeechToTextService? speechToTextSvc;
+    ISpeechToTextService? speechToTextService;
 
     [ObservableProperty]
-    TextToSpeechService? textToSpeechSvc;
+    ITextToSpeechService? textToSpeechService;
 
     [ObservableProperty]
     string? textContent;
@@ -91,24 +89,30 @@ public partial class HandsFreeChatViewModel : ObservableRecipient
     }
 
     [RelayCommand]
-    void StartOrStopHandsFreeMode()
+    async Task StartOrStopHandsFreeModeAsync()
     {
+        ArgumentNullException.ThrowIfNull(SpeechToTextService);
+        ArgumentNullException.ThrowIfNull(TextToSpeechService);
+
         IsHandsFreeModeOn = !IsHandsFreeModeOn;
 
-        SpeechToTextSvc!.CancelSpeechToTextTokenSource?.Cancel();
-        TextToSpeechSvc!.CancelReadingTokenSource?.Cancel();
+        if (SpeechToTextService.IsTranscribing)
+            await SpeechToTextService.StopTranscriptionAsync();
+
+        if (TextToSpeechService.IsReading)
+            TextToSpeechService.StopReading();
 
         MainThread.BeginInvokeOnMainThread(async () =>
         {
             while (IsHandsFreeModeOn)
             {
-                TextContent += await SpeechToTextSvc!.StartOrStopTranscriptionAsync();
+                TextContent += await SpeechToTextService.StartTranscriptionAsync();
 
                 if (string.IsNullOrWhiteSpace(TextContent))
                     break;
 
                 await SendMessageAsync();
-                await TextToSpeechSvc!.StartOrStopReadAsync(ChatMessages.Last().TextContent);
+                await TextToSpeechService.StartReadingAsync(ChatMessages.Last().TextContent);
             }
 
             IsHandsFreeModeOn = false;

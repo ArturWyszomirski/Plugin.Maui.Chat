@@ -1,4 +1,3 @@
-
 namespace Plugin.Maui.Chat.Controls;
 
 public partial class Chat : ContentView
@@ -13,11 +12,9 @@ public partial class Chat : ContentView
 	{
 		InitializeComponent();
 
-        AudioService = new(this);
-        SpeechToTextService = new(this);
-        TextToSpeechService = new(this);
-
-        AudioRecorderCommand ??= new Command(async () => await RecordAudioAsync());
+        AudioService ??= new AudioService();
+        SpeechToTextService ??= new SpeechToTextService();
+        TextToSpeechService ??= new TextToSpeechService();
     }
     #endregion
 
@@ -27,11 +24,11 @@ public partial class Chat : ContentView
     /// Holds audio service instance.
     /// </summary>
     public static readonly BindableProperty AudioServiceProperty =
-        BindableProperty.Create(nameof(AudioService), typeof(AudioService), typeof(Chat), defaultBindingMode: BindingMode.OneWayToSource);
+        BindableProperty.Create(nameof(AudioService), typeof(IAudioService), typeof(Chat), propertyChanged: OnAudioServiceChanged);
 
-    public AudioService AudioService
+    public IAudioService AudioService
     {
-        get => (AudioService)GetValue(AudioServiceProperty);
+        get => (IAudioService)GetValue(AudioServiceProperty);
         set => SetValue(AudioServiceProperty, value);
     }
 
@@ -39,11 +36,12 @@ public partial class Chat : ContentView
     /// Holds spech-to-text service instance.
     /// </summary>
     public static readonly BindableProperty SpeechToTextServiceProperty =
-        BindableProperty.Create(nameof(SpeechToTextService), typeof(SpeechToTextService), typeof(SpeechToTextService), defaultBindingMode: BindingMode.OneWayToSource);
+        BindableProperty.Create(nameof(SpeechToTextService), typeof(ISpeechToTextService), typeof(Chat), propertyChanged: OnSpeechToTextServiceChanged);
 
-    public SpeechToTextService SpeechToTextService
+
+    public ISpeechToTextService SpeechToTextService
     {
-        get => (SpeechToTextService)GetValue(SpeechToTextServiceProperty);
+        get => (ISpeechToTextService)GetValue(SpeechToTextServiceProperty);
         set => SetValue(SpeechToTextServiceProperty, value);
     }
 
@@ -51,11 +49,11 @@ public partial class Chat : ContentView
     /// Holds text-to-speech service instance.
     /// </summary>
     public static readonly BindableProperty TextToSpeechServiceProperty =
-        BindableProperty.Create(nameof(TextToSpeechService), typeof(TextToSpeechService), typeof(TextToSpeechService), defaultBindingMode: BindingMode.OneWayToSource);
+        BindableProperty.Create(nameof(TextToSpeechService), typeof(ITextToSpeechService), typeof(Chat), propertyChanged: OnTextToSpeechServiceChanged);
 
-    public TextToSpeechService TextToSpeechService
+    public ITextToSpeechService TextToSpeechService
     {
-        get => (TextToSpeechService)GetValue(TextToSpeechServiceProperty);
+        get => (ITextToSpeechService)GetValue(TextToSpeechServiceProperty);
         set => SetValue(TextToSpeechServiceProperty, value);
     }
     #endregion
@@ -67,12 +65,6 @@ public partial class Chat : ContentView
     public static readonly BindableProperty IsRecordingProperty =
         BindableProperty.Create(nameof(IsRecording), typeof(bool), typeof(Chat), propertyChanged: OnIsRecordingChanged);
 
-    private static void OnIsRecordingChanged(BindableObject bindable, object oldValue, object newValue)
-    {
-        if (bindable is Chat chat)
-            chat.Status = (bool)newValue ? "Recording..." : string.Empty;
-    }
-
     public bool IsRecording
     {
         get => (bool)GetValue(IsRecordingProperty);
@@ -80,16 +72,22 @@ public partial class Chat : ContentView
     }
 
     /// <summary>
+    /// True when speech transcription is on.
+    /// </summary>
+    public static readonly BindableProperty IsTranscribingProperty =
+        BindableProperty.Create(nameof(IsTranscribing), typeof(bool), typeof(Chat), propertyChanged: OnIsTranscribingChanged);
+
+    public bool IsTranscribing
+    {
+        get => (bool)GetValue(IsTranscribingProperty);
+        set => SetValue(IsTranscribingProperty, value);
+    }
+
+    /// <summary>
     /// True when audio playing is on.
     /// </summary>
     public static readonly BindableProperty IsPlayingProperty =
         BindableProperty.Create(nameof(IsPlaying), typeof(bool), typeof(Chat), propertyChanged: OnIsPlayingChanged);
-
-    private static void OnIsPlayingChanged(BindableObject bindable, object oldValue, object newValue)
-    {
-        if (bindable is Chat chat)
-            chat.Status = (bool)newValue ? "Playing..." : string.Empty;
-    }
 
     public bool IsPlaying
     {
@@ -102,12 +100,6 @@ public partial class Chat : ContentView
     /// </summary>
     public static readonly BindableProperty IsReadingProperty =
         BindableProperty.Create(nameof(IsReading), typeof(bool), typeof(Chat), propertyChanged: OnIsReadingChanged);
-
-    private static void OnIsReadingChanged(BindableObject bindable, object oldValue, object newValue)
-    {
-        if (bindable is Chat chat)
-            chat.Status = (bool)newValue ? "Reading..." : string.Empty;
-    }
 
     public bool IsReading
     {
@@ -317,18 +309,6 @@ public partial class Chat : ContentView
 
     #region Text reader
     /// <summary>
-    /// Read or stop text message.
-    /// </summary>
-    public static readonly BindableProperty TextReaderCommandProperty =
-        BindableProperty.Create(nameof(TextReaderCommand), typeof(ICommand), typeof(Chat));
-
-    public ICommand TextReaderCommand
-    {
-        get => (ICommand)GetValue(TextReaderCommandProperty);
-        set => SetValue(TextReaderCommandProperty, value);
-    }
-
-    /// <summary>
     /// Text reader button icon.
     /// </summary>
     public static readonly BindableProperty TextReaderIconProperty =
@@ -393,44 +373,6 @@ public partial class Chat : ContentView
     #endregion
     #endregion
 
-    #region User message contents
-    /// <summary>
-    /// Message typed by user.
-    /// </summary>
-    public static readonly BindableProperty TextContentProperty =
-        BindableProperty.Create(nameof(TextContent), typeof(string), typeof(Chat), defaultBindingMode: BindingMode.TwoWay);
-
-    public string? TextContent
-    {
-        get => (string)GetValue(TextContentProperty);
-        set => SetValue(TextContentProperty, value);
-    }
-
-    /// <summary>
-    /// Audio content in message.
-    /// </summary>
-    public static readonly BindableProperty AudioContentProperty =
-        BindableProperty.Create(nameof(AudioContent), typeof(object), typeof(Chat), defaultBindingMode: BindingMode.TwoWay);
-
-    public object? AudioContent
-    {
-        get => GetValue(AudioContentProperty);
-        set => SetValue(AudioContentProperty, value);
-    }
-
-    /// <summary>
-    /// User audio content button color.
-    /// </summary>
-    public static readonly BindableProperty AudioContentColorProperty =
-        BindableProperty.Create(nameof(AudioContentColor), typeof(Color), typeof(Chat), primaryColor);
-
-    public Color AudioContentColor
-    {
-        get => (Color)GetValue(AudioContentColorProperty);
-        set => SetValue(AudioContentColorProperty, value);
-    }
-    #endregion
-
     #region Status label
     /// <summary>
     /// Status shown just above the user message entry field e.g. "John Doe is typing..."
@@ -469,19 +411,7 @@ public partial class Chat : ContentView
     }
     #endregion
 
-    #region AudioRecorder
-    /// <summary>
-    /// Start or stop recording voice message.
-    /// </summary>
-    public static readonly BindableProperty AudioRecorderCommandProperty = 
-        BindableProperty.Create(nameof(AudioRecorderCommand), typeof(ICommand), typeof(Chat));
-
-    public ICommand AudioRecorderCommand
-    {
-        get => (ICommand)GetValue(AudioRecorderCommandProperty);
-        set => SetValue(AudioRecorderCommandProperty, value);
-    }
-
+    #region Audio recorder
     /// <summary>
     /// Determines whether start/stop record toggle button is visible.
     /// </summary>
@@ -533,18 +463,6 @@ public partial class Chat : ContentView
 
     #region Audio player
     /// <summary>
-    /// Play or stop audio message.
-    /// </summary>
-    public static readonly BindableProperty AudioPlayerCommandProperty =
-        BindableProperty.Create(nameof(AudioPlayerCommand), typeof(ICommand), typeof(Chat));
-
-    public ICommand AudioPlayerCommand
-    {
-        get => (ICommand)GetValue(AudioPlayerCommandProperty);
-        set => SetValue(AudioPlayerCommandProperty, value);
-    }
-
-    /// <summary>
     /// Audio content button icon.
     /// </summary>
     public static readonly BindableProperty AudioContentIconProperty =
@@ -557,7 +475,61 @@ public partial class Chat : ContentView
     }
     #endregion
 
-    #region HandsFreeMode button
+    #region Message content entry
+
+    #region Text content
+    /// <summary>
+    /// Message typed by user.
+    /// </summary>
+    public static readonly BindableProperty TextContentProperty =
+        BindableProperty.Create(nameof(TextContent), typeof(string), typeof(Chat), defaultBindingMode: BindingMode.TwoWay);
+
+    public string? TextContent
+    {
+        get => (string)GetValue(TextContentProperty);
+        set => SetValue(TextContentProperty, value);
+    }
+
+    /// <summary>
+    /// Text content color.
+    /// </summary>
+    public static readonly BindableProperty TextContentColorProperty =
+        BindableProperty.Create(nameof(TextContentColor), typeof(Color), typeof(Chat), SetTextContentDefaultColor());
+
+    public Color TextContentColor
+    {
+        get => (Color)GetValue(TextContentColorProperty);
+        set => SetValue(TextContentColorProperty, value);
+    }
+    #endregion
+
+    #region Audio content
+    /// <summary>
+    /// Audio content in message.
+    /// </summary>
+    public static readonly BindableProperty AudioContentProperty =
+        BindableProperty.Create(nameof(AudioContent), typeof(object), typeof(Chat), defaultBindingMode: BindingMode.TwoWay);
+
+    public object? AudioContent
+    {
+        get => GetValue(AudioContentProperty);
+        set => SetValue(AudioContentProperty, value);
+    }
+
+    /// <summary>
+    /// User audio content button color.
+    /// </summary>
+    public static readonly BindableProperty AudioContentColorProperty =
+        BindableProperty.Create(nameof(AudioContentColor), typeof(Color), typeof(Chat), primaryColor);
+
+    public Color AudioContentColor
+    {
+        get => (Color)GetValue(AudioContentColorProperty);
+        set => SetValue(AudioContentColorProperty, value);
+    }
+    #endregion
+
+    #region Hands-free mode button
     /// <summary>
     /// Turn on/off hands-free mode. Hands-free mode is automated recording, transcribing and sending voice messages as well as reading received messages.
     /// </summary>
@@ -607,7 +579,7 @@ public partial class Chat : ContentView
     }
     #endregion
 
-    #region AddAttachment button
+    #region Add attachment button
     /// <summary>
     /// Turn on/off hands-free mode. Hands-free mode is automated recording, transcribing and sending voice messages as well as reading received messages.
     /// </summary>
@@ -657,7 +629,7 @@ public partial class Chat : ContentView
     }
     #endregion
 
-    #region TakePhoto button
+    #region Take photo button
     /// <summary>
     /// Turn on/off hands-free mode. Hands-free mode is automated recording, transcribing and sending voice messages as well as reading received messages.
     /// </summary>
@@ -707,7 +679,22 @@ public partial class Chat : ContentView
     }
     #endregion
 
-    #region SendMessage button
+    #region Background color
+    /// <summary>
+    /// Message entry background color.
+    /// </summary>
+    public static readonly BindableProperty MessageEntryBackgroundColorProperty =
+        BindableProperty.Create(nameof(MessageEntryBackgroundColor), typeof(Color), typeof(Chat), Colors.Transparent);
+
+    public Color MessageEntryBackgroundColor
+    {
+        get => (Color)GetValue(MessageEntryBackgroundColorProperty);
+        set => SetValue(MessageEntryBackgroundColorProperty, value);
+    }
+    #endregion
+    #endregion
+
+    #region Send message button
     /// <summary>
     /// Send user message.
     /// </summary>
@@ -794,31 +781,117 @@ public partial class Chat : ContentView
     #endregion
     #endregion
 
-    #region Protected methods
-    protected override void OnBindingContextChanged()
+    #region Private methods
+    static Color SetTextContentDefaultColor()
     {
-        base.OnBindingContextChanged();
+        var theme = Application.Current?.RequestedTheme;
 
-        // workaround for StartStopCommand being null when AudioPlayer resolved (issue #14)
-        audioPlayerControl.StartStopCommand = AudioPlayerCommand;
+        if (theme == AppTheme.Light)
+            return Colors.Black;
+        else
+            return Colors.White;
+    }
+
+    #region Audio service changed
+    static void OnAudioServiceChanged(BindableObject bindable, object oldValue, object newValue)
+    {
+        var control = bindable as Chat;
+
+        control?.ChangeAudioServiceHandlers(oldValue, newValue);
+    }
+
+    void ChangeAudioServiceHandlers(object oldValue, object newValue)
+    {
+        if (oldValue is IAudioService oldService)
+            oldService.PropertyChanged -= AudioService_PropertyChanged;
+
+        if (newValue is IAudioService newService)
+            newService.PropertyChanged += AudioService_PropertyChanged;
+    }
+
+    void AudioService_PropertyChanged(object? sender, PropertyChangedEventArgs e)
+    {
+        if (e.PropertyName == nameof(IsRecording))
+            IsRecording = AudioService.IsRecording;
+
+        if (e.PropertyName == nameof(IsPlaying))
+            IsPlaying = AudioService.IsPlaying;
     }
     #endregion
 
-    #region Private methods
-    async Task RecordAudioAsync()
+    #region Speech-to-text service changed
+    private static void OnSpeechToTextServiceChanged(BindableObject bindable, object oldValue, object newValue)
     {
-        if (await Permissions.RequestAsync<Permissions.Microphone>() != PermissionStatus.Granted)
-        {
-            await Shell.Current.DisplayAlert("Permission denied", "The app needs microphone permission to record audio.", "OK");
-            AudioRecorderColor = SecondaryColor;
-            return;
-        }
+        var control = bindable as Chat;
 
-        if (IsSpeechToTextEnabled)
-            TextContent += await SpeechToTextService.StartOrStopTranscriptionAsync();
-        else
-            AudioContent = await AudioService.StartOrStopRecorderAsync();
+        control?.ChangeSpeechToTextHandlers(oldValue, newValue);
     }
+
+    void ChangeSpeechToTextHandlers(object? oldValue, object? newValue)
+    {
+        if (oldValue is ISpeechToTextService oldService)
+            oldService.PropertyChanged -= SpeechToTextService_PropertyChanged;
+
+        if (newValue is ISpeechToTextService newService)
+            newService.PropertyChanged += SpeechToTextService_PropertyChanged;
+    }
+
+    void SpeechToTextService_PropertyChanged(object? sender, PropertyChangedEventArgs e)
+    {
+        if (e.PropertyName == nameof(IsTranscribing))
+            IsTranscribing = SpeechToTextService.IsTranscribing;
+    }
+    #endregion
+
+    #region Text-to-speech service changed
+    static void OnTextToSpeechServiceChanged(BindableObject bindable, object oldValue, object newValue)
+    {
+        var control = bindable as Chat;
+
+        control?.ChangeTextToSpeechHandlers(oldValue, newValue);
+    }
+
+    void ChangeTextToSpeechHandlers(object? oldValue, object? newValue)
+    {
+        if (oldValue is ITextToSpeechService oldService)
+            oldService.PropertyChanged -= TextToSpeechService_PropertyChanged;
+
+        if (newValue is ITextToSpeechService newService)
+            newService.PropertyChanged += TextToSpeechService_PropertyChanged;
+    }
+
+    void TextToSpeechService_PropertyChanged(object? sender, PropertyChangedEventArgs e)
+    {
+        if (e.PropertyName == nameof(IsReading))
+            IsReading = TextToSpeechService.IsReading;
+    }
+    #endregion
+
+    #region State properties changed
+    private static void OnIsRecordingChanged(BindableObject bindable, object oldValue, object newValue)
+    {
+        if (bindable is Chat chat)
+            chat.Status = (bool)newValue ? "Recording..." : string.Empty;
+    }
+
+    private static void OnIsTranscribingChanged(BindableObject bindable, object oldValue, object newValue)
+    {
+        if (bindable is Chat chat)
+            chat.Status = (bool)newValue ? "Transcribing..." : string.Empty;
+    }
+
+    private static void OnIsPlayingChanged(BindableObject bindable, object oldValue, object newValue)
+    {
+        if (bindable is Chat chat)
+            chat.Status = (bool)newValue ? "Playing..." : string.Empty;
+    }
+
+    private static void OnIsReadingChanged(BindableObject bindable, object oldValue, object newValue)
+    {
+        if (bindable is Chat chat)
+            chat.Status = (bool)newValue ? "Reading..." : string.Empty;
+    }
+    #endregion
 
     #region Workaround for scrolling issue on Android where the last messages were hidden under the device keyboard.
     static void OnChatMessagesChanged(BindableObject bindable, object oldValue, object newValue)

@@ -1,67 +1,93 @@
 ﻿namespace Plugin.Maui.Chat.Services;
 
-public class AudioService
+public partial class AudioService : ObservableRecipient, IAudioService
 {
-    readonly Controls.Chat chat;
-
     readonly AudioManager audioManager = new();
     readonly IAudioRecorder audioRecorder;
     AsyncAudioPlayer? audioPlayer;
 
-    public AudioService(Controls.Chat chat)
+    public AudioService()
     {
-        this.chat = chat;
-
         audioRecorder = audioManager.CreateRecorder();
     }
 
-    public async Task<IAudioSource?> StartOrStopRecorderAsync()
+    [ObservableProperty]
+    bool isRecording;
+
+    public bool SoundDetected { get; private set; }
+
+    [ObservableProperty]
+    bool isPlaying;
+
+    public async Task<IAudioSource?> StartRecordingAsync(bool silenceDetection, double silenceTreshold, TimeSpan silenceDuration)
     {
         IAudioSource? audioSource = default;
 
+        if (await Permissions.RequestAsync<Permissions.Microphone>() != PermissionStatus.Granted)
+        {
+            await Shell.Current.DisplayAlert("Permission denied", "The app needs microphone permission to record audio.", "OK");
+            return audioSource;
+        }
+
         if (!audioRecorder.IsRecording)
         {
+            IsRecording = true;
+
             await audioRecorder.StartAsync();
 
-            chat.IsRecording = true;
-            chat.AudioRecorderColor = Colors.Red;
-
 #if ANDROID || WINDOWS
-            audioSource = await audioRecorder.StopAsync(When.SilenceIsDetected());
+            if (silenceDetection) 
+                audioSource = await audioRecorder.StopAsync(When.SilenceIsDetected(silenceTreshold, silenceDuration));
 #endif
         }
-        else
-        {
-            audioSource = await audioRecorder.StopAsync(When.Immediately());
-        }
 
-        chat.IsRecording = false;
-        chat.AudioRecorderColor = chat.PrimaryColor;
+        await UpdatedStatuses();
 
         return audioSource;
     }
 
-    public async Task StartStopPlayerAsync(IAudioSource? audioSource)
+    public async Task<IAudioSource?> StopRecordingAsync()
     {
-        if (audioSource == null || audioSource.GetType() == typeof(EmptyAudioSource)) 
+        IAudioSource? audioSource = await audioRecorder.StopAsync(When.Immediately());
+
+        await UpdatedStatuses();
+
+        return audioSource;
+    }
+
+    private async Task UpdatedStatuses()
+    {
+        IsRecording = false;
+
+#if ANDROID || WINDOWS
+        SoundDetected = audioRecorder.SoundDetected;
+
+        if (!SoundDetected)
+        {
+            var toast = Toast.Make("No sound detected.");
+            await toast.Show();
+        }
+#endif
+    }
+
+    public async Task StartPlayingAsync(IAudioSource? audioSource)
+    {
+        if (audioSource == null || audioSource.GetType() == typeof(EmptyAudioSource))
             return;
 
-        if (!chat.IsPlaying)
-        {
-            chat.IsPlaying = true;
+        audioPlayer = audioManager.CreateAsyncPlayer(((FileAudioSource)audioSource).GetAudioStream());
+        audioPlayer.Volume = 1;
+        IsPlaying = true;
 
-            audioPlayer = audioManager.CreateAsyncPlayer(((FileAudioSource)audioSource).GetAudioStream());
-            audioPlayer.Volume = 1;
+        await audioPlayer.PlayAsync(CancellationToken.None);
 
-            await audioPlayer.PlayAsync(CancellationToken.None);
+        IsPlaying = false;
+    }
 
-            chat.IsPlaying = false;
-        }
-        else
-        {
-            audioPlayer?.Stop();
+    public void StopPlaying()
+    {
+        audioPlayer?.Stop();
 
-            chat.IsPlaying = false;
-        }
+        IsPlaying = false;
     }
 }

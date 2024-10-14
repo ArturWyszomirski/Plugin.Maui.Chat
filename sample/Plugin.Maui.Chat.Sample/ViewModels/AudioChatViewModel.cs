@@ -6,6 +6,7 @@ public partial class AudioChatViewModel : ObservableRecipient
     {
         InitChatMessages();
     }
+    public ObservableCollection<ChatMessage> ChatMessages { get; } = [];
 
     [ObservableProperty]
     string? textContent;
@@ -15,8 +16,6 @@ public partial class AudioChatViewModel : ObservableRecipient
 
     [ObservableProperty]
     string? status;
-
-    public ObservableCollection<ChatMessage> ChatMessages { get; set; } = [];
 
     private void InitChatMessages()
     {
