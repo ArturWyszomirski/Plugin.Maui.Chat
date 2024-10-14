@@ -2,29 +2,36 @@
 
 public partial class CustomizedChatViewModel : ObservableRecipient
 {
-    public CustomizedChatViewModel()
+    public CustomizedChatViewModel(IAudioService audioService, ITextToSpeechService textToSpeechService)
     {
+        AudioService = audioService;
+        TextToSpeechService = textToSpeechService;
+
         InitChatMessages();
     }
+
+    [ObservableProperty]
+    IAudioService audioService;
+
+    [ObservableProperty]
+    ITextToSpeechService textToSpeechService;
+
+    public ObservableCollection<ChatMessage> ChatMessages { get; set; } = [];
 
     [ObservableProperty]
     string? textContent;
 
     [ObservableProperty]
+    object? audioContent;
+
+    [ObservableProperty]
     string? status;
 
     [ObservableProperty]
-    bool isStatusVisible;
-
-    [ObservableProperty]
-    bool isRecording;
+    bool isStatusVisible = true;
 
     [ObservableProperty]
     bool isHandsFreeMode;
-
-    [ObservableProperty]
-    object? audioContent;
-    public ObservableCollection<ChatMessage> ChatMessages { get; set; } = [];
 
     private void InitChatMessages()
     {
@@ -72,7 +79,8 @@ public partial class CustomizedChatViewModel : ObservableRecipient
         {
             Type = MessageType.Sent,
             Author = "You",
-            TextContent = TextContent
+            TextContent = TextContent,
+            AudioContent = AudioContent
         });
 
         TextContent = null;
@@ -90,37 +98,10 @@ public partial class CustomizedChatViewModel : ObservableRecipient
         {
             Type = MessageType.Received,
             Author = "Echo",
-            TextContent = $"Echo: {ChatMessages.Last().TextContent}"
+            TextContent = $"Echo: {ChatMessages.Last().TextContent}",
+            AudioContent = ChatMessages.Last().AudioContent
         });
     }
-
-    [RelayCommand]
-    async Task StartStopRecordingAsync()
-    {
-        IsRecording = !IsRecording;
-
-        if (IsRecording)
-            await Shell.Current.DisplayAlert("Custom record audio command", "You can use your own commands instead of those built-in.", "Cool :)");
-
-        AudioContent = new EmptyAudioSource();
-    }
-
-    [RelayCommand]
-    async Task PlayAudioAsync()
-    {
-        var audioPlayer = AudioManager.Current.CreateAsyncPlayer(await FileSystem.OpenAppPackageFileAsync("ukulele.mp3"));
-
-        await Shell.Current.DisplayAlert("Custom play audio command",
-                                         "On this page all audio contents will play \"The Happy Ukulele Song\" by Stanislav Fomin. Enjoy!",
-                                         "Aloha :)");
-
-        await audioPlayer.PlayAsync(default);
-    }
-
-    [RelayCommand]
-    async Task ReadMessage() => await Shell.Current.DisplayAlert("Custom read text command",
-                                                                 "Bla bla bla bla...",
-                                                                 "Que?");
 
     [RelayCommand]
     void HandsFreeMode() => IsHandsFreeMode = !IsHandsFreeMode;

@@ -15,10 +15,10 @@
                IsReceivedMessageTimestampVisible="True"
                IsTextReaderVisible="True"
                
+               TextContent="{Binding TextContent}"
+               
                Status="{Binding Status}"
                IsStatusVisible="True"
-        
-               TextContent="{Binding TextContent}"
                
                IsAudioRecorderVisible="True"
                IsSpeechToTextEnabled="True"

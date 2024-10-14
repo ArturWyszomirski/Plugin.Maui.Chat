@@ -8,8 +8,8 @@
              Title="Hands-free chat"
              x:DataType="viewmodels:HandsFreeChatViewModel">
 
-    <chat:Chat SpeechToTextService="{Binding SpeechToTextSvc}"
-               TextToSpeechService="{Binding TextToSpeechSvc}"
+    <chat:Chat SpeechToTextService="{Binding SpeechToTextService, Mode=OneWayToSource}"
+               TextToSpeechService="{Binding TextToSpeechService, Mode=OneWayToSource}"
                
                ChatMessages="{Binding ChatMessages}"
                IsSentMessageAuthorVisible="True"
@@ -18,10 +18,10 @@
                IsReceivedMessageTimestampVisible="True"
                IsTextReaderVisible="True"
                
+               TextContent="{Binding TextContent}"
+               
                Status="{Binding Status}"
                IsStatusVisible="True"
-               
-               TextContent="{Binding TextContent}"
                
                IsAudioRecorderVisible="True"
                IsSpeechToTextEnabled="True"

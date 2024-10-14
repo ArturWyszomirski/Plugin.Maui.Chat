@@ -1,59 +1,65 @@
 ﻿namespace Plugin.Maui.Chat.Services;
 
-public class SpeechToTextService(Controls.Chat chat)
+public partial class SpeechToTextService : ObservableRecipient, ISpeechToTextService
 {
-    public CancellationTokenSource? CancelSpeechToTextTokenSource { get; private set; }
+    string text = string.Empty;
+    CancellationTokenSource? cancelSpeechToTextTokenSource;
 
-    public async Task<string?> StartOrStopTranscriptionAsync()
+    [ObservableProperty]
+    bool isTranscribing;
+
+    public async Task<string?> StartTranscriptionAsync()
     {
-        string text = string.Empty;
+        text = string.Empty;
 
         if (await RequestPermission() is not PermissionStatus.Granted)
             return text;
-        
-        if (!chat.IsRecording) // couldn't use SpeechToText.Default.CurrentState because is always in Listenig state on Windows OS
+
+        cancelSpeechToTextTokenSource = new();
+
+        IsTranscribing = true;
+
+        var recognitionResult = await SpeechToText.Default.ListenAsync(CultureInfo.CurrentCulture, new Progress<string>(partialText =>
         {
-            CancelSpeechToTextTokenSource = new();
-
-            chat.IsRecording = true;
-            chat.AudioRecorderColor = Colors.Red;
-
-            var recognitionResult = await SpeechToText.Default.ListenAsync(CultureInfo.CurrentCulture, new Progress<string>(partialText =>
+            if (!string.IsNullOrWhiteSpace(partialText))
             {
-                if (!string.IsNullOrWhiteSpace(partialText))
-                {
 #if WINDOWS 
-                    text += CapitalizeFirstLetter(partialText) + ". ";
+                text += CapitalizeFirstLetter(partialText) + ". ";
 #elif ANDROID || IOS || MACCATALYST
-                    text = CapitalizeFirstLetter(partialText) + ". ";
+                text = CapitalizeFirstLetter(partialText) + ". ";
 #endif
-                }
-            }), CancelSpeechToTextTokenSource.Token);
+            }
+        }), cancelSpeechToTextTokenSource.Token);
 
-            if (recognitionResult.IsSuccessful)
-            {
+        if (recognitionResult.IsSuccessful)
+        {
 #if ANDROID || IOS || MACCATALYST
-                CancelSpeechToTextTokenSource.Cancel();
+            cancelSpeechToTextTokenSource.Cancel();
 
-                if (!string.IsNullOrWhiteSpace(recognitionResult.Text))
-                    text = CapitalizeFirstLetter(recognitionResult.Text) + ". ";
+            if (!string.IsNullOrWhiteSpace(recognitionResult.Text))
+                text = CapitalizeFirstLetter(recognitionResult.Text) + ". ";
 #endif
-            }
-            else
-            {
-                await Toast.Make(recognitionResult.Exception?.Message ?? "Unable to recognize speech").Show(CancellationToken.None);
-            }
         }
-#if ANDROID || IOS || MACCATALYST
         else
-            CancelSpeechToTextTokenSource?.Cancel();
-        
-        if (CancelSpeechToTextTokenSource?.IsCancellationRequested == false)
+        {
+            await Toast.Make(recognitionResult.Exception?.Message ?? "Unable to recognize speech").Show(CancellationToken.None);
+        }
+
+        IsTranscribing = false;
+
+        return text;
+    }
+
+    public async Task<string?> StopTranscriptionAsync()
+    {
+#if ANDROID || IOS || MACCATALYST
+        cancelSpeechToTextTokenSource?.Cancel();
+
+        if (cancelSpeechToTextTokenSource?.IsCancellationRequested == false)
             await SpeechToText.Default.DisposeAsync();
 #endif
 
-        chat.IsRecording = false;
-        chat.AudioRecorderColor = chat.PrimaryColor;
+        IsTranscribing = false;
 
         return text;
     }
@@ -70,7 +76,7 @@ public class SpeechToTextService(Controls.Chat chat)
 #elif WINDOWS || ANDROID
             await Shell.Current.DisplayAlert("Permission denied", "The app needs microphone permission to record audio.", "OK");
 #endif
-            chat.AudioRecorderColor = chat.SecondaryColor;
+
             return PermissionStatus.Denied;
         }
 

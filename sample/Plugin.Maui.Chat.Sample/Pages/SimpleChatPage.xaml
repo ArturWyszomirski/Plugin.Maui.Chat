@@ -7,9 +7,9 @@
              x:Class="Plugin.Maui.Chat.Sample.Pages.SimpleChatPage"
              Title="Simple chat"
              x:DataType="viewmodels:SimpleChatViewModel">
-    
-    <chat:Chat TextContent="{Binding TextContent}"
-               ChatMessages="{Binding ChatMessages}"
+
+    <chat:Chat ChatMessages="{Binding ChatMessages}"
+               TextContent="{Binding TextContent}"
                SendMessageCommand="{Binding SendMessageCommand}"
                Margin="10"/>
     

@@ -61,7 +61,7 @@ namespace Plugin.Maui.Chat.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to camera_br.png.
+        ///   Looks up a localized string similar to https://raw.githubusercontent.com/ArturWyszomirski/Plugin.Maui.Chat/refs/heads/main/src/Plugin.Maui.Chat/Resources/Images/camera_br.png.
         /// </summary>
         internal static string Camera {
             get {
@@ -70,7 +70,7 @@ namespace Plugin.Maui.Chat.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to headphones_br.png.
+        ///   Looks up a localized string similar to https://raw.githubusercontent.com/ArturWyszomirski/Plugin.Maui.Chat/refs/heads/main/src/Plugin.Maui.Chat/Resources/Images/headphones_br.png.
         /// </summary>
         internal static string Headphones {
             get {
@@ -79,7 +79,7 @@ namespace Plugin.Maui.Chat.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to microphone_br.png.
+        ///   Looks up a localized string similar to https://raw.githubusercontent.com/ArturWyszomirski/Plugin.Maui.Chat/refs/heads/main/src/Plugin.Maui.Chat/Resources/Images/microphone_br.png.
         /// </summary>
         internal static string Microphone {
             get {
@@ -88,7 +88,7 @@ namespace Plugin.Maui.Chat.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to paper_clip_br.png.
+        ///   Looks up a localized string similar to https://raw.githubusercontent.com/ArturWyszomirski/Plugin.Maui.Chat/refs/heads/main/src/Plugin.Maui.Chat/Resources/Images/paper_clip_br.png.
         /// </summary>
         internal static string PaperClip {
             get {
@@ -97,7 +97,7 @@ namespace Plugin.Maui.Chat.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to paper_plane_br.png.
+        ///   Looks up a localized string similar to https://raw.githubusercontent.com/ArturWyszomirski/Plugin.Maui.Chat/refs/heads/main/src/Plugin.Maui.Chat/Resources/Images/paper_plane_br.png.
         /// </summary>
         internal static string PaperPlane {
             get {
@@ -106,7 +106,7 @@ namespace Plugin.Maui.Chat.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to speaker_br.png.
+        ///   Looks up a localized string similar to https://raw.githubusercontent.com/ArturWyszomirski/Plugin.Maui.Chat/refs/heads/main/src/Plugin.Maui.Chat/Resources/Images/speaker_br.png.
         /// </summary>
         internal static string Speaker {
             get {
@@ -115,7 +115,7 @@ namespace Plugin.Maui.Chat.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to waveform_br.png.
+        ///   Looks up a localized string similar to https://raw.githubusercontent.com/ArturWyszomirski/Plugin.Maui.Chat/refs/heads/main/src/Plugin.Maui.Chat/Resources/Images/waveform_br.png.
         /// </summary>
         internal static string Waveform {
             get {

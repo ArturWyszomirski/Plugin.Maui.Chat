@@ -8,8 +8,13 @@
              Title="Customized chat"
              x:DataType="viewmodels:CustomizedChatViewModel">
 
-    <chat:Chat TextContent="{Binding TextContent}"
+    <chat:Chat AudioService="{Binding AudioService}" 
+               TextToSpeechService="{Binding TextToSpeechService}"
+               
                ChatMessages="{Binding ChatMessages}"
+               
+               TextContent="{Binding TextContent}"
+               AudioContent="{Binding AudioContent}"
                
                SentMessageBackgroundColor="{StaticResource Primary}"
                IsSentMessageAuthorVisible="True"
@@ -27,7 +32,6 @@
                ReceivedMessageContentTextColor="{StaticResource Primary}"
                ReceivedMessageAudioContentColor="{StaticResource Primary}"
                
-               TextReaderCommand="{Binding ReadMessageCommand}"
                IsTextReaderVisible="True"
                TextReaderColor="{StaticResource Tertiary}"
                TextReaderIcon="{Static resources:Icons.Speaker}"
@@ -39,13 +43,12 @@
                IsStatusVisible="{Binding IsStatusVisible}"
                StatusTextColor="{StaticResource Gray500}"
                
-               AudioRecorderCommand="{Binding StartStopRecordingCommand}"
+               TextContentColor="{StaticResource Primary}"
+               
                IsAudioRecorderVisible="True"
                AudioRecorderIcon="{Static resources:Icons.Microphone}"
                AudioRecorderColor="{StaticResource Primary}"
                
-               AudioContent="{Binding AudioContent}"
-               AudioPlayerCommand="{Binding PlayAudioCommand}"
                AudioContentIcon="{Static resources:Icons.Waveform}"
                AudioContentColor="{StaticResource Primary}"
                
@@ -68,24 +71,26 @@
                SendMessageIcon="{Static resources:Icons.PaperPlane}"
                SendMessageColor="{StaticResource Primary}"
                
+               MessageEntryBackgroundColor="{StaticResource Secondary}"
+               
                Margin="10">
 
         <chat:Chat.Triggers>
 
             <DataTrigger TargetType="chat:Chat" Binding="{Binding IsRecording}" Value="True">
-                <Setter Property="AudioRecorderColor" Value="{StaticResource Primary}"/>
+                <Setter Property="AudioRecorderColor" Value="{StaticResource Magenta}"/>
             </DataTrigger>
 
             <DataTrigger TargetType="chat:Chat" Binding="{Binding IsRecording}" Value="False">
-                <Setter Property="AudioRecorderColor" Value="{StaticResource Secondary}"/>
+                <Setter Property="AudioRecorderColor" Value="{StaticResource Primary}"/>
             </DataTrigger>
 
             <DataTrigger TargetType="chat:Chat" Binding="{Binding IsHandsFreeMode}" Value="True">
-                <Setter Property="HandsFreeModeColor" Value="{StaticResource Primary}"/>
+                <Setter Property="HandsFreeModeColor" Value="{StaticResource Magenta}"/>
             </DataTrigger>
 
             <DataTrigger TargetType="chat:Chat" Binding="{Binding IsHandsFreeMode}" Value="False">
-                <Setter Property="HandsFreeModeColor" Value="{StaticResource Secondary}"/>
+                <Setter Property="HandsFreeModeColor" Value="{StaticResource Primary}"/>
             </DataTrigger>
 
         </chat:Chat.Triggers>

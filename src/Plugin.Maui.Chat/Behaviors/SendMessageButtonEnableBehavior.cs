@@ -21,7 +21,16 @@ internal class SendMessageButtonEnableBehavior : Behavior<Controls.Chat>
     {
         var chat = sender as Controls.Chat ?? throw new ArgumentNullException(nameof(sender));
 
-        if (e.PropertyName == Controls.Chat.TextContentProperty.PropertyName || e.PropertyName == Controls.Chat.AudioContentProperty.PropertyName)
-            chat.IsSendMessageEnabled = (!string.IsNullOrWhiteSpace(chat?.TextContent) || (chat?.AudioContent is not null)) && !chat.IsHandsFreeModeOn;
+        if (e.PropertyName == Controls.Chat.TextContentProperty.PropertyName
+            || e.PropertyName == Controls.Chat.AudioContentProperty.PropertyName
+            || e.PropertyName == Controls.Chat.IsRecordingProperty.PropertyName
+            || e.PropertyName == Controls.Chat.IsTranscribingProperty.PropertyName
+            || e.PropertyName == Controls.Chat.IsHandsFreeModeOnProperty.PropertyName)
+        {
+            chat.IsSendMessageEnabled = (!string.IsNullOrWhiteSpace(chat?.TextContent) || (chat?.AudioContent is not null))
+                && !chat.IsRecording
+                && !chat.IsTranscribing
+                && !chat.IsHandsFreeModeOn;
+        }
     }
 }

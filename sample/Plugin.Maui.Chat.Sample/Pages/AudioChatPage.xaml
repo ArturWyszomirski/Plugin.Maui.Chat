@@ -7,16 +7,18 @@
              x:Class="Plugin.Maui.Chat.Sample.Pages.AudioChatPage"
              Title="Audio chat"
              x:DataType="viewmodels:AudioChatViewModel">
-    
-    <chat:Chat TextContent="{Binding TextContent}"
-               ChatMessages="{Binding ChatMessages}"
-               SendMessageCommand="{Binding SendMessageCommand}"
-               
+
+    <chat:Chat ChatMessages="{Binding ChatMessages}"
+                
+               TextContent="{Binding TextContent}"
+               AudioContent="{Binding AudioContent}"
+                
                Status="{Binding Status}"
                IsStatusVisible="True"
                
                IsAudioRecorderVisible="True"
-               AudioContent="{Binding AudioContent}"
+                
+               SendMessageCommand="{Binding SendMessageCommand}"
                
                Margin="10"/>
     
