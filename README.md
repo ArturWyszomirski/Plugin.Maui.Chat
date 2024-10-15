@@ -45,7 +45,7 @@ Visibility of other buttons in the user message entry field as well as their's i
 
 ### Dependency Injection
 
-This NuGet depends on `MAUI Community Toolkit`, so you will first need to register the `Feature` with the `MAUI Community Toolkit`.
+This NuGet depends on `MAUI Community Toolkit`, so you will first need to chain up the `MAUI Community Toolkit` in app builder.
 
 ```csharp
 builder.UseMauiCommunityToolkit();
@@ -370,21 +370,16 @@ Implements `IAudioService`. Utilizes `Plugin.Maui.Audio`. Responsible for record
 
 ##### Properties
 
-`IsRecording` - shows whether audio is being currently recorded.
-
-`SoundDetected` - set to true if there was a sound detected in latest recording in the latest recording (updated after recording is finished).
-
-`IsPlaying` - shows whether audio is being currently played.
+- `IsRecording` - shows whether audio is being currently recorded.
+- `SoundDetected` - set to true if there was a sound detected in latest recording in the latest recording (updated after recording is finished).
+- `IsPlaying` - shows whether audio is being currently played.
 
 ##### Methods
 
-`Task<IAudioSource?> StartRecordingAsync(bool silenceDetection = true, double silenceTreshold = 2, TimeSpan silenceDuration = default)` - fired when audio recorder button is pressed, `IsRecording = false` and `IsSpeechToTextEnabled = false`.
-
-`Task<IAudioSource?> StopRecordingAsync()` - fired when audio redorder button is pressed, `IsRecording = true` and `IsSpeechToTextEnabled = false`.
-
-`Task StartPlayingAsync(IAudioSource? audioSource)` - fired when audio player button is pressed and `IsPlaying = false`.
-    
-`void StopPlaying()` - fired when audio player button is pressed and `IsPlaying = true`.
+- `Task<IAudioSource?> StartRecordingAsync(bool silenceDetection = true, double silenceTreshold = 2, TimeSpan silenceDuration = default)` - fired when audio recorder button is pressed, `IsRecording = false` and `IsSpeechToTextEnabled = false`.
+- `Task<IAudioSource?> StopRecordingAsync()` - fired when audio redorder button is pressed, `IsRecording = true` and `IsSpeechToTextEnabled = false`.
+- `Task StartPlayingAsync(IAudioSource? audioSource)` - fired when audio player button is pressed and `IsPlaying = false`.
+- `void StopPlaying()` - fired when audio player button is pressed and `IsPlaying = true`.
 
 #### `SpeechToTextService`:
 
@@ -392,13 +387,12 @@ Implements `ISpeechToTextService`. Utilizes `CommunityToolkit`'s speech-to-text 
 
 ##### Properties
 
-`IsTranscribing` - shows whether speech is currently being transcribed.
+- `IsTranscribing` - shows whether speech is currently being transcribed.
 
 ##### Methods
 
-`Task<string?> StartTranscriptionAsync()` - fired when audio recorder button is pressed, `IsTransribing = false`, and `IsSpeechToTextEnabled = true`.
-
-`Task<string?> StopTranscriptionAsync()` - fired when audio recorder button is pressed, `IsTransribing = true`, and `IsSpeechToTextEnabled = true`.
+- `Task<string?> StartTranscriptionAsync()` - fired when audio recorder button is pressed, `IsTransribing = false`, and `IsSpeechToTextEnabled = true`.
+- `Task<string?> StopTranscriptionAsync()` - fired when audio recorder button is pressed, `IsTransribing = true`, and `IsSpeechToTextEnabled = true`.
 
 #### `TextToSpeechService`:
 
@@ -406,16 +400,15 @@ Implements `ITextToSpeechService`. Utilizes MAUI's native text-to-speech feature
 
 ##### Properties
 
-`IsReading` - shows whether text message is currently being read.
+- `IsReading` - shows whether text message is currently being read.
 
 ##### Methods
 
-`Task StartReadingAsync(string? text)` - fired when text reader button is pressed, `IsReading = false`.
-
-`void StopReading()` - fired when text reader button is pressed, `IsReading = true`.
+- `Task StartReadingAsync(string? text)` - fired when text reader button is pressed, `IsReading = false`.
+- `void StopReading()` - fired when text reader button is pressed, `IsReading = true`.
 
 ## Credits
 
-All icons comes from [flaticon.com](https://www.flaticon.com)'s UICONS series.
+All icons comes from [Flaticon](https://www.flaticon.com) Uicons series.
 
-Icon was coloured using https://onlinepngtools.com/change
+Icon was resized and coloured with [Online PNG Tools](https://onlinepngtools.com).
